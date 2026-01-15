@@ -3,16 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <title>SystemTag</title>
-  <script src="shared/js/qr-handler.js"></script>
 </head>
 <body>
+
 <script>
-  const user = QR.getParam("u");
+  const params = new URLSearchParams(window.location.search);
+  const user = params.get("u");
+
   if (user) {
-    window.location.href = `unlkd/users/${user}/index.html`;
+    window.location.href = "unlkd/users/" + user + "/index.html";
   } else {
-    window.location.href = `core/index.html`;
+    window.location.href = "core/index.html";
   }
 </script>
+
 </body>
 </html>
