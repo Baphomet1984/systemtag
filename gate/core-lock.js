@@ -1,5 +1,7 @@
 (async function () {
 
+  console.log("Gate activo");
+
   const params = new URLSearchParams(window.location.search);
   const level = params.get("lvl");
   const target = params.get("go");
@@ -9,7 +11,7 @@
     return;
   }
 
-  const response = await fetch("/gate/rules.json");
+  const response = await fetch("rules.json");
   const rules = await response.json();
 
   const userRule = rules[level];
