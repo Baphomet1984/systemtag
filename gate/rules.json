@@ -1,0 +1,14 @@
+{
+  "core": {
+    "access": ["signal-core", "signal-unlkd"],
+    "expires": false
+  },
+  "unlkd": {
+    "access": ["signal-unlkd"],
+    "expires": true
+  },
+  "blocked": {
+    "access": [],
+    "redirect": "/denied.html"
+  }
+}
