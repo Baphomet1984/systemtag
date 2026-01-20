@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -10,6 +10,339 @@
 
   <h1>Signal Unlkd</h1>
   <p>Acceso limitado, pero acceso al fin.</p>
+
+</body>
+</html>-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Door-01 | Key#01</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #1DB954; /* Verde oficial de Spotify */
+            --bg-dark: #000000; /* Fondo negro puro */
+            --card-bg: #121212; /* Gris muy oscuro para las tarjetas */
+            --card-border: #282828; /* Gris para bordes */
+            --text-color: #ffffff;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-color);
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        .header-img {
+            width: 300px; /* Ajusta el tamaño de tu imagen aquí */
+            height: 50px;
+            /*border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-color);*/
+            }
+.core-access {
+    text-align: center;
+    margin: 30px 0 50px 0;
+}
+
+.core-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 22px;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    text-decoration: none;
+    color: #b3b3b3;
+    border: 1px solid #282828;
+    background: transparent;
+    transition: all 0.3s ease;
+}
+
+.core-button i {
+    font-size: 1rem;
+    color: #666;
+}
+
+.core-button:hover {
+    color: #ffffff;
+    border-color: var(--primary-color);
+    background: rgba(29, 185, 84, 0.08);
+    box-shadow: 0 0 10px rgba(29, 185, 84, 0.15);
+}
+
+.core-button:hover i {
+    color: var(--primary-color);
+}
+.core-note {
+    margin-top: 3px;
+    font-size: 0.75rem;
+    color: #666;
+}
+        h1 { 
+            color: var(--primary-color); 
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        h2 { 
+            font-size: 1.2rem; 
+            margin-top: 50px; 
+            color: #b3b3b3;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 10px;
+        }
+
+                /* Buscador */
+        .search-container {
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .search-container i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+        }
+
+        #playlistSearch {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            background: #242424;
+            border: 1px solid var(--card-border);
+            border-radius: 50px;
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        #playlistSearch:focus {
+            border-color: var(--primary-color);
+            background: #2a2a2a;
+            box-shadow: 0 0 10px rgba(29, 185, 84, 0.2);
+        }
+
+        h2 { 
+            font-size: 1.1rem; 
+            margin-top: 40px; 
+            color: #b3b3b3;
+            border-bottom: 1px solid var(--card-border);
+            padding-bottom: 10px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        /* Tarjetas de Playlist */
+        /*.playlist-item: /*{
+            /*transition: transform 0.3s ease;
+             li a:*//*hover {
+            background: #282828;
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(29, 185, 84, 0.2);
+        }*/
+
+        /* Ocultar elementos cuando no coinciden con la búsqueda */
+        .hidden {
+            display: none;
+        }
+        /* Contenedor de la lista */
+        ul {
+            list-style: none;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        /* Estilo de los botones */
+        li a {
+            display: flex;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 16px 20px;
+            border-radius: 8px; /* Bordes ligeramente redondeados */
+            text-decoration: none;
+            color: white;
+            transition: all 0.3s ease;
+            border: 1px solid var(--card-border);
+            font-weight: 500;
+        }
+
+        li a i {
+            margin-right: 15px;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        /* Efecto al pasar el mouse */
+        li a:hover {
+            background: #282828;
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(29, 185, 84, 0.2);
+        }
+
+        .widget-container {
+            margin-top: 60px;
+            background: #121212;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--card-border);
+        }
+
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            padding-bottom: 40px;
+        }
+
+        /* Estilo para el contador */
+        .footer-counter {
+            filter: invert(1); /* Invierte color del contador si es necesario para fondo negro */
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+<script src="protect.js"></script>
+    <div class="container">
+        
+        <header>
+            <img src="systemtag-gif2.gif" class="header-img">
+            <h1><!--<i class="fab fa-spotify"></i>--> Bienvenido a Signal</h1>
+<div class="core-access">
+    <a href="https://baphomet1984.github.io/systemtag/gate/?lvl=core&go=signal-core
+" class="core-button">
+        <i class="fa-solid fa-layer-group"></i>
+        Acceder a Signal Core
+    </a>
+<p class="core-note">Contenido general disponible para todos los usuarios</p>
+</div>
+
+                <!-- Elfsight WhatsApp Chat | Untitled WhatsApp Chat -->
+<script src="https://elfsightcdn.com/platform.js" async></script>
+<div class="elfsight-app-1c4d0ae1-891a-4847-86b0-00553260b99b" data-elfsight-app-lazy></div>
+        </header>
+        <div class="hub-status">
+            <p>Estado:<span id="hub-status"></span></p>
+            <p>Última mutación: <span id="hub-date"></span></p>
+        </div>   
+        <div class="search-container">
+            <i class="fa fa-search"></i>
+            <input type="text" id="playlistSearch" placeholder="Buscar playlist...">
+        </div>
+        <main>
+            <h2>Perfil Sonoro</h2><h3>>seleccion personal del portador</h3>
+           <ul class="playlist-group">
+               <!--PLAYLIST PERSONALIZADAS-->
+                    <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1EIXuvYF1J44v1?si=4KBqYQeCRYSa7QI1GBRuzg"><i class="fab fa-spotify"></i> 1.Manson</a></li>
+                    <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1E4xadFD2IyUbd?si=k3iJLuTITFaWM7hiddSyBQ"><i class="fab fa-spotify"></i> 2.Gotico</a></li>
+                    <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1DXcfZ6moR6J0G?si=EnT90tSRRwaTbFD2N0vfGQ"><i class="fab fa-spotify"></i> 3.New Metal</a></li>
+                    <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1DWTe5ECpTKzMo?si=dTi2iGlEQJqUDQCHhXrLrQ"><i class="fab fa-spotify"></i> 4.Hip Hop MX 24K</a></li>
+                    <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1EIea0ChiRU7ji?si=Eh1WKcBvQBqTfx3IcVPR-Q"><i class="fab fa-spotify"></i> 5.Doom</a></li>
+                    <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1DWTmGGCbcoQhY?si=9htAtALLTWqE3o3LG9TqNg"><i class="fab fa-spotify"></i> 6. CUMBIA SONIDERA</a></li>
+                    <li class="playlist-item"><a href="https://open.spotify.com/playlist/1z9BMuPLZE7bVemN5E85rV?si=vs4BVFxjTgyUycoBLQpARQ"><i class="fab fa-spotify"></i> 7. HITS TIKTOK MEXICO</a></li>
+                </ul>
+            <!--REPRODUCTOR DE SPOTIFY-->
+            <iframe data-testid="embed-iframe" style="border-radius:12px" src="https://open.spotify.com/embed/playlist/37i9dQZEVXdezsuDdNH1jV?utm_source=generator&theme=0" width="100%" height="152" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+
+            <h2>Catarsis y Ruido controlado</h2>
+            <ul class="playlist-group">
+                <!--    <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1EIea0ChiRU7ji?si=l1tpgnOTSceRtCiN5SMSWQ"><i class="fab fa-spotify"></i> 8. METAL DENSO</a></li>-->
+                    <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1DWYMHB55fgZrY?si=C0gKOkwdS_OKb2gXXrERkQ"><i class="fab fa-spotify"></i> 9. ROCK MEXICANO</a></li>
+                    <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1EIcM7vKLqtJgT?si=MU8P6kObS_efOEAuU7b73A"><i class="fab fa-spotify"></i> 10. TECHNO OSCURO</a></li>
+                <!--    <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1DWTe5ECpTKzMo?si=8IR6Y2vHRByTr_w5FnmT_w"><i class="fab fa-spotify"></i> 11. HIP-HOP MX 24K</a></li>-->
+                </ul>   
+
+           <!-- <div class="widget-container">
+                <iframe src='https://widget.spreaker.com/player?show_id=6247023&theme=dark&playlist=show&playlist-continuous=true&chapters-image=true' width='100%' height='400px' title='el panda show' frameborder='0'></iframe>
+            </div>-->
+        </main>
+
+        <footer>
+            <div class="footer-counter">
+                <script type="text/javascript" src="https://contador.websiteout.com/js/2/5/0/0"></script>
+            </div>
+        </footer>
+    </div>
+    <script>
+        document.getElementById('playlistSearch').addEventListener('keyup', function() {
+            let filter = this.value.toUpperCase();
+            let items = document.querySelectorAll('.playlist-item');
+
+            items.forEach(item => {
+                let text = item.textContent || item.innerText;
+                if (text.toUpperCase().indexOf(filter) > -1) {
+                    item.classList.remove('hidden');
+                } else {
+                    item.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+<script>
+    
+const statusElement = document.getElementById("hub-status");
+const now = new Date();
+const hour = now.getHours();
+
+let statusText = "";
+
+if (hour >= 6 && hour < 12) {
+    statusText = " despertando";
+} else if (hour >= 12 && hour < 18) {
+    statusText = " activo";
+} else if (hour >= 18 && hour < 23) {
+    statusText = " observandote";
+} else {
+    statusText = " viendo que no duermes";
+}
+
+statusElement.textContent = statusText.toUpperCase();
+    const dateElement = document.getElementById("hub-date");
+
+    const today = new Date();
+
+    const options = {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+    };
+
+    const formattedDate = today.toLocaleDateString("es-MX", options);
+
+    dateElement.textContent = formattedDate;
+</script>
 
 </body>
 </html>
