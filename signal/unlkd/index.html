@@ -225,7 +225,49 @@
             text-align: center;
             padding-bottom: 40px;
         }
+ /*Mini player*/
+#miniPlayer {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 320px;
+  background: #111;
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.6);
+  z-index: 9999;
+  overflow: hidden;
+  font-family: sans-serif;
+}
 
+#miniHeader {
+  background: #1a1a1a;
+  color: #fff;
+  padding: 8px 10px;
+  cursor: move;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+}
+
+#miniHeader .controls button {
+  background: none;
+  border: none;
+  color: #aaa;
+  font-size: 16px;
+  margin-left: 8px;
+  cursor: pointer;
+}
+
+#miniHeader .controls button:hover {
+  color: #fff;
+}
+
+#miniVideo {
+  width: 100%;
+  display: block;
+}
+/*hasta aquí el mini player*
         /* Estilo para el contador */
         .footer-counter {
             filter: invert(1); /* Invierte color del contador si es necesario para fondo negro */
@@ -368,6 +410,64 @@ statusElement.textContent = statusText.toUpperCase();
     dateElement.textContent = formattedDate;
 </script>
 
+/*magia del miniplayer*/
+<script>
+const miniPlayer = document.getElementById('miniPlayer');
+const header = document.getElementById('miniHeader');
+const video = document.getElementById('miniVideo');
+const minimizeBtn = document.getElementById('minimizeBtn');
+const closeBtn = document.getElementById('closeBtn');
+
+let isDragging = false;
+let offsetX, offsetY;
+
+// Arrastrar
+header.addEventListener('mousedown', (e) => {
+  isDragging = true;
+  offsetX = e.clientX - miniPlayer.offsetLeft;
+  offsetY = e.clientY - miniPlayer.offsetTop;
+});
+
+document.addEventListener('mousemove', (e) => {
+  if (!isDragging) return;
+  miniPlayer.style.left = (e.clientX - offsetX) + 'px';
+  miniPlayer.style.top = (e.clientY - offsetY) + 'px';
+  miniPlayer.style.right = 'auto';
+  miniPlayer.style.bottom = 'auto';
+});
+
+document.addEventListener('mouseup', () => {
+  isDragging = false;
+});
+
+// Minimizar
+let minimized = false;
+minimizeBtn.addEventListener('click', () => {
+  minimized = !minimized;
+  video.style.display = minimized ? 'none' : 'block';
+});
+
+// Cerrar
+closeBtn.addEventListener('click', () => {
+  video.pause();
+  miniPlayer.style.display = 'none';
+});
+</script>
+/*hasta aquí la magia del miniplayer*/
+
 </body>
 <!--mini player-->
+<div id="miniPlayer">
+  <div id="miniHeader">
+    <span>▶ Reproduciendo</span>
+    <div class="controls">
+      <button id="minimizeBtn">_</button>
+      <button id="closeBtn">×</button>
+    </div>
+  </div>
+
+  <video id="miniVideo" controls>
+    <source src="https://la.movie/" type="video/mp4">
+  </video>
+</div>
 </html>
