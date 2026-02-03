@@ -458,35 +458,34 @@ statusElement.textContent = statusText.toUpperCase();
 </script>
 <!--estado del avatar-->
 <script>
+// === AVATAR CORE ===
 const unlkdId = "demon-01";
-const avatar = document.getElementById("avatar");
-
-const hour = new Date().getHours();
-
-let mood = "neutral";
-if (hour >= 18 && hour < 23) mood = "angry";
-if (hour >= 23 || hour < 6) mood = "sleepy";
-
-const base = "https://api.dicebear.com/7.x/adventurer-neutral/svg";
-
-avatar.src = `${base}?seed=${unlkdId}-${mood}&v=${Date.now()}`;
-</script>
-<script>
 const avatar = document.getElementById("avatar");
 const panel = document.getElementById("avatar-panel");
 
+// mood por hora
+const hourNow = new Date().getHours();
+let mood = "neutral";
+if (hourNow >= 18 && hourNow < 23) mood = "angry";
+if (hourNow >= 23 || hourNow < 6) mood = "sleepy";
+
+const base = "https://api.dicebear.com/7.x/adventurer-neutral/svg";
+avatar.src = `${base}?seed=${unlkdId}-${mood}&v=${Date.now()}`;
+
+// toggle panel
 avatar.addEventListener("click", () => {
   panel.style.display = panel.style.display === "block" ? "none" : "block";
 });
 
+// acciones
 function changeAvatar() {
   const seed = Math.random().toString(36).substring(7);
-  avatar.src = `https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=${seed}`;
+  avatar.src = `${base}?seed=${seed}&v=${Date.now()}`;
 }
 
 function toggleStealth() {
-  const isHidden = avatar.style.opacity === "0.2";
-  avatar.style.opacity = isHidden ? "1" : "0.2";
+  avatar.style.opacity =
+    avatar.style.opacity === "0.2" ? "1" : "0.2";
 }
 </script>
 </body>
