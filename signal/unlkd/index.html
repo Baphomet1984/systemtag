@@ -256,6 +256,37 @@
   border-radius: 50%;
   object-fit: cover;
 }
+#avatar-panel {
+  position: fixed;
+  top: 80px;
+  right: 16px;
+  width: 220px;
+  padding: 14px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #b3b3b3;
+  font-size: 0.8rem;
+  display: none;
+  z-index: 9998;
+}
+
+#avatar-panel button {
+  width: 100%;
+  margin-top: 8px;
+  background: transparent;
+  border: 1px solid #333;
+  color: #b3b3b3;
+  padding: 6px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#avatar-panel button:hover {
+  border-color: var(--primary-color);
+  color: #fff;
+}
         /* Estilo para el contador */
         .footer-counter {
             filter: invert(1); /* Invierte color del contador si es necesario para fondo negro */
