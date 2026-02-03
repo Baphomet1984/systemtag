@@ -422,13 +422,20 @@ statusElement.textContent = statusText.toUpperCase();
 
     dateElement.textContent = formattedDate;
 <!--estado del avatar-->
-const base = "https://api.dicebear.com/7.x/pixel-art/svg";
-let mood = "neutral";
+<script>
+const unlkdId = "demon-01";
+const avatar = document.getElementById("avatar");
 
+const hour = new Date().getHours();
+
+let mood = "neutral";
 if (hour >= 18 && hour < 23) mood = "angry";
 if (hour >= 23 || hour < 6) mood = "sleepy";
 
+const base = "https://api.dicebear.com/7.x/adventurer-neutral/svg";
+
 avatar.src = `${base}?seed=${unlkdId}-${mood}&v=${Date.now()}`;
+</script>
 </script>
 
 </body>
