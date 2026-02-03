@@ -475,6 +475,23 @@ const base = "https://api.dicebear.com/7.x/adventurer-neutral/svg";
 avatar.src = `${base}?seed=${unlkdId}-${mood}&v=${Date.now()}`;
 </script>
 </script>
+<script>
+const avatar = document.getElementById("avatar");
+const panel = document.getElementById("avatar-panel");
 
+avatar.addEventListener("click", () => {
+  panel.style.display = panel.style.display === "block" ? "none" : "block";
+});
+
+function changeAvatar() {
+  const seed = Math.random().toString(36).substring(7);
+  avatar.src = `https://api.dicebear.com/7.x/adventurer-neutral/svg?seed=${seed}`;
+}
+
+function toggleStealth() {
+  const isHidden = avatar.style.opacity === "0.2";
+  avatar.style.opacity = isHidden ? "1" : "0.2";
+}
+</script>
 </body>
 </html>
