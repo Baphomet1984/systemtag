@@ -267,19 +267,19 @@
 <!--estado del sistema-->
         <div class="hub-status">
             <p>Estado:<span id="hub-status"></span></p>
-            <p>Última mutación: <span id="hub-date"></span><img
+            <p>Última mutación: <span id="hub-date"></span></p>
+</div>
+<img
     id="avatar"
     width="72"
     height="72"
     alt="UNLKD Avatar"
-  ></p>
-</div>
-
+  >
 <!--avatar-->
 <script>
 const unlkdId = "demon-01"; // o cualquier string
 document.getElementById("avatar").src =
-  `https://api.dicebear.com/7.x/bottts/svg?seed=${unlkdId}`;
+  `https://api.dicebear.com/7.x/pixel-art/svg?seed=${unlkdId}`;
 </script><!--fin avatar-->
            
         <div class="search-container">
@@ -399,7 +399,7 @@ statusElement.textContent = statusText.toUpperCase();
 
     dateElement.textContent = formattedDate;
 <!--estado del avatar-->
-const base = "https://api.dicebear.com/7.x/bottts/svg";
+const base = "https://api.dicebear.com/7.x/pixel-art/svg";
 let mood = "neutral";
 
 if (hour >= 18 && hour < 23) mood = "angry";
