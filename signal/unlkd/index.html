@@ -261,7 +261,17 @@
         </header>
         <div class="hub-status">
             <p>Estado:<span id="hub-status"></span></p>
-            <p>Última mutación: <span id="hub-date"></span></p>
+            <p>Última mutación: <span id="hub-date"></span><!--avatar-->
+<img 
+  id="avatar"
+  width="72"
+  height="72"
+/>
+
+<script>
+document.getElementById("avatar").src =
+  `https://api.dicebear.com/7.x/bottts/svg?seed=${unlkdId}`;
+</script><!--fin avatar--></p>
         </div>   
         <div class="search-container">
             <i class="fa fa-search"></i>
