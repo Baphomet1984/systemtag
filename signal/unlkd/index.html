@@ -397,7 +397,7 @@ statusElement.textContent = statusText.toUpperCase();
     const formattedDate = today.toLocaleDateString("es-MX", options);
 
     dateElement.textContent = formattedDate;
-</script>
+<!--estado del avatar-->
 const base = "https://api.dicebear.com/7.x/bottts/svg";
 let mood = "neutral";
 
@@ -405,5 +405,7 @@ if (hour >= 18 && hour < 23) mood = "angry";
 if (hour >= 23 || hour < 6) mood = "sleepy";
 
 avatar.src = `${base}?seed=${unlkdId}-${mood}&v=${Date.now()}`;
+</script>
+
 </body>
 </html>
