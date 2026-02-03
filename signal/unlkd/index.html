@@ -1,41 +1,27 @@
-<!--<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Signal Unlkd</title>
-</head>
-<body>
-
-  <script src="protect.js"></script>
-
-  <h1>Signal Unlkd</h1>
-  <p>Acceso limitado, pero acceso al fin.</p>
-
-</body>
-</html>-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Door-01 | Key#01</title>
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    
+
     <style>
         :root {
-            --primary-color: #1DB954; /* Verde oficial de Spotify */
-            --bg-dark: #000000; /* Fondo negro puro */
-            --card-bg: #121212; /* Gris muy oscuro para las tarjetas */
-            --card-border: #282828; /* Gris para bordes */
+            --primary-color: #1DB954; 
+            --bg-dark: #000000; 
+            --card-bg: #121212; 
+            --card-border: #282828; 
             --text-color: #ffffff;
+            --accent-gray: #666;
         }
 
         body {
             margin: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', Roboto, sans-serif;
             background-color: var(--bg-dark);
             color: var(--text-color);
+            overflow-x: hidden;
         }
 
         .container {
@@ -44,458 +30,267 @@
             padding: 40px 20px;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .header-img {
-            width: 150px; /* Ajusta el tamaño de tu imagen aquí */
-            height: 25px;
-            /*border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary-color);*/
-            }
-.core-access {
-    text-align: center;
-    margin: 30px 0 50px 0;
-}
+        /* --- HEADER & CORE --- */
+        header { text-align: center; margin-bottom: 20px; }
+        .header-img { width: 150px; height: auto; margin-bottom: 10px; }
 
-.core-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 12px 22px;
-    border-radius: 50px;
-    font-size: 0.9rem;
-    text-decoration: none;
-    color: #b3b3b3;
-    border: 1px solid #282828;
-    background: transparent;
-    transition: all 0.3s ease;
-}
-
-.core-button i {
-    font-size: 1rem;
-    color: #666;
-}
-
-.core-button:hover {
-    color: #ffffff;
-    border-color: var(--primary-color);
-    background: rgba(29, 185, 84, 0.08);
-    box-shadow: 0 0 10px rgba(29, 185, 84, 0.15);
-}
-
-.core-button:hover i {
-    color: var(--primary-color);
-}
-.core-note {
-    margin-top: 3px;
-    font-size: 0.75rem;
-    color: #666;
-}
-
-.hub-status {
-  margin: 20px 0;
-  font-size: 0.75rem;
-  color: #666;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
-
-        h1 { 
-            color: var(--primary-color); 
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 2rem;
-            margin: 0;
-        }
-
-
-                /* Buscador */
-        .search-container {
-            position: relative;
-            margin-bottom: 40px;
-        }
-
-        .search-container i {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #888;
-        }
-
-        #playlistSearch {
-            width: 100%;
-            padding: 15px 15px 15px 45px;
-            background: #242424;
-            border: 1px solid var(--card-border);
+        .core-access { text-align: center; margin: 30px 0; }
+        .core-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 22px;
             border-radius: 50px;
-            color: white;
-            font-size: 1rem;
-            outline: none;
-            box-sizing: border-box;
-            transition: all 0.3s ease;
-        }
-
-        #playlistSearch:focus {
-            border-color: var(--primary-color);
-            background: #2a2a2a;
-            box-shadow: 0 0 10px rgba(29, 185, 84, 0.2);
-        }
-
-        h2 { 
-            font-size: 1.1rem; 
-            margin-top: 40px; 
+            text-decoration: none;
             color: #b3b3b3;
-            border-bottom: 1px solid var(--card-border);
-            padding-bottom: 10px;
+            border: 1px solid var(--card-border);
+            background: rgba(255,255,255,0.02);
+            transition: 0.3s;
         }
-
-        ul {
-            list-style: none;
-            padding: 0;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px;
-            margin-top: 20px;
-        }
-
-        /* Tarjetas de Playlist */
-        /*.playlist-item: /*{
-            /*transition: transform 0.3s ease;
-             li a:*//*hover {
-            background: #282828;
+        .core-button:hover {
+            color: #fff;
             border-color: var(--primary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(29, 185, 84, 0.2);
-        }*/
-
-        /* Ocultar elementos cuando no coinciden con la búsqueda */
-        .hidden {
-            display: none;
-        }
-        /* Contenedor de la lista */
-        ul {
-            list-style: none;
-            padding: 0;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 15px;
-            margin-top: 25px;
+            background: rgba(29, 185, 84, 0.1);
+            box-shadow: 0 0 15px rgba(29, 185, 84, 0.2);
         }
 
-        /* Estilo de los botones */
-        li a {
+        /* --- AVATAR SYSTEM (FIJO Y CORREGIDO) --- */
+        #hub-avatar {
+            position: fixed; 
+            top: 20px; 
+            right: 20px; 
+            width: 60px; 
+            height: 60px;
+            border-radius: 50%; 
+            z-index: 10000; /* Siempre al frente */
+            cursor: pointer;
+            background: rgba(0,0,0,0.8); 
+            backdrop-filter: blur(8px);
+            border: 2px solid var(--card-border); 
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             display: flex;
             align-items: center;
-            background: var(--card-bg);
-            padding: 16px 20px;
-            border-radius: 8px; /* Bordes ligeramente redondeados */
-            text-decoration: none;
-            color: white;
-            transition: all 0.3s ease;
-            border: 1px solid var(--card-border);
-            font-weight: 500;
-        }
-
-        li a i {
-            margin-right: 15px;
-            font-size: 1.5rem;
-            color: var(--primary-color);
-        }
-
-        /* Efecto al pasar el mouse */
-        li a:hover {
-            background: #282828;
-            border-color: var(--primary-color);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(29, 185, 84, 0.2);
-        }
-
-        .widget-container {
-            margin-top: 60px;
-            background: #121212;
-            border-radius: 12px;
+            justify-content: center;
             overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        #hub-avatar:hover { 
+            transform: scale(1.1); 
+            border-color: var(--primary-color);
+        }
+
+        #hub-avatar img { 
+            width: 110%; 
+            height: 110%; 
+            object-fit: cover; 
+        }
+
+        #avatar-panel {
+            position: fixed; 
+            top: 90px; 
+            right: 20px; 
+            width: 200px; 
+            padding: 15px;
+            border-radius: 12px; 
+            background: rgba(15, 15, 15, 0.98);
+            backdrop-filter: blur(12px); 
             border: 1px solid var(--card-border);
+            display: none; 
+            z-index: 9999; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
         }
 
-        footer {
-            margin-top: 50px;
-            text-align: center;
-            padding-bottom: 40px;
+        #avatar-panel button {
+            width: 100%; margin-top: 8px; background: #1a1a1a;
+            border: 1px solid #333; color: #ccc; padding: 8px;
+            border-radius: 6px; cursor: pointer; font-size: 0.75rem;
         }
- /*Mini player*/
-.miniVideo {
-  width: 100%;
-  height: 180px;
-  border: none;
-}
-/*hasta aquí el mini player*/
-#hub-avatar {
-  position: fixed;
-  top: 16px;
-  right: 16px;
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  z-index: 9999;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(6px);
-  border: 1px solid rgba(255,255,255,0.15);
-}
-
-#hub-avatar img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-}
-#avatar-panel {
-  position: fixed;
-  top: 80px;
-  right: 16px;
-  width: 220px;
-  padding: 14px;
-  border-radius: 12px;
-  background: rgba(0,0,0,0.85);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255,255,255,0.15);
-  color: #b3b3b3;
-  font-size: 0.8rem;
-  display: none;
-  z-index: 9998;
-}
-
-#avatar-panel button {
-  width: 100%;
-  margin-top: 8px;
-  background: transparent;
-  border: 1px solid #333;
-  color: #b3b3b3;
-  padding: 6px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-#avatar-panel button:hover {
-  border-color: var(--primary-color);
-  color: #fff;
-}
-        /* Estilo para el contador */
-        .footer-counter {
-            filter: invert(1); /* Invierte color del contador si es necesario para fondo negro */
-            opacity: 0.5;
+        /* --- BUSCADOR --- */
+        .search-container { position: relative; margin: 30px 0; }
+        .search-container i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--accent-gray); }
+        #playlistSearch {
+            width: 100%; padding: 15px 15px 15px 50px;
+            background: #181818; border: 1px solid var(--card-border);
+            border-radius: 50px; color: white; outline: none; transition: 0.3s;
         }
+        #playlistSearch:focus { border-color: var(--primary-color); background: #222; }
+
+        /* --- CONTENIDO --- */
+        .hub-status { font-size: 0.7rem; color: var(--accent-gray); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px;}
+        h2 { font-size: 1rem; color: #eee; border-left: 3px solid var(--primary-color); padding-left: 10px; margin-top: 40px; text-transform: uppercase;}
+        h3 { font-size: 0.75rem; color: var(--accent-gray); margin-top: -10px; margin-bottom: 20px;}
+
+        ul {
+            list-style: none; padding: 0; display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px;
+        }
+        .playlist-item a {
+            display: flex; align-items: center; background: var(--card-bg);
+            padding: 14px; border-radius: 6px; text-decoration: none;
+            color: #ccc; border: 1px solid var(--card-border); transition: 0.3s;
+        }
+        .playlist-item a:hover {
+            background: #1e1e1e; border-color: var(--primary-color);
+            color: #fff; transform: translateX(5px);
+        }
+        .playlist-item i { margin-right: 12px; color: var(--primary-color); width: 20px; text-align: center; }
+
+        .miniVideo {
+            width: 100%; height: 200px; border-radius: 8px;
+            border: 1px solid var(--card-border); margin: 10px 0;
+            background: #050505;
+        }
+
+        .hidden { display: none !important; }
+
+        footer { margin-top: 60px; opacity: 0.4; font-size: 0.8rem; text-align: center; }
     </style>
 </head>
 <body>
-<script src="protect.js"></script>
-    <div class="container">
-        
-        <header>
-            <img src="../../assets/img/sytemtag-gif2.gif" class="header-img">
-            
-<h2><!--<i class="fab fa-spotify"></i>--> UNLKD-ONLY:no es solo un QR,es identidad digital</h2>
 
-<div class="core-access">
-    <a href="https://baphomet1984.github.io/systemtag/gate/?lvl=core&go=signal-core
-" class="core-button">
-        <i class="fa-solid fa-layer-group"></i>
-        Acceder a Signal Core
-    </a>
-<p class="core-note">Contenido general disponible para todos los usuarios</p>
-</div>
+<div class="container">
+    <header>
+        <img src="../../assets/img/sytemtag-gif2.gif" class="header-img" onerror="this.src='https://via.placeholder.com/150x25?text=SIGNAL+UNLKD'">
+        <h2>UNLKD-ONLY: Identidad Digital</h2>
 
-                <!-- Elfsight WhatsApp Chat | Untitled WhatsApp Chat -->
-<script src="https://elfsightcdn.com/platform.js" async></script>
-<div class="elfsight-app-1c4d0ae1-891a-4847-86b0-00553260b99b" data-elfsight-app-lazy></div>
-        </header>
-<!-- AVATAR HUB -->
-<div id="hub-avatar">
-  <img id="avatar" alt="System Avatar">
-</div>
-
-<div id="avatar-panel">
-  <p>SYSTEM // UNLKD</p>
-  <button onclick="changeAvatar()">Mutar identidad</button>
-  <button onclick="toggleStealth()">Modo sigilo</button>
-</div>
-<!-- /AVATAR HUB -->
-<!--estado del sistema-->
-        <div class="hub-status">
-            <p>Estado:<span id="hub-status"></span></p>
-            <p>Última mutación: <span id="hub-date"></span></p>
-</div>
-<!--avatar: Estilos:
-identicon (tech, hacker)
-bottts (muy system-core)
-pixel-art
-adventurer-neutral-->
-
-           
-        <div class="search-container">
-            <i class="fa fa-search"></i>
-            <input type="text" id="playlistSearch" placeholder="Buscar playlist...">
+        <div class="core-access">
+            <a href="https://baphomet1984.github.io/systemtag/gate/?lvl=core&go=signal-core" class="core-button">
+                <i class="fa-solid fa-layer-group"></i> Acceder a Signal Core
+            </a>
+            <p style="font-size: 0.75rem; color: #666; margin-top: 8px;">Contenido general disponible para todos los usuarios</p>
         </div>
-        <main>
-            <h2>Perfil Sonoro</h2><h3>>seleccion personal del portador</h3>
-           <ul class="playlist-group">
-               <!--PLAYLIST PERSONALIZADAS-->
-                    <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1EIXuvYF1J44v1?si=4KBqYQeCRYSa7QI1GBRuzg"><i class="fab fa-spotify"></i> 1.Manson</a></li>
-                    <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1E4xadFD2IyUbd?si=k3iJLuTITFaWM7hiddSyBQ"><i class="fab fa-spotify"></i> 2.Gotico</a></li>
-                    <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1DXcfZ6moR6J0G?si=EnT90tSRRwaTbFD2N0vfGQ"><i class="fab fa-spotify"></i> 3.New Metal</a></li>
-                    <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1DWTe5ECpTKzMo?si=dTi2iGlEQJqUDQCHhXrLrQ"><i class="fab fa-spotify"></i> 4.Hip Hop MX 24K</a></li>
-                    <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1EIea0ChiRU7ji?si=Eh1WKcBvQBqTfx3IcVPR-Q"><i class="fab fa-spotify"></i> 5.Doom</a></li>
-                                  
-<li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1DWYMHB55fgZrY?si=C0gKOkwdS_OKb2gXXrERkQ"><i class="fab fa-spotify"></i> 6. ROCK MEXICANO</a></li>
-                    <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1EIcM7vKLqtJgT?si=MU8P6kObS_efOEAuU7b73A"><i class="fab fa-spotify"></i> 7. TECHNO OSCURO</a></li>
-          
+    </header>
 
-
-                    <rssapp-ticker id="OeLsywezx7YoL8ZZ"></rssapp-ticker><script src="https://news.google.com/search?q=Noticias%20de%20hoy&hl=en-US&gl=US&ceid=US%3Aen" type="text/javascript" async></script>
-                 </ul>
-            <!--REPRODUCTOR DE SPOTIFY-->
-         <!--ventana para descargas-->
-          <h2>bajate una rola</h2>
-<iframe 
-    class="miniVideo"
-    src="https://resto-tajmahal.fr/"
-    frameborder="0"
-    allowfullscreen>
-  </iframe>
-
-          
-          <!--ventana para pelis-->
-          <h2>cine</h2>
-<iframe 
-    class="miniVideo"
-    src="https://www.cinecalidad.ec/"
-    frameborder="0"
-    allowfullscreen>
-  </iframe>
-            <h2>TUS WEBS </h2>
-            <ul class="playlist-group">
-               
-<!--CORREO-->
-<li class="playlist-item"><a href="https://mail.google.com/mail/mu/mp/535/#tl/priority/%5Esmartlabel_personal">GMAIL</a></li>
-
-           
-<!--SERIES Y PELICULAS--> 
-<li class="playlist-item"><a href="https://www.lacartoons.com/">CARTOONS</a></li><h3>si te pide VPN da click <a href="https://play.google.com/store/apps/details?id=com.free.vpn.mexico.proxy.planet"> aquí</a></h3>
-
-<li class="playlist-item"><a href="https://www.cinecalidad.ec/">SERIES/MOVIES</a></li>
-
-<li class="playlist-item"><a href="https://la.movie/">SERIES/MOVIES sin basura</a></li> 
-
-<!--LO PROHIBIDO-->
-<li class="playlist-item"><a href="https://www.xvideos.com/">XVIDEOS</a></li>        
-                </ul>   
-
-           <!-- <div class="widget-container">
-                <iframe src='https://widget.spreaker.com/player?show_id=6247023&theme=dark&playlist=show&playlist-continuous=true&chapters-image=true' width='100%' height='400px' title='el panda show' frameborder='0'></iframe>
-            </div>-->
-        </main>
-
-        <footer>
-            <div class="footer-counter">
-                <script type="text/javascript" src="https://contador.websiteout.com/js/2/5/0/0"></script>
-            </div>
-        </footer>
+    <div id="hub-avatar"><img id="avatar" alt="System Avatar"></div>
+    <div id="avatar-panel">
+        <p style="margin: 0 0 10px 0; color: var(--primary-color); font-weight: bold;">SYSTEM // UNLKD</p>
+        <button onclick="changeAvatar()"><i class="fa-solid fa-dna"></i> Mutar identidad</button>
+        <button onclick="toggleStealth()"><i class="fa-solid fa-user-secret"></i> Modo sigilo</button>
     </div>
-    <script>
-        document.getElementById('playlistSearch').addEventListener('keyup', function() {
-            let filter = this.value.toUpperCase();
-            let items = document.querySelectorAll('.playlist-item');
+
+    <div class="hub-status">
+        <span>Estado: <b id="hub-status" style="color:var(--primary-color)"></b></span> | 
+        <span>Sinc: <b id="hub-date"></b></span>
+    </div>
+
+    <div class="search-container">
+        <i class="fa fa-search"></i>
+        <input type="text" id="playlistSearch" placeholder="Filtrar protocolos o webs...">
+    </div>
+
+    <main>
+        <section class="search-section">
+            <h2>Perfil Sonoro</h2>
+            <h3>> Selección personal del portador</h3>
+            <ul>
+                <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1EIXuvYF1J44v1?si=4KBqYQeCRYSa7QI1GBRuzg"><i class="fab fa-spotify"></i> 1. Manson</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1E4xadFD2IyUbd?si=k3iJLuTITFaWM7hiddSyBQ"><i class="fab fa-spotify"></i> 2. Gotico</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1DXcfZ6moR6J0G?si=EnT90tSRRwaTbFD2N0vfGQ"><i class="fab fa-spotify"></i> 3. New Metal</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1DWTe5ECpTKzMo?si=dTi2iGlEQJqUDQCHhXrLrQ"><i class="fab fa-spotify"></i> 4. Hip Hop MX 24K</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1EIea0ChiRU7ji?si=Eh1WKcBvQBqTfx3IcVPR-Q"><i class="fab fa-spotify"></i> 5. Doom</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1DWYMHB55fgZrY?si=C0gKOkwdS_OKb2gXXrERkQ"><i class="fab fa-spotify"></i> 6. ROCK MEXICANO</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1EIcM7vKLqtJgT?si=MU8P6kObS_efOEAuU7b73A"><i class="fab fa-spotify"></i> 7. TECHNO OSCURO</a></li>
+            </ul>
+        </section>
+
+        <section class="search-section">
+            <h2>Multimedia</h2>
+            <h3>> Bajate una rola / Cine</h3>
+            <iframe class="miniVideo" src="https://resto-tajmahal.fr/"></iframe>
+            <iframe class="miniVideo" src="https://www.cinecalidad.ec/"></iframe>
+        </section>
+
+        <section class="search-section">
+            <h2>Tus Webs</h2>
+            <ul>
+                <li class="playlist-item"><a href="https://mail.google.com/mail/mu/mp/535/#tl/priority/%5Esmartlabel_personal"><i class="fa-solid fa-envelope"></i> GMAIL</a></li>
+                <li class="playlist-item"><a href="https://www.lacartoons.com/"><i class="fa-solid fa-tv"></i> CARTOONS</a></li>
+                <li class="playlist-item"><a href="https://www.cinecalidad.ec/"><i class="fa-solid fa-clapperboard"></i> SERIES/MOVIES</a></li>
+                <li class="playlist-item"><a href="https://la.movie/"><i class="fa-solid fa-film"></i> SERIES/MOVIES (Sin basura)</a></li>
+                <li class="playlist-item"><a href="https://www.xvideos.com/"><i class="fa-solid fa-mask"></i> XVIDEOS</a></li>
+            </ul>
+            <p style="font-size: 0.75rem; color: var(--accent-gray); margin-top: 10px;">Si CARTOONS pide VPN, usa <a href="https://play.google.com/store/apps/details?id=com.free.vpn.mexico.proxy.planet" style="color:var(--primary-color); text-decoration: none;">Planet VPN aquí</a>.</p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-counter">
+            <script type="text/javascript" src="https://contador.websiteout.com/js/2/5/0/0"></script>
+        </div>
+    </footer>
+</div>
+
+<script>
+    // --- BUSCADOR ---
+    document.getElementById('playlistSearch').addEventListener('keyup', function() {
+        let filter = this.value.toLowerCase();
+        let sections = document.querySelectorAll('.search-section');
+
+        sections.forEach(section => {
+            let items = section.querySelectorAll('.playlist-item');
+            let hasVisibleItems = false;
 
             items.forEach(item => {
-                let text = item.textContent || item.innerText;
-                if (text.toUpperCase().indexOf(filter) > -1) {
+                let text = item.textContent.toLowerCase();
+                if (text.includes(filter)) {
                     item.classList.remove('hidden');
+                    hasVisibleItems = true;
                 } else {
                     item.classList.add('hidden');
                 }
             });
+
+            let sectionTitle = section.querySelector('h2').textContent.toLowerCase();
+            section.classList.toggle('hidden', !hasVisibleItems && !sectionTitle.includes(filter));
         });
-    </script>
-<script>
-    
-const statusElement = document.getElementById("hub-status");
-const now = new Date();
-const hour = now.getHours();
+    });
 
-let statusText = "";
+    // --- LOGICA DE ESTADO ---
+    function updateStatus() {
+        const statusElement = document.getElementById("hub-status");
+        const hour = new Date().getHours();
+        let statusText = "";
 
-if (hour >= 6 && hour < 12) {
-    statusText = " despertando";
-} else if (hour >= 12 && hour < 18) {
-    statusText = " activo";
-} else if (hour >= 18 && hour < 23) {
-    statusText = " observandote";
-} else {
-    statusText = " viendo que no duermes";
-}
+        if (hour >= 6 && hour < 12) statusText = "Despertando";
+        else if (hour >= 12 && hour < 18) statusText = "Activo";
+        else if (hour >= 18 && hour < 23) statusText = "Observándote";
+        else statusText = "Viendo que no duermes";
 
-statusElement.textContent = statusText.toUpperCase();
-    const dateElement = document.getElementById("hub-date");
+        statusElement.textContent = statusText.toUpperCase();
+        document.getElementById("hub-date").textContent = new Date().toLocaleDateString("es-MX");
+    }
+    updateStatus();
 
-    const today = new Date();
+    // --- AVATAR SYSTEM ---
+    const avatar = document.getElementById("avatar");
+    const panel = document.getElementById("avatar-panel");
+    const base = "https://api.dicebear.com/7.x/adventurer-neutral/svg";
 
-    const options = {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric"
-    };
+    // Semilla inicial
+    avatar.src = `${base}?seed=demon-01&backgroundColor=000000`;
 
-    const formattedDate = today.toLocaleDateString("es-MX", options);
+    avatar.addEventListener("click", (e) => {
+        e.stopPropagation();
+        panel.style.display = panel.style.display === "block" ? "none" : "block";
+    });
 
-    dateElement.textContent = formattedDate;
+    function changeAvatar() {
+        avatar.src = `${base}?seed=${Math.random().toString(36).substring(7)}`;
+    }
+
+    function toggleStealth() {
+        avatar.style.opacity = avatar.style.opacity === "0.2" ? "1" : "0.2";
+    }
+
+    // Cerrar panel al hacer clic fuera
+    document.addEventListener("click", (e) => {
+        if (!avatar.contains(e.target) && !panel.contains(e.target)) {
+            panel.style.display = "none";
+        }
+    });
 </script>
-<!--estado del avatar-->
-<script>
-// === AVATAR CORE ===
-const unlkdId = "demon-01";
-const avatar = document.getElementById("avatar");
-const panel = document.getElementById("avatar-panel");
 
-// mood por hora
-const hourNow = new Date().getHours();
-let mood = "neutral";
-if (hourNow >= 18 && hourNow < 23) mood = "angry";
-if (hourNow >= 23 || hourNow < 6) mood = "sleepy";
-
-const base = "https://api.dicebear.com/7.x/adventurer-neutral/svg";
-avatar.src = `${base}?seed=${unlkdId}-${mood}&v=${Date.now()}`;
-
-// toggle panel
-avatar.addEventListener("click", () => {
-  panel.style.display = panel.style.display === "block" ? "none" : "block";
-});
-
-// acciones
-function changeAvatar() {
-  const seed = Math.random().toString(36).substring(7);
-  avatar.src = `${base}?seed=${seed}&v=${Date.now()}`;
-}
-
-function toggleStealth() {
-  avatar.style.opacity =
-    avatar.style.opacity === "0.2" ? "1" : "0.2";
-}
-</script>
-<script>
-document.addEventListener("click", (e) => {
-  if (!avatar.contains(e.target) && !panel.contains(e.target)) {
-    panel.style.display = "none";
-  }
-});
-</script>
 </body>
 </html>
