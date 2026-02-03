@@ -488,5 +488,12 @@ function toggleStealth() {
     avatar.style.opacity === "0.2" ? "1" : "0.2";
 }
 </script>
+<script>
+document.addEventListener("click", (e) => {
+  if (!avatar.contains(e.target) && !panel.contains(e.target)) {
+    panel.style.display = "none";
+  }
+});
+</script>
 </body>
 </html>
