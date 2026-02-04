@@ -188,6 +188,50 @@
     height: 100%;
     border: none;
 }
+
+/* --- PUERTAS --- */
+.door {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        to bottom,
+        #0a0a0a,
+        #000
+    );
+    z-index: 5;
+    transition: transform 0.9s cubic-bezier(0.77, 0, 0.175, 1),
+                opacity 0.6s ease;
+}
+
+.door-left {
+    left: 0;
+    border-right: 1px solid #111;
+}
+
+.door-right {
+    right: 0;
+    border-left: 1px solid #111;
+}
+
+/* Estado sellado */
+.door-sealed .door-left {
+    transform: translateX(0);
+}
+.door-sealed .door-right {
+    transform: translateX(0);
+}
+
+/* Estado desbloqueado */
+.door-open .door-left {
+    transform: translateX(-100%);
+    opacity: 0;
+}
+.door-open .door-right {
+    transform: translateX(100%);
+    opacity: 0;
+}
     </style>
 </head>
 <body>
@@ -240,13 +284,18 @@
         <section class="search-section">
             <h2>Multimedia</h2>
             <h3>> Bajate una rola / Cine</h3>
-            <div class="frame-box minimized" data-frame>
+            <div class="frame-box minimized door-sealed" data-frame>
+    <div class="door door-left"></div>
+    <div class="door door-right"></div>
     <iframe src="https://resto-tajmahal.fr/"></iframe>
 </div>
 
-<div class="frame-box minimized" data-frame>
+<div class="frame-box minimized door-sealed" data-frame>
+    <div class="door door-left"></div>
+    <div class="door door-right"></div>
     <iframe src="https://www.cinecalidad.ec/"></iframe>
 </div>
+
         </section>
 
         <section class="search-section">
@@ -390,10 +439,10 @@ ritual.panelOpen = panel.style.display === "block";
     avatar.style.boxShadow = "0 0 25px rgba(29,185,84,0.6)";
     avatar.style.transform = "scale(1.15)";
 
-    // --- DESBLOQUEO DE FRAMES ---
     document.querySelectorAll("[data-frame]").forEach(frame => {
         frame.classList.remove("minimized");
-        frame.classList.add("unlocked");
+        frame.classList.remove("door-sealed");
+        frame.classList.add("door-open", "unlocked");
     });
 }
 </script>
