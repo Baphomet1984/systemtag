@@ -515,15 +515,15 @@ function unlockDoor() {
     avatarBox.style.transform = "scale(1.15)";
 
     document.querySelectorAll("[data-frame]").forEach(frame => {
-    frame.classList.remove("minimized", "door-sealed");
-    frame.classList.add("door-open", "unlocked");
+        frame.classList.remove("minimized", "door-sealed");
+        frame.classList.add("door-open", "unlocked");
 
-    frame.querySelectorAll("iframe").forEach(i => {
-        if (!i.src && i.dataset.src) {
-            i.src = i.dataset.src;
-        }
+        frame.querySelectorAll("iframe").forEach(i => {
+            if (!i.src && i.dataset.src) {
+                i.src = i.dataset.src;
+            }
+        });
     });
-});
 }
 </script>
 
