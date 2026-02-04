@@ -514,12 +514,13 @@ function unlockDoor() {
     avatarBox.style.boxShadow = "0 0 25px rgba(29,185,84,0.6)";
     avatarBox.style.transform = "scale(1.15)";
 
-   frame.querySelectorAll("iframe").forEach(i=>{
-  if(!i.src) i.src = i.dataset.src;
-}); document.querySelectorAll("[data-frame]").forEach(frame => {
+    document.querySelectorAll("[data-frame]").forEach(frame => {
         frame.classList.remove("minimized", "door-sealed");
         frame.classList.add("door-open", "unlocked");
     });
+frame.querySelectorAll("iframe").forEach(i=>{
+  if(!i.src) i.src = i.dataset.src;
+});
 }
 </script>
 
