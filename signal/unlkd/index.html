@@ -232,6 +232,25 @@
     transform: translateX(100%);
     opacity: 0;
 }
+
+.door-lock {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 1.2rem;
+    opacity: 0.35;
+    filter: grayscale(100%);
+    pointer-events: none;
+    z-index: 6;
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Al abrir */
+.door-open .door-lock {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.8);
+}
     </style>
 </head>
 <body>
@@ -287,12 +306,14 @@
             <div class="frame-box minimized door-sealed" data-frame>
     <div class="door door-left"></div>
     <div class="door door-right"></div>
+    <div class="door-lock">🔐</div>
     <iframe src="https://resto-tajmahal.fr/"></iframe>
 </div>
 
 <div class="frame-box minimized door-sealed" data-frame>
     <div class="door door-left"></div>
     <div class="door door-right"></div>
+    <div class="door-lock">🔐</div>
     <iframe src="https://www.cinecalidad.ec/"></iframe>
 </div>
 
