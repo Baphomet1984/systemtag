@@ -404,6 +404,9 @@
     };
 
     // --- AVATAR CLICK ---
+let clickCount = 0
+let lastClickTime = 0
+let bruteForceDetected = false
     avatar.addEventListener("click", (e) => {
         e.stopPropagation();
 
@@ -458,6 +461,33 @@ ritual.panelOpen = panel.style.display === "block";
                 }
             }
         }
+// ---avatar huye ---
+
+const now = Date.now()
+if (now - lastClickTime < 600) {
+  clickCount++
+} else {
+  clickCount = 1
+}
+lastClickTime = now
+
+if (clickCount >= 5) {
+  bruteForceDetected = true
+}
+if (bruteForceDetected) {
+  moveAvatar();
+}
+function moveAvatar() {
+  const avatar = document.getElementById("avatar")
+
+  const maxX = window.innerWidth - avatar.offsetWidth
+  const maxY = window.innerHeight - avatar.offsetHeight
+
+  const x = Math.random() * maxX
+  const y = Math.random() * maxY
+
+  avatar.style.transform = `translate(${x}px, ${y}px)`
+}
     });
 
     // --- DESBLOQUEO ---
@@ -473,32 +503,7 @@ ritual.panelOpen = panel.style.display === "block";
         frame.classList.remove("door-sealed");
         frame.classList.add("door-open", "unlocked");
     });
-// ---avatar huye ---
-let clickCount = 0
-let lastClickTime = 0
-let bruteForceDetected = false
-const now = Date.now()
-if (now - lastClickTime < 600) {
-  clickCount++
-} else {
-  clickCount = 1
-}
-lastClickTime = now
 
-if (clickCount >= 5) {
-  bruteForceDetected = true
-}
-function moveAvatar() {
-  const avatar = document.getElementById("avatar")
-
-  const maxX = window.innerWidth - avatar.offsetWidth
-  const maxY = window.innerHeight - avatar.offsetHeight
-
-  const x = Math.random() * maxX
-  const y = Math.random() * maxY
-
-  avatar.style.transform = `translate(${x}px, ${y}px)`
-}
 
 }
 </script>
