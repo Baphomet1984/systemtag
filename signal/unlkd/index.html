@@ -146,6 +146,48 @@
         .hidden { display: none !important; }
         
         footer { margin-top: 60px; opacity: 0.4; font-size: 0.8rem; text-align: center; }
+
+/* --- FRAME RITUAL --- */
+.frame-box {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    margin: 10px 0;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--card-border);
+    background: #050505;
+    transition: all 0.4s ease;
+}
+
+.frame-box.minimized {
+    height: 42px;
+}
+
+.frame-box::after {
+    content: "CONTENIDO BLOQUEADO";
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    letter-spacing: 2px;
+    color: #555;
+    background: rgba(0,0,0,0.85);
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.frame-box.unlocked::after {
+    opacity: 0;
+}
+
+.frame-box iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
     </style>
 </head>
 <body>
@@ -198,8 +240,13 @@
         <section class="search-section">
             <h2>Multimedia</h2>
             <h3>> Bajate una rola / Cine</h3>
-            <iframe class="miniVideo" src="https://resto-tajmahal.fr/"></iframe>
-            <iframe class="miniVideo" src="https://www.cinecalidad.ec/"></iframe>
+            <div class="frame-box minimized" data-frame>
+    <iframe src="https://resto-tajmahal.fr/"></iframe>
+</div>
+
+<div class="frame-box minimized" data-frame>
+    <iframe src="https://www.cinecalidad.ec/"></iframe>
+</div>
         </section>
 
         <section class="search-section">
@@ -337,12 +384,18 @@ ritual.panelOpen = panel.style.display === "block";
 
     // --- DESBLOQUEO ---
     function unlockDoor() {
-        ritual.unlocked = true;
+    ritual.unlocked = true;
 
-        avatar.style.borderColor = "var(--primary-color)";
-        avatar.style.boxShadow = "0 0 25px rgba(29,185,84,0.6)";
-        avatar.style.transform = "scale(1.15)";
-    }
+    avatar.style.borderColor = "var(--primary-color)";
+    avatar.style.boxShadow = "0 0 25px rgba(29,185,84,0.6)";
+    avatar.style.transform = "scale(1.15)";
+
+    // --- DESBLOQUEO DE FRAMES ---
+    document.querySelectorAll("[data-frame]").forEach(frame => {
+        frame.classList.remove("minimized");
+        frame.classList.add("unlocked");
+    });
+}
 </script>
 <!-- Elfsight WhatsApp Chat | SystemTag clients Chat -->
 <script src="https://elfsightcdn.com/platform.js" async></script>
