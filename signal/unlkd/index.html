@@ -341,139 +341,184 @@
 </div>
 
 <script>
-    // --- BUSCADOR ---
-    document.getElementById('playlistSearch').addEventListener('keyup', function() {
-        let filter = this.value.toLowerCase();
-        let sections = document.querySelectorAll('.search-section');
+/* ===============================
+   BUSCADOR
+================================ */
+document.getElementById('playlistSearch').addEventListener('keyup', function() {
+    let filter = this.value.toLowerCase();
+    let sections = document.querySelectorAll('.search-section');
 
-        sections.forEach(section => {
-            let items = section.querySelectorAll('.playlist-item');
-            let hasVisibleItems = false;
+    sections.forEach(section => {
+        let items = section.querySelectorAll('.playlist-item');
+        let hasVisibleItems = false;
 
-            items.forEach(item => {
-                let text = item.textContent.toLowerCase();
-                if (text.includes(filter)) {
-                    item.classList.remove('hidden');
-                    hasVisibleItems = true;
-                } else {
-                    item.classList.add('hidden');
-                }
-            });
-
-            let sectionTitle = section.querySelector('h2').textContent.toLowerCase();
-            section.classList.toggle('hidden', !hasVisibleItems && !sectionTitle.includes(filter));
+        items.forEach(item => {
+            let text = item.textContent.toLowerCase();
+            if (text.includes(filter)) {
+                item.classList.remove('hidden');
+                hasVisibleItems = true;
+            } else {
+                item.classList.add('hidden');
+            }
         });
+
+        let sectionTitle = section.querySelector('h2').textContent.toLowerCase();
+        section.classList.toggle('hidden', !hasVisibleItems && !sectionTitle.includes(filter));
     });
+});
 
-    // --- ESTADO ---
-    function updateStatus() {
-        const statusElement = document.getElementById("hub-status");
-        const hour = new Date().getHours();
-        let statusText = "";
-        
-        if (hour >= 6 && hour < 12) statusText = "Despertando";
-        else if (hour >= 12 && hour < 18) statusText = "Activo";
-        else if (hour >= 18 && hour < 23) statusText = "Observándote";
-        else statusText = "Viendo que no duermes";
-        
-        statusElement.textContent = statusText.toUpperCase();
-        document.getElementById("hub-date").textContent = new Date().toLocaleDateString("es-MX");
-    }
-    updateStatus();
+/* ===============================
+   ESTADO
+================================ */
+function updateStatus() {
+    const statusElement = document.getElementById("hub-status");
+    const hour = new Date().getHours();
+    let statusText = "";
 
-    // --- AVATAR BASE ---
-    const avatar = document.getElementById("avatar");
-    const panel = document.getElementById("avatar-panel");
-    const base = "https://api.dicebear.com/7.x/adventurer-neutral/svg";
+    if (hour >= 6 && hour < 12) statusText = "Despertando";
+    else if (hour >= 12 && hour < 18) statusText = "Activo";
+    else if (hour >= 18 && hour < 23) statusText = "Observándote";
+    else statusText = "Viendo que no duermes";
 
-    avatar.src = `${base}?seed=demon-01&backgroundColor=000000`;
+    statusElement.textContent = statusText.toUpperCase();
+    document.getElementById("hub-date").textContent =
+        new Date().toLocaleDateString("es-MX");
+}
+updateStatus();
 
-    // --- RITUAL STATE ---
-    const ritual = {
-        step: 0,
-        stealth: false,
-        panelOpen: false,
-        unlocked: false
-    };
+/* ===============================
+   AVATAR BASE
+================================ */
+const avatar = document.getElementById("avatar");
+const avatarBox = document.getElementById("hub-avatar");
+const panel = document.getElementById("avatar-panel");
+const base = "https://api.dicebear.com/7.x/adventurer-neutral/svg";
 
-    // --- AVATAR CLICK ---
+avatar.src = `${base}?seed=demon-01&backgroundColor=000000`;
 
-    avatar.addEventListener("click", (e) => {
-        e.stopPropagation();
+/* ===============================
+   RITUAL STATE
+================================ */
+const ritual = {
+    step: 0,
+    stealth: false,
+    panelOpen: false,
+    unlocked: false
+};
 
-        if (ritual.unlocked) {
-            window.location.href = "https://drive.google.com/drive/folders/0B0F9Kqt9_0moV0pKa3pGd0NIUlk?resourcekey=0-2_gEsFcNVuGFoCj8fOfj2w";
-            return;
-        }
+/* ===============================
+   BRUTE FORCE STATE (GLOBAL)
+================================ */
+let clickCount = 0;
+let lastClickTime = 0;
 
-       if (ritual.step === 3 && panel.style.display === "none") {
-    unlockDoor();
-    return;
+/* ===============================
+   AVATAR MOVE
+================================ */
+function moveAvatar() {
+    const maxX = window.innerWidth - avatarBox.offsetWidth;
+    const maxY = window.innerHeight - avatarBox.offsetHeight;
+
+    const x = Math.random() * maxX;
+    const y = Math.random() * maxY;
+
+    avatarBox.style.transform = `translate(${x}px, ${y}px) scale(1.05)`;
 }
 
-panel.style.display = panel.style.display === "block" ? "none" : "block";
-ritual.panelOpen = panel.style.display === "block";
+/* ===============================
+   AVATAR CLICK
+================================ */
+avatarBox.addEventListener("click", (e) => {
+    e.stopPropagation();
 
-    });
+    const now = Date.now();
 
-    // --- MUTAR AVATAR ---
-    function changeAvatar() {
-        avatar.src = `${base}?seed=${Math.random().toString(36).substring(7)}`;
+    if (now - lastClickTime < 600) {
+        clickCount++;
+    } else {
+        clickCount = 1;
+    }
+    lastClickTime = now;
 
-        if (ritual.step === 0) {
-            ritual.step = 1;
-        } else {
-            ritual.step = 0;
-        }
+    // --- BRUTE FORCE DETECTADO ---
+    if (clickCount >= 5 && !ritual.unlocked) {
+        moveAvatar();
+        return; // corta ritual
     }
 
-    // --- SIGILO ---
-    function toggleStealth() {
-        ritual.stealth = !ritual.stealth;
-        avatar.style.opacity = ritual.stealth ? "0.2" : "1";
-
-        if (ritual.step === 1 && ritual.stealth) {
-            ritual.step = 2;
-        } else {
-            ritual.step = 0;
-        }
+    // --- YA DESBLOQUEADO ---
+    if (ritual.unlocked) {
+        window.location.href =
+            "https://drive.google.com/drive/folders/0B0F9Kqt9_0moV0pKa3pGd0NIUlk";
+        return;
     }
 
-    // --- CLICK FUERA ---
-    document.addEventListener("click", (e) => {
-        if (!avatar.contains(e.target) && !panel.contains(e.target)) {
-            if (panel.style.display === "block") {
-                panel.style.display = "none";
+    // --- RITUAL FINAL ---
+    if (ritual.step === 3 && panel.style.display === "none") {
+        unlockDoor();
+        return;
+    }
 
-                if (ritual.step === 2) {
-                    ritual.step = 3;
-                } else {
-                    ritual.step = 0;
-                }
+    panel.style.display = panel.style.display === "block" ? "none" : "block";
+    ritual.panelOpen = panel.style.display === "block";
+});
+
+/* ===============================
+   MUTAR AVATAR
+================================ */
+function changeAvatar() {
+    avatar.src = `${base}?seed=${Math.random().toString(36).substring(7)}`;
+    ritual.step = ritual.step === 0 ? 1 : 0;
+}
+
+/* ===============================
+   SIGILO
+================================ */
+function toggleStealth() {
+    ritual.stealth = !ritual.stealth;
+    avatar.style.opacity = ritual.stealth ? "0.2" : "1";
+
+    if (ritual.step === 1 && ritual.stealth) {
+        ritual.step = 2;
+    } else {
+        ritual.step = 0;
+    }
+}
+
+/* ===============================
+   CLICK FUERA
+================================ */
+document.addEventListener("click", (e) => {
+    if (!avatarBox.contains(e.target) && !panel.contains(e.target)) {
+        if (panel.style.display === "block") {
+            panel.style.display = "none";
+
+            if (ritual.step === 2) {
+                ritual.step = 3;
+            } else {
+                ritual.step = 0;
             }
         }
-// ---avatar huye ---
+    }
+});
 
-
-    });
-
-    // --- DESBLOQUEO ---
-    function unlockDoor() {
+/* ===============================
+   DESBLOQUEO
+================================ */
+function unlockDoor() {
     ritual.unlocked = true;
 
-    avatar.style.borderColor = "var(--primary-color)";
-    avatar.style.boxShadow = "0 0 25px rgba(29,185,84,0.6)";
-    avatar.style.transform = "scale(1.15)";
+    avatarBox.style.borderColor = "var(--primary-color)";
+    avatarBox.style.boxShadow = "0 0 25px rgba(29,185,84,0.6)";
+    avatarBox.style.transform = "scale(1.15)";
 
     document.querySelectorAll("[data-frame]").forEach(frame => {
-        frame.classList.remove("minimized");
-        frame.classList.remove("door-sealed");
+        frame.classList.remove("minimized", "door-sealed");
         frame.classList.add("door-open", "unlocked");
     });
-
-
 }
 </script>
+
 <!-- Elfsight WhatsApp Chat | SystemTag clients Chat -->
 <script src="https://elfsightcdn.com/platform.js" async></script>
 <div class="elfsight-app-1c4d0ae1-891a-4847-86b0-00553260b99b" data-elfsight-app-lazy></div>
