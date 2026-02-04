@@ -33,7 +33,7 @@
         /* --- HEADER & CORE --- */
         header { text-align: center; margin-bottom: 20px; }
         .header-img { width: 150px; height: auto; margin-bottom: 10px; }
-
+        
         .core-access { text-align: center; margin: 30px 0; }
         .core-button {
             display: inline-flex;
@@ -144,7 +144,7 @@
         }
 
         .hidden { display: none !important; }
-
+        
         footer { margin-top: 60px; opacity: 0.4; font-size: 0.8rem; text-align: center; }
     </style>
 </head>
@@ -154,7 +154,7 @@
     <header>
         <img src="../../assets/img/sytemtag-gif2.gif" class="header-img" onerror="this.src='https://via.placeholder.com/150x25?text=SIGNAL+UNLKD'">
         <h2>UNLKD-ONLY: Identidad Digital</h2>
-
+        
         <div class="core-access">
             <a href="https://baphomet1984.github.io/systemtag/gate/?lvl=core&go=signal-core" class="core-button">
                 <i class="fa-solid fa-layer-group"></i> Acceder a Signal Core
@@ -165,7 +165,7 @@
 
     <div id="hub-avatar"><img id="avatar" alt="System Avatar"></div>
     <div id="avatar-panel">
-        <p style="margin: 0 0 10px 0; color: var(--primary-color); font-weight: bold;">🜏SYSTEM // UNLKD</p>
+        <p style="margin: 0 0 10px 0; color: var(--primary-color); font-weight: bold;">SYSTEM // UNLKD</p>
         <button onclick="changeAvatar()"><i class="fa-solid fa-dna"></i> Mutar identidad</button>
         <button onclick="toggleStealth()"><i class="fa-solid fa-user-secret"></i> Modo sigilo</button>
     </div>
@@ -247,54 +247,102 @@
         });
     });
 
-    // --- LOGICA DE ESTADO ---
+    // --- ESTADO ---
     function updateStatus() {
         const statusElement = document.getElementById("hub-status");
         const hour = new Date().getHours();
         let statusText = "";
-
+        
         if (hour >= 6 && hour < 12) statusText = "Despertando";
         else if (hour >= 12 && hour < 18) statusText = "Activo";
         else if (hour >= 18 && hour < 23) statusText = "Observándote";
         else statusText = "Viendo que no duermes";
-
+        
         statusElement.textContent = statusText.toUpperCase();
         document.getElementById("hub-date").textContent = new Date().toLocaleDateString("es-MX");
     }
     updateStatus();
 
-    // --- AVATAR SYSTEM ---
+    // --- AVATAR BASE ---
     const avatar = document.getElementById("avatar");
     const panel = document.getElementById("avatar-panel");
-    const base = "https://api.dicebear.com/7.x/bottts/svg";
-/*Estilos de avatar:
-identicon (tech, hacker)
-bottts (muy system-core)
-pixel-art
-adventurer-neutral*/
+    const base = "https://api.dicebear.com/7.x/adventurer-neutral/svg";
 
-    // Semilla inicial
     avatar.src = `${base}?seed=demon-01&backgroundColor=000000`;
 
+    // --- RITUAL STATE ---
+    const ritual = {
+        step: 0,
+        stealth: false,
+        panelOpen: false,
+        unlocked: false
+    };
+
+    // --- AVATAR CLICK ---
     avatar.addEventListener("click", (e) => {
         e.stopPropagation();
-        panel.style.display = panel.style.display === "block" ? "none" : "block";
+
+        if (ritual.unlocked) {
+            window.location.href = "https://www.google.com";
+            return;
+        }
+
+       if (ritual.step === 3 && panel.style.display === "none") {
+    unlockDoor();
+    return;
+}
+
+panel.style.display = panel.style.display === "block" ? "none" : "block";
+ritual.panelOpen = panel.style.display === "block";
+
     });
 
+    // --- MUTAR AVATAR ---
     function changeAvatar() {
         avatar.src = `${base}?seed=${Math.random().toString(36).substring(7)}`;
+
+        if (ritual.step === 0) {
+            ritual.step = 1;
+        } else {
+            ritual.step = 0;
+        }
     }
 
+    // --- SIGILO ---
     function toggleStealth() {
-        avatar.style.opacity = avatar.style.opacity === "0.2" ? "1" : "0.2";
+        ritual.stealth = !ritual.stealth;
+        avatar.style.opacity = ritual.stealth ? "0.2" : "1";
+
+        if (ritual.step === 1 && ritual.stealth) {
+            ritual.step = 2;
+        } else {
+            ritual.step = 0;
+        }
     }
 
-    // Cerrar panel al hacer clic fuera
+    // --- CLICK FUERA ---
     document.addEventListener("click", (e) => {
         if (!avatar.contains(e.target) && !panel.contains(e.target)) {
-            panel.style.display = "none";
+            if (panel.style.display === "block") {
+                panel.style.display = "none";
+
+                if (ritual.step === 2) {
+                    ritual.step = 3;
+                } else {
+                    ritual.step = 0;
+                }
+            }
         }
     });
+
+    // --- DESBLOQUEO ---
+    function unlockDoor() {
+        ritual.unlocked = true;
+
+        avatar.style.borderColor = "var(--primary-color)";
+        avatar.style.boxShadow = "0 0 25px rgba(29,185,84,0.6)";
+        avatar.style.transform = "scale(1.15)";
+    }
 </script>
 
 </body>
