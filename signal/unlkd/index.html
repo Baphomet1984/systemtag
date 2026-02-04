@@ -419,9 +419,9 @@ function moveAvatar() {
     const maxX = window.innerWidth - avatarBox.offsetWidth;
     const maxY = window.innerHeight - avatarBox.offsetHeight;
 
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
-
+    const padding = 20;
+const x = Math.random() * (maxX - padding);
+const y = Math.random() * (maxY - padding);
     avatarBox.style.transform = `translate(${x}px, ${y}px) scale(1.05)`;
 }
 
@@ -442,9 +442,11 @@ avatarBox.addEventListener("click", (e) => {
 
     // --- BRUTE FORCE DETECTADO ---
     if (clickCount >= 5 && !ritual.unlocked) {
-        moveAvatar();
-        return; // corta ritual
-    }
+    moveAvatar();
+    clickCount = 0;
+    lastClickTime = 0;
+    return;
+}
 
     // --- YA DESBLOQUEADO ---
     if (ritual.unlocked) {
