@@ -316,11 +316,13 @@
         <button onclick="changeAvatar()"><i class="fa-solid fa-dna"></i> Mutar identidad</button>
         <button onclick="toggleStealth()"><i class="fa-solid fa-user-secret"></i> Modo sigilo</button>
 
-<button class="avatar-help" 
-        onmousedown="helpPressStart()" 
-        onmouseup="helpPressEnd()" 
-        ontouchstart="helpPressStart()" 
-        ontouchend="helpPressEnd()">?</button>
+<button class="avatar-help"
+    onmousedown="helpPressStart(event)"
+    onmouseup="helpPressEnd(event)"
+    ontouchstart="helpPressStart(event)"
+    ontouchend="helpPressEnd(event)">
+    ?
+</button>
 </div>
     <div class="hub-status">
         <span>Estado: <b id="hub-status" style="color:var(--primary-color)"></b></span> | 
@@ -533,13 +535,17 @@ function toggleStealth() {
     }
 }
 
-let helpActive = false;
+let helpPressTimer = null;
+let helpLongPress = false;
+let helpHandled = false;
 
-function helpPressStart() {
-    if (helpActive) return;
-    helpActive = true;
+function helpPressStart(e) {
+    e.preventDefault();
+    if (helpHandled) return;
 
+    helpHandled = true;
     helpLongPress = false;
+
     helpPressTimer = setTimeout(() => {
         helpLongPress = true;
         window.location.href =
@@ -547,7 +553,8 @@ function helpPressStart() {
     }, 800);
 }
 
-function helpPressEnd() {
+function helpPressEnd(e) {
+    e.preventDefault();
     clearTimeout(helpPressTimer);
 
     if (!helpLongPress) {
@@ -556,7 +563,11 @@ function helpPressEnd() {
             "Algunas cosas se activan cuando insistes."
         );
     }
-    helpActive = false;
+
+    // Reinicio limpio
+    setTimeout(() => {
+        helpHandled = false;
+    }, 50);
 }
 /* ===============================
    CLICK FUERA
