@@ -642,6 +642,7 @@ function redDotStart(e) {
     redDotActivated = true;
 
     redDotTimer = setTimeout(() => {
+if (navigator.vibrate) navigator.vibrate(60);
         window.location.href = "https://rb.gy/bv0yn5";
     }, 1000); // 1 segundo. No accidental.
 }
