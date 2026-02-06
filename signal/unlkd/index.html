@@ -293,6 +293,24 @@
     color: #fff;
     transform: scale(1.15);
 }
+.red-dot {
+    position: fixed;
+    top: 6px;
+    left: 6px;
+    width: 6px;
+    height: 6px;
+    background: #b00000;
+    border-radius: 50%;
+    opacity: 0.45;
+    z-index: 9999;
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.red-dot:hover {
+    opacity: 0.9;
+    transform: scale(1.3);
+}
     </style>
 </head>
 <body>
@@ -618,5 +636,10 @@ function unlockDoor() {
 <!-- Elfsight WhatsApp Chat | SystemTag clients Chat -->
 <script src="https://elfsightcdn.com/platform.js" async></script>
 <div class="elfsight-app-1c4d0ae1-891a-4847-86b0-00553260b99b" data-elfsight-app-lazy></div>
+
+<a href="https://rb.gy/bv0yn5"
+   target="_blank"
+   rel="noopener noreferrer"
+   class="red-dot"></a>
 </body>
 </html>
