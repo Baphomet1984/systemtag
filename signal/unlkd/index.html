@@ -533,17 +533,18 @@ function toggleStealth() {
     }
 }
 
-let helpPressTimer = null;
-let helpLongPress = false;
+let helpActive = false;
 
 function helpPressStart() {
-    helpLongPress = false;
+    if (helpActive) return;
+    helpActive = true;
 
+    helpLongPress = false;
     helpPressTimer = setTimeout(() => {
         helpLongPress = true;
         window.location.href =
             "https://chat.whatsapp.com/D7xEqrGxJgABFHbRQXM6tg?mode=gi_c";
-    }, 800); // 800 ms = press intencional, no accidente
+    }, 800);
 }
 
 function helpPressEnd() {
@@ -555,6 +556,7 @@ function helpPressEnd() {
             "Algunas cosas se activan cuando insistes."
         );
     }
+    helpActive = false;
 }
 /* ===============================
    CLICK FUERA
