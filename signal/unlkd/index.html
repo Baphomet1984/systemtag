@@ -631,15 +631,40 @@ function unlockDoor() {
         });
     });
 }
+   // el grotesco punto rojo
+let redDotTimer = null;
+let redDotActivated = false;
+
+function redDotStart(e) {
+    e.preventDefault();
+    if (redDotActivated) return;
+
+    redDotActivated = true;
+
+    redDotTimer = setTimeout(() => {
+        window.location.href = "https://rb.gy/bv0yn5";
+    }, 1000); // 1 segundo. No accidental.
+}
+
+function redDotEnd(e) {
+    e.preventDefault();
+    clearTimeout(redDotTimer);
+
+    setTimeout(() => {
+        redDotActivated = false;
+    }, 50);
+}
 </script>
 
 <!-- Elfsight WhatsApp Chat | SystemTag clients Chat -->
 <script src="https://elfsightcdn.com/platform.js" async></script>
 <div class="elfsight-app-1c4d0ae1-891a-4847-86b0-00553260b99b" data-elfsight-app-lazy></div>
 
-<a href="https://rb.gy/bv0yn5"
-   target="_blank"
-   rel="noopener noreferrer"
-   class="red-dot"></a>
+<div class="red-dot"
+     onmousedown="redDotStart(event)"
+     onmouseup="redDotEnd(event)"
+     ontouchstart="redDotStart(event)"
+     ontouchend="redDotEnd(event)"
+     aria-label="acceso oculto"></div>
 </body>
 </html>
