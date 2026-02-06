@@ -268,7 +268,31 @@
     opacity: 0;
     transform: translate(-50%, -50%) scale(0.8);
 }
+.avatar-help {
+    width: 26px !important;
+    height: 26px;
+    padding: 0;
+    margin: 10px auto 0 auto;
 
+    border-radius: 50%;
+    border: 1px solid #333;
+
+    background: rgba(255,255,255,0.08);
+    color: #bbb;
+
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 24px;
+
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.avatar-help:hover {
+    background: rgba(255,255,255,0.25);
+    color: #fff;
+    transform: scale(1.15);
+}
     </style>
 </head>
 <body>
@@ -293,6 +317,8 @@
         <button onclick="toggleStealth()"><i class="fa-solid fa-user-secret"></i> Modo sigilo</button>
     </div>
 
+    <button class="avatar-help" onclick="helpRitual()">?</button>
+</div>
     <div class="hub-status">
         <span>Estado: <b id="hub-status" style="color:var(--primary-color)"></b></span> | 
         <span>Sinc: <b id="hub-date"></b></span>
@@ -504,6 +530,9 @@ function toggleStealth() {
     }
 }
 
+function helpRitual() {
+    alert("No todo responde cuando preguntas.\nAlgunas cosas reaccionan cuando observas.");
+}
 /* ===============================
    CLICK FUERA
 ================================ */
