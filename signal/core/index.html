@@ -148,7 +148,7 @@
             
             <header>
             <img src="../../assets/img/logo-systemtag2.png" class="header-img">
-                <h1><i class="fab fa-spotify"></i> Playlists Top México</h1>
+                <h1 id="core-title"><i class="fab fa-spotify"></i> Playlists Top México</h1>
                 <!-- Elfsight WhatsApp Chat | Untitled WhatsApp Chat -->
 <script src="https://elfsightcdn.com/platform.js" async></script>
 <div class="elfsight-app-1c4d0ae1-891a-4847-86b0-00553260b99b" data-elfsight-app-lazy></div>
@@ -179,7 +179,52 @@
 <iframe src="https://widget.spreaker.com/player?show_id=6671022&theme=light&playlist=false&playlist-continuous=false&chapters-image=true&episode_image_position=right&hide-logo=false&hide-likes=false&hide-comments=false&hide-sharing=false&hide-download=true" width="100%" height="200px" title="CRIME AND PUNISHMENT" frameborder="0"></iframe>
                 </div>
             </main>
+<script>
+(() => {
+    // Evita que ocurra más de una vez por sesión
+    if (sessionStorage.getItem("coreTextMutated")) return;
 
+    const title = document.getElementById("core-title");
+    if (!title) return;
+
+    const originalHTML = title.innerHTML;
+
+    const variants = [
+        '<i class="fab fa-spotify"></i> Selección Activa',
+        '<i class="fab fa-spotify"></i> Acceso Autorizado',
+        '<i class="fab fa-spotify"></i> Flujo Detectado',
+        '<i class="fab fa-spotify"></i> Señal Estable'
+    ];
+
+    // Espera un poco para que el usuario "se asiente"
+    const delay = Math.random() * 4000 + 3000; // 3–7 segundos
+
+    setTimeout(() => {
+        const variant = variants[Math.floor(Math.random() * variants.length)];
+        title.style.transition = "opacity 0.4s ease";
+        title.style.opacity = "0";
+
+        setTimeout(() => {
+            title.innerHTML = variant;
+            title.style.opacity = "1";
+
+            // Regresa al texto original
+            setTimeout(() => {
+                title.style.opacity = "0";
+
+                setTimeout(() => {
+                    title.innerHTML = originalHTML;
+                    title.style.opacity = "1";
+                    sessionStorage.setItem("coreTextMutated", "true");
+                }, 400);
+
+            }, 1400);
+
+        }, 400);
+
+    }, delay);
+})();
+</script>
             <footer class="footer-counter">
                 <script type="text/javascript" src="https://contador.websiteout.com/js/2/5/0/0"></script>
             </footer>
