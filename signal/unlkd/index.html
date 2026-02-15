@@ -216,6 +216,14 @@
     opacity: 1;
     filter: grayscale(0%);
 }
+#xvideosBtn.pressing {
+    animation: pulse 0.4s infinite alternate;
+}
+
+@keyframes pulse {
+    from { transform: scale(1); }
+    to { transform: scale(1.05); }
+}
 /* --- PUERTAS --- */
 /* --- PUERTAS (PESADAS) --- */
 .door {
@@ -795,7 +803,7 @@ xvBtn.addEventListener("touchend", cancelPress);
 
 function startPress(e) {
     if (unlocked) return;
-
+xvBtn.classList.add("pressing");
     // Vibración intermitente cada 200ms
     vibrationInterval = setInterval(() => {
         if (navigator.vibrate) {
@@ -817,6 +825,7 @@ function startPress(e) {
 }
 
 function cancelPress() {
+xvBtn.classList.remove("pressing");
     clearTimeout(pressTimer);
     clearInterval(vibrationInterval);
 }
