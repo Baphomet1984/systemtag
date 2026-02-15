@@ -370,6 +370,14 @@
 #kernelConsole {
   white-space: pre-wrap;
 }
+
+@keyframes glitch {
+  0% { transform: translate(2px, -2px); }
+  25% { transform: translate(-2px, 2px); }
+  50% { transform: translate(1px, -1px); }
+  75% { transform: translate(-1px, 1px); }
+  100% { transform: translate(0,0); }
+}
     </style>
 </head>
 <body>
@@ -982,6 +990,7 @@ function unlockSystem() {
         kernelOverlay.style.display = "none";
     });
 }
+overlay.style.animation = "glitch 0.4s";
 </script>
 
 <!-- Elfsight WhatsApp Chat | SystemTag clients Chat -->
