@@ -207,14 +207,12 @@
 }
 
 #xvideosBtn {
-    pointer-events: none;
-    opacity: 0.4;
+    opacity: 0.5;
     filter: grayscale(100%);
-    transition: all 0.4s ease;
+    transition: all 0.3s ease;
 }
 
-#xvideosBtn.active {
-    pointer-events: auto;
+#xvideosBtn.armed {
     opacity: 1;
     filter: grayscale(0%);
 }
@@ -774,16 +772,40 @@ function redDotEnd(e) {
     }, 50);
 }
 //activación de botón xvideos
-window.addEventListener("load", () => {
-    const xvBtn = document.getElementById("xvideosBtn");
+const xvBtn = document.getElementById("xvideosBtn");
 
-    xvBtn.innerHTML = '<i class="fa-solid fa-mask"></i> Cargando tentación...';
+let pressTimer = null;
+let unlocked = false;
 
-    setTimeout(() => {
-        xvBtn.innerHTML = '<i class="fa-solid fa-mask"></i> XVIDEOS';
-        xvBtn.classList.add("active");
-    }, 3000);
+// Evita click normal
+xvBtn.addEventListener("click", (e) => {
+    if (!unlocked) {
+        e.preventDefault();
+    }
 });
+
+// Mouse
+xvBtn.addEventListener("mousedown", startPress);
+xvBtn.addEventListener("mouseup", cancelPress);
+xvBtn.addEventListener("mouseleave", cancelPress);
+
+// Touch (móvil)
+xvBtn.addEventListener("touchstart", startPress);
+xvBtn.addEventListener("touchend", cancelPress);
+
+function startPress(e) {
+    if (unlocked) return;
+
+    pressTimer = setTimeout(() => {
+        unlocked = true;
+        xvBtn.classList.add("armed");
+        xvBtn.innerHTML = '<i class="fa-solid fa-mask"></i> ACCESO CONCEDIDO';
+    }, 3000);
+}
+
+function cancelPress() {
+    clearTimeout(pressTimer);
+}
 </script>
 
 <!-- Elfsight WhatsApp Chat | SystemTag clients Chat -->
