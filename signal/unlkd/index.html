@@ -869,75 +869,118 @@ xvBtn.classList.remove("pressing");
     clearInterval(vibrationInterval);
 }
 
-//función del botón SYSTEM FAIL
-const btn = document.getElementById("systemFailBtn");
-const overlay = document.getElementById("kernelOverlay");
-const consoleBox = document.getElementById("kernelConsole");
+/* ===============================
+   SYSTEM FAIL - KERNEL MODE
+================================ */
 
-let holdTimer;
+const systemBtn = document.getElementById("systemFailBtn");
+const kernelOverlay = document.getElementById("kernelOverlay");
+const kernelConsole = document.getElementById("kernelConsole");
 
-btn.addEventListener("mousedown", () => {
-  holdTimer = setTimeout(startKernelMode, 3000);
-});
+let holdTimeout;
+let kernelActive = false;
 
-btn.addEventListener("mouseup", () => clearTimeout(holdTimer));
-btn.addEventListener("mouseleave", () => clearTimeout(holdTimer));
+// ---- ACTIVACIÓN POR PRESIÓN 3 SEG ----
+function startHold() {
+    if (kernelActive) return;
 
-function startKernelMode() {
-  if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+    systemBtn.classList.add("pressing");
 
-  overlay.style.display = "block";
-  consoleBox.innerHTML = "";
-
-  runKernelSequence();
+    holdTimeout = setTimeout(() => {
+        activateKernel();
+    }, 3000);
 }
 
-function typeLine(text, delay = 40) {
-  return new Promise(resolve => {
-    let i = 0;
-    const interval = setInterval(() => {
-      consoleBox.innerHTML += text[i];
-      i++;
-      if (i >= text.length) {
-        clearInterval(interval);
-        consoleBox.innerHTML += "\n";
-        resolve();
-      }
-    }, delay);
-  });
+function cancelHold() {
+    systemBtn.classList.remove("pressing");
+    clearTimeout(holdTimeout);
 }
 
+// Mouse
+systemBtn.addEventListener("mousedown", startHold);
+systemBtn.addEventListener("mouseup", cancelHold);
+systemBtn.addEventListener("mouseleave", cancelHold);
+
+// Touch (móvil)
+systemBtn.addEventListener("touchstart", startHold);
+systemBtn.addEventListener("touchend", cancelHold);
+
+// ---- ACTIVACIÓN REAL ----
+function activateKernel() {
+    kernelActive = true;
+
+    if (navigator.vibrate) {
+        navigator.vibrate([200,100,200]);
+    }
+
+    kernelOverlay.style.display = "block";
+    kernelOverlay.style.zIndex = "20000";
+    kernelConsole.innerHTML = "";
+
+    runKernelSequence();
+}
+
+// ---- EFECTO ESCRITURA ----
+function typeLine(text, speed = 25) {
+    return new Promise(resolve => {
+        let i = 0;
+        const interval = setInterval(() => {
+            kernelConsole.innerHTML += text.charAt(i);
+            i++;
+            if (i >= text.length) {
+                clearInterval(interval);
+                kernelConsole.innerHTML += "\n";
+                resolve();
+            }
+        }, speed);
+    });
+}
+
+// ---- SECUENCIA ----
 async function runKernelSequence() {
 
-  const cpu = navigator.hardwareConcurrency || "unknown";
-  const memory = navigator.deviceMemory || "unknown";
+    const cpu = navigator.hardwareConcurrency || "unknown";
+    const memory = navigator.deviceMemory || "unknown";
+    const battery = navigator.getBattery ? await navigator.getBattery() : null;
+    const batteryLevel = battery ? Math.floor(battery.level * 100) + "%" : "unknown";
 
-  const sequence = [
-    "[BOOT] Initializing Signal Core...",
-    "[KERNEL] Mounting anomaly layer...",
-    `[SCAN] CPU threads detected: ${cpu}`,
-    `[SCAN] RAM blocks mapped: ${memory}GB`,
-    "[SYS] Checking entropy pool...",
-    "[OK] Entropy stabilized",
-    "[WARN] Behavioral anomaly detected",
-    "[KERNEL] Switching execution layer...",
-    "[MODE] KERNEL_DIVERGENCE_ACTIVE",
-    "[ROOT ACCESS] granted",
-    "[WARNING] You are not supposed to be here."
-  ];
+    const lines = [
+        "[BOOT] Initializing Signal Core...",
+        "[KERNEL] Mounting anomaly layer...",
+        `[SCAN] CPU threads: ${cpu}`,
+        `[SCAN] RAM blocks: ${memory}GB`,
+        `[SCAN] Battery integrity: ${batteryLevel}`,
+        "[SYS] Checking entropy pool...",
+        "[OK] Entropy stabilized",
+        "[WARN] Behavioral anomaly detected",
+        "[KERNEL] Switching execution layer...",
+        "[MODE] KERNEL_DIVERGENCE_ACTIVE",
+        "[ROOT ACCESS] granted",
+        "[WARNING] You are not supposed to be here."
+    ];
 
-  for (let line of sequence) {
-    await typeLine(line);
-  }
+    for (let line of lines) {
+        await typeLine(line);
+    }
 
-  unlockHiddenPanel();
+    unlockSystem();
 }
 
-function unlockHiddenPanel() {
-  const panel = document.createElement("div");
-  panel.innerHTML = "<br>⚠ ACCESO OCULTO DESBLOQUEADO ⚠";
-  panel.style.color = "#ff2e2e";
-  consoleBox.appendChild(panel);
+// ---- DESBLOQUEO FINAL ----
+function unlockSystem() {
+
+    const msg = document.createElement("div");
+    msg.style.color = "#ff2e2e";
+    msg.innerHTML = "\n⚠ ACCESO OCULTO DESBLOQUEADO ⚠";
+    kernelConsole.appendChild(msg);
+
+    // Cambia estado del hub
+    document.getElementById("hub-status").textContent = "CRÍTICO";
+
+    // Cierra overlay al tocar
+    kernelOverlay.addEventListener("click", () => {
+        kernelOverlay.style.display = "none";
+    });
 }
 </script>
 
