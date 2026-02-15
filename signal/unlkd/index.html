@@ -775,9 +775,9 @@ function redDotEnd(e) {
 const xvBtn = document.getElementById("xvideosBtn");
 
 let pressTimer = null;
+let vibrationInterval = null;
 let unlocked = false;
 
-// Evita click normal
 xvBtn.addEventListener("click", (e) => {
     if (!unlocked) {
         e.preventDefault();
@@ -789,22 +789,36 @@ xvBtn.addEventListener("mousedown", startPress);
 xvBtn.addEventListener("mouseup", cancelPress);
 xvBtn.addEventListener("mouseleave", cancelPress);
 
-// Touch (móvil)
+// Touch
 xvBtn.addEventListener("touchstart", startPress);
 xvBtn.addEventListener("touchend", cancelPress);
 
 function startPress(e) {
     if (unlocked) return;
 
+    // Vibración intermitente cada 200ms
+    vibrationInterval = setInterval(() => {
+        if (navigator.vibrate) {
+            navigator.vibrate(50);
+        }
+    }, 200);
+
     pressTimer = setTimeout(() => {
         unlocked = true;
         xvBtn.classList.add("armed");
         xvBtn.innerHTML = '<i class="fa-solid fa-mask"></i> ACCESO CONCEDIDO';
+
+        if (navigator.vibrate) {
+            navigator.vibrate([200, 100, 200]); // vibración final más intensa
+        }
+
+        clearInterval(vibrationInterval);
     }, 3000);
 }
 
 function cancelPress() {
     clearTimeout(pressTimer);
+    clearInterval(vibrationInterval);
 }
 </script>
 
