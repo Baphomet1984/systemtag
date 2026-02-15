@@ -346,6 +346,30 @@
     opacity: 0.9;
     transform: scale(1.3);
 }
+#systemFailBtn {
+  padding: 12px 20px;
+  background: #111;
+  color: #ff2e2e;
+  border: 1px solid #ff2e2e;
+  cursor: pointer;
+}
+
+#kernelOverlay {
+  position: fixed;
+  inset: 0;
+  background: #050505;
+  color: #00ff88;
+  font-family: monospace;
+  font-size: 14px;
+  padding: 20px;
+  display: none;
+  overflow-y: auto;
+  z-index: 9999;
+}
+
+#kernelConsole {
+  white-space: pre-wrap;
+}
     </style>
 </head>
 <body>
@@ -528,6 +552,11 @@
     <i class="fa-solid fa-box-archive"></i>desarrolla
   </a>
 </li>
+<button id="systemFailBtn">Falla del Sistema</button>
+
+<div id="kernelOverlay">
+  <div id="kernelConsole"></div>
+</div>
             </ul>
  
         </section>
@@ -838,6 +867,76 @@ function cancelPress() {
 xvBtn.classList.remove("pressing");
     clearTimeout(pressTimer);
     clearInterval(vibrationInterval);
+}
+//función del botón SYSTEM FAIL
+const btn = document.getElementById("systemFailBtn");
+const overlay = document.getElementById("kernelOverlay");
+const consoleBox = document.getElementById("kernelConsole");
+
+let holdTimer;
+
+btn.addEventListener("mousedown", () => {
+  holdTimer = setTimeout(startKernelMode, 3000);
+});
+
+btn.addEventListener("mouseup", () => clearTimeout(holdTimer));
+btn.addEventListener("mouseleave", () => clearTimeout(holdTimer));
+
+function startKernelMode() {
+  if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+
+  overlay.style.display = "block";
+  consoleBox.innerHTML = "";
+
+  runKernelSequence();
+}
+
+function typeLine(text, delay = 40) {
+  return new Promise(resolve => {
+    let i = 0;
+    const interval = setInterval(() => {
+      consoleBox.innerHTML += text[i];
+      i++;
+      if (i >= text.length) {
+        clearInterval(interval);
+        consoleBox.innerHTML += "\n";
+        resolve();
+      }
+    }, delay);
+  });
+}
+
+async function runKernelSequence() {
+
+  const cpu = navigator.hardwareConcurrency || "unknown";
+  const memory = navigator.deviceMemory || "unknown";
+
+  const sequence = [
+    "[BOOT] Initializing Signal Core...",
+    "[KERNEL] Mounting anomaly layer...",
+    `[SCAN] CPU threads detected: ${cpu}`,
+    `[SCAN] RAM blocks mapped: ${memory}GB`,
+    "[SYS] Checking entropy pool...",
+    "[OK] Entropy stabilized",
+    "[WARN] Behavioral anomaly detected",
+    "[KERNEL] Switching execution layer...",
+    "[MODE] KERNEL_DIVERGENCE_ACTIVE",
+    "[ROOT ACCESS] granted",
+    "[WARNING] You are not supposed to be here."
+  ];
+
+  for (let line of sequence) {
+    await typeLine(line);
+  }
+
+  unlockHiddenPanel();
+}
+
+function unlockHiddenPanel() {
+  const panel = document.createElement("div");
+  panel.innerHTML = "<br>⚠ ACCESO OCULTO DESBLOQUEADO ⚠";
+  panel.style.color = "#ff2e2e";
+  consoleBox.appendChild(panel);
 }
 </script>
 
