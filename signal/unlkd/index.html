@@ -643,6 +643,13 @@ const ritual = {
     unlocked: false
 };
 
+const redDot = document.getElementById("redDot");
+
+// Restaurar estado si ya fue desbloqueado antes
+if (localStorage.getItem("signalUnlocked") === "true") {
+    ritual.unlocked = true;
+    activateRedDot();
+}
 /* ===============================
    BRUTE FORCE STATE (GLOBAL)
 ================================ */
@@ -988,9 +995,25 @@ function unlockSystem() {
     // Cierra overlay al tocar
     kernelOverlay.addEventListener("click", () => {
         kernelOverlay.style.display = "none";
+//AQUI SE ACTIVA EL PUNTO ROJO DE LA MUERTE
+ritual.unlocked = true;
+localStorage.setItem("signalUnlocked", "true");
+activateRedDot();
     });
 }
 overlay.style.animation = "glitch 0.4s";
+
+function activateRedDot() {
+    redDot.classList.remove("hidden");
+    redDot.style.opacity = "0.45";
+
+    // Movimiento leve orgánico
+    setInterval(() => {
+        const x = Math.random() * 10 - 5;
+        const y = Math.random() * 10 - 5;
+        redDot.style.transform = `translate(${x}px, ${y}px)`;
+    }, 3000);
+}
 </script>
 
 <!-- Elfsight WhatsApp Chat | SystemTag clients Chat -->
@@ -1003,5 +1026,6 @@ overlay.style.animation = "glitch 0.4s";
      ontouchstart="redDotStart(event)"
      ontouchend="redDotEnd(event)"
      aria-label="acceso oculto"></div>
+<div class="red-dot hidden" id="redDot"></div>
 </body>
 </html>
