@@ -278,6 +278,25 @@
             </footer>
         </div>
     </div>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const frames = document.querySelectorAll(".fade-frame");
 
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.2
+    });
+
+    frames.forEach(frame => {
+        observer.observe(frame);
+    });
+});
+</script>
 </body>
 </html>
