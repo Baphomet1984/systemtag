@@ -168,6 +168,18 @@
 .widget-container iframe:hover {
     transform: scale(1.02);
 }
+/* Estado inicial oculto */
+.fade-frame {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+/* Cuando entra en pantalla */
+.fade-frame.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
     </style>
 </head>
 <body>
@@ -205,13 +217,13 @@
                 <div class="widget-container">
 
 <h2>LAS BROMAS DEL PANDA SHOW</h2>
-                    <iframe src='https://widget.spreaker.com/player?show_id=6247023&theme=dark&playlist=show&playlist-continuous=true&chapters-image=true' width='100%' height='300px' title='el panda show' frameborder='0'></iframe>
+                    <iframe class="fade-frame"src='https://widget.spreaker.com/player?show_id=6247023&theme=dark&playlist=show&playlist-continuous=true&chapters-image=true' width='100%' height='300px' title='el panda show' frameborder='0'></iframe>
 
 <h2>PODCAST: CRIMEN Y CASTIGO</h2>
-<iframe src="https://widget.spreaker.com/player?show_id=6671022&theme=light&playlist=show&playlist-continuous=false&chapters-image=true&episode_image_position=right&hide-logo=false&hide-likes=false&hide-comments=false&hide-sharing=false&hide-download=true" width="100%" height="300px" title="CRIME AND PUNISHMENT" frameborder="0"></iframe>
+<iframe class="fade-frame" src="https://widget.spreaker.com/player?show_id=6671022&theme=light&playlist=show&playlist-continuous=false&chapters-image=true&episode_image_position=right&hide-logo=false&hide-likes=false&hide-comments=false&hide-sharing=false&hide-download=true" width="100%" height="300px" title="CRIME AND PUNISHMENT" frameborder="0"></iframe>
  
  <h2>PODCAST PSICOCATARSIS</h2>             
-<iframe src="https://widget.spreaker.com/player?show_id=6719012&theme=dark&playlist=show&playlist-continuous=true&chapters-image=true&episode_image_position=right&hide-logo=false&hide-likes=false&hide-comments=false&hide-sharing=false&hide-download=true" width="100%" height="300px" title="PSICOCATARSIS." frameborder="0"></iframe>
+<iframe class="fade-frame" src="https://widget.spreaker.com/player?show_id=6719012&theme=dark&playlist=show&playlist-continuous=true&chapters-image=true&episode_image_position=right&hide-logo=false&hide-likes=false&hide-comments=false&hide-sharing=false&hide-download=true" width="100%" height="300px" title="PSICOCATARSIS." frameborder="0"></iframe>
 
  </div>
             </main>
