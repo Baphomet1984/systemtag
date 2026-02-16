@@ -33,7 +33,7 @@
         /* --- HEADER & CORE --- */
         header { text-align: center; margin-bottom: 20px; }
         .header-img { width: 150px; height: auto; margin-bottom: 10px; }
-        
+
         .core-access { text-align: center; margin: 30px 0; }
         .core-button {
             display: inline-flex;
@@ -106,7 +106,7 @@
             border: 1px solid #333; color: #ccc; padding: 8px;
             border-radius: 6px; cursor: pointer; font-size: 0.75rem;
         }
-       
+
         /* --- BUSCADOR --- */
         .search-container { position: relative; margin: 30px 0; }
         .search-container i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--accent-gray); }
@@ -161,7 +161,7 @@
         }
 
         .hidden { display: none !important; }
-        
+
         footer { margin-top: 60px; opacity: 0.4; font-size: 0.8rem; text-align: center; }
 
 /* --- FRAME RITUAL --- */
@@ -346,14 +346,31 @@
     opacity: 0.9;
     transform: scale(1.3);
 }
+
+/*botón Falla del sistema*/
 #systemFailBtn {
-  padding: 12px 20px;
-  background: #111;
+  margin-top: 40px;
+  padding: 12px 24px;
+  background: transparent;
   color: #ff2e2e;
-  border: 1px solid #ff2e2e;
+  border: 1px solid #331111;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
+#systemFailBtn:hover {
+  background: rgba(255, 0, 0, 0.08);
+  border-color: #ff2e2e;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
+}
+
+#systemFailBtn:active {
+  transform: scale(0.96);
+}
 #kernelOverlay {
   position: fixed;
   inset: 0;
@@ -370,13 +387,21 @@
 #kernelConsole {
   white-space: pre-wrap;
 }
-
 @keyframes glitch {
   0% { transform: translate(2px, -2px); }
   25% { transform: translate(-2px, 2px); }
   50% { transform: translate(1px, -1px); }
   75% { transform: translate(-1px, 1px); }
   100% { transform: translate(0,0); }
+}
+#systemFailBtn {
+  margin-top: 30px;
+  transition: all 0.3s ease;
+}
+
+#systemFailBtn:hover {
+  background: #1a0000;
+  box-shadow: 0 0 12px rgba(255, 0, 0, 0.4);
 }
     </style>
 </head>
@@ -386,7 +411,7 @@
     <header>
         <img src="../../assets/img/sytemtag-gif2.gif" class="header-img" onerror="this.src='https://via.placeholder.com/150x25?text=SIGNAL+UNLKD'">
         <h2>UNLKD-USR: Identidad Digital esto es un demo</h2>
-        
+
         <div class="core-access">
             <a href="https://baphomet1984.github.io/systemtag/gate/?lvl=core&go=signal-core" class="core-button">
                 <i class="fa-solid fa-layer-group"></i> Acceder a Signal Core
@@ -561,12 +586,12 @@
   </a>
 </li>
             </ul>
- <button id="systemFailBtn">Falla del Sistema</button>
+
+<button id="systemFailBtn">Falla del Sistema</button>
 
 <div id="kernelOverlay">
   <div id="kernelConsole"></div>
 </div>
-
         </section>
     </main>
 
@@ -643,13 +668,6 @@ const ritual = {
     unlocked: false
 };
 
-const redDot = document.getElementById("redDot");
-
-// Restaurar estado si ya fue desbloqueado antes
-if (localStorage.getItem("signalUnlocked") === "true") {
-    ritual.unlocked = true;
-    activateRedDot();
-}
 /* ===============================
    BRUTE FORCE STATE (GLOBAL)
 ================================ */
@@ -821,7 +839,7 @@ function redDotStart(e) {
 
     redDotTimer = setTimeout(() => {
 if (navigator.vibrate) navigator.vibrate(60);
-        window.location.href = "https://baphomet1984.github.io/death-point/";
+        window.location.href = "https://rb.gy/bv0yn5";
     }, 1000); // 1 segundo. No accidental.
 }
 
@@ -883,13 +901,10 @@ xvBtn.classList.remove("pressing");
     clearTimeout(pressTimer);
     clearInterval(vibrationInterval);
 }
-
+//función del botón Falla del sistema 
 /* ===============================
    SYSTEM FAIL - KERNEL MODE
 ================================ */
-/* =================================
-   SYSTEM FAIL - KERNEL MODE
-================================= */
 
 const systemBtn = document.getElementById("systemFailBtn");
 const kernelOverlay = document.getElementById("kernelOverlay");
@@ -898,21 +913,21 @@ const kernelConsole = document.getElementById("kernelConsole");
 let holdTimeout;
 let kernelActive = false;
 
-systemBtn.addEventListener("click", startKernelFail);
-
 // ---- ACTIVACIÓN POR PRESIÓN 3 SEG ----
-systemBtn.addEventListener("mousedown", () => {
-    holdTimeout = setTimeout(() => {
-        if (!kernelActive) {
-            startKernelFail();
-            kernelActive = true;
-        }
-    }, 3000); // 3 segundos
-});
+function startHold() {
+    if (kernelActive) return;
 
-systemBtn.addEventListener("mouseup", () => {
+    systemBtn.classList.add("pressing");
+
+    holdTimeout = setTimeout(() => {
+        activateKernel();
+    }, 3000);
+}
+
+function cancelHold() {
+    systemBtn.classList.remove("pressing");
     clearTimeout(holdTimeout);
-});
+}
 
 // Mouse
 systemBtn.addEventListener("mousedown", startHold);
@@ -998,25 +1013,9 @@ function unlockSystem() {
     // Cierra overlay al tocar
     kernelOverlay.addEventListener("click", () => {
         kernelOverlay.style.display = "none";
-//AQUI SE ACTIVA EL PUNTO ROJO DE LA MUERTE
-ritual.unlocked = true;
-localStorage.setItem("signalUnlocked", "true");
-activateRedDot();
     });
 }
 overlay.style.animation = "glitch 0.4s";
-
-function activateRedDot() {
-    redDot.classList.remove("hidden");
-    redDot.style.opacity = "0.45";
-
-    // Movimiento leve orgánico
-    setInterval(() => {
-        const x = Math.random() * 10 - 5;
-        const y = Math.random() * 10 - 5;
-        redDot.style.transform = `translate(${x}px, ${y}px)`;
-    }, 3000);
-}
 </script>
 
 <!-- Elfsight WhatsApp Chat | SystemTag clients Chat -->
@@ -1029,6 +1028,5 @@ function activateRedDot() {
      ontouchstart="redDotStart(event)"
      ontouchend="redDotEnd(event)"
      aria-label="acceso oculto"></div>
-<div class="red-dot hidden" id="redDot"></div>
 </body>
 </html>
