@@ -139,6 +139,24 @@
             text-align: center;
             opacity: 0.6;
         }
+.widget-container {
+    margin-top: 50px;
+    background: #000;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
+    border: 1px solid #333;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;              /* ← separación real entre iframes */
+    padding: 40px 20px;     /* ← espacio interno elegante */
+}
+.widget-container iframe {
+    max-width: 750px;
+    width: 100%;
+    border-radius: 12px;
+}
     </style>
 </head>
 <body>
@@ -175,11 +193,11 @@
 <h2>ruido autorizado</h2>
                 <div class="widget-container">
 
-                    <iframe src='https://widget.spreaker.com/player?show_id=6247023&theme=dark&playlist=show&playlist-continuous=true&chapters-image=true' width='90%' height='300px' title='el panda show' frameborder='0'></iframe>
+                    <iframe src='https://widget.spreaker.com/player?show_id=6247023&theme=dark&playlist=show&playlist-continuous=true&chapters-image=true' width='100%' height='300px' title='el panda show' frameborder='0'></iframe>
 
-<iframe src="https://widget.spreaker.com/player?show_id=6719012&theme=dark&playlist=show&playlist-continuous=true&chapters-image=true&episode_image_position=right&hide-logo=false&hide-likes=false&hide-comments=false&hide-sharing=false&hide-download=true" width="80%" height="250px" title="PSICOCATARSIS." frameborder="0"></iframe>
+<iframe src="https://widget.spreaker.com/player?show_id=6719012&theme=dark&playlist=show&playlist-continuous=true&chapters-image=true&episode_image_position=right&hide-logo=false&hide-likes=false&hide-comments=false&hide-sharing=false&hide-download=true" width="100%" height="300px" title="PSICOCATARSIS." frameborder="0"></iframe>
 
-<iframe src="https://widget.spreaker.com/player?show_id=6671022&theme=light&playlist=show&playlist-continuous=false&chapters-image=true&episode_image_position=right&hide-logo=false&hide-likes=false&hide-comments=false&hide-sharing=false&hide-download=true" width="90%" height="300px" title="CRIME AND PUNISHMENT" frameborder="0"></iframe>
+<iframe src="https://widget.spreaker.com/player?show_id=6671022&theme=light&playlist=show&playlist-continuous=false&chapters-image=true&episode_image_position=right&hide-logo=false&hide-likes=false&hide-comments=false&hide-sharing=false&hide-download=true" width="100%" height="300px" title="CRIME AND PUNISHMENT" frameborder="0"></iframe>
                 </div>
             </main>
 <script>
