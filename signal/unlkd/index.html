@@ -887,6 +887,9 @@ xvBtn.classList.remove("pressing");
 /* ===============================
    SYSTEM FAIL - KERNEL MODE
 ================================ */
+/* =================================
+   SYSTEM FAIL - KERNEL MODE
+================================= */
 
 const systemBtn = document.getElementById("systemFailBtn");
 const kernelOverlay = document.getElementById("kernelOverlay");
@@ -895,21 +898,21 @@ const kernelConsole = document.getElementById("kernelConsole");
 let holdTimeout;
 let kernelActive = false;
 
+systemBtn.addEventListener("click", startKernelFail);
+
 // ---- ACTIVACIÓN POR PRESIÓN 3 SEG ----
-function startHold() {
-    if (kernelActive) return;
-
-    systemBtn.classList.add("pressing");
-
+systemBtn.addEventListener("mousedown", () => {
     holdTimeout = setTimeout(() => {
-        activateKernel();
-    }, 3000);
-}
+        if (!kernelActive) {
+            startKernelFail();
+            kernelActive = true;
+        }
+    }, 3000); // 3 segundos
+});
 
-function cancelHold() {
-    systemBtn.classList.remove("pressing");
+systemBtn.addEventListener("mouseup", () => {
     clearTimeout(holdTimeout);
-}
+});
 
 // Mouse
 systemBtn.addEventListener("mousedown", startHold);
