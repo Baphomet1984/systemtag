@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Door-01 | Key #02</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <!-- protect.js se agrega aquí cuando esté listo -->
-    <script src="protect.js" defer></script>
+    <!-- <script src="protect.js" defer></script> -->
     <style>
         :root {
             --primary-color: #1DB954;
@@ -16,366 +15,67 @@
             --text-color: #ffffff;
             --accent-gray: #666;
         }
-
-        body {
-            margin: 0;
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-color);
-            overflow-x: hidden;
-        }
-
-        .container {
-            max-width: 850px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        /* --- HEADER --- */
-        header { text-align: center; margin-bottom: 20px; }
-        .header-img { width: 150px; height: auto; margin-bottom: 10px; }
-
-        .core-access { text-align: center; margin: 30px 0; }
-        .core-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 22px;
-            border-radius: 50px;
-            text-decoration: none;
-            color: #b3b3b3;
-            border: 1px solid var(--card-border);
-            background: rgba(255,255,255,0.02);
-            transition: 0.3s;
-        }
-        .core-button:hover {
-            color: #fff;
-            border-color: var(--primary-color);
-            background: rgba(29,185,84,0.1);
-            box-shadow: 0 0 15px rgba(29,185,84,0.2);
-        }
-
-        /* --- AVATAR --- */
-        #hub-avatar {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            z-index: 10000;
-            cursor: pointer;
-            background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(8px);
-            border: 2px solid var(--card-border);
-            transition: all 0.3s cubic-bezier(0.175,0.885,0.32,1.275);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-        }
-        #hub-avatar:hover {
-            transform: scale(1.1);
-            border-color: var(--primary-color);
-        }
-        #hub-avatar img {
-            width: 110%;
-            height: 110%;
-            object-fit: cover;
-        }
-
-        /* --- PANEL AVATAR --- */
-        #avatar-panel {
-            position: fixed;
-            top: 90px;
-            right: 20px;
-            width: 200px;
-            padding: 15px;
-            border-radius: 12px;
-            background: rgba(15,15,15,0.98);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--card-border);
-            display: none;
-            z-index: 9999;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-        }
-        #avatar-panel button {
-            width: 100%;
-            margin-top: 8px;
-            background: #1a1a1a;
-            border: 1px solid #333;
-            color: #ccc;
-            padding: 8px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.75rem;
-        }
-
-        /* --- BOTÓN HUB --- */
-        .boton-hub {
-            display: inline-block;
-            padding: 12px 20px;
-            background-color: #111;
-            color: #fff;
-            text-decoration: none;
-            border: 2px solid #444;
-            border-radius: 8px;
-            transition: all 0.3s ease;
-        }
-        .boton-hub:hover {
-            background-color: #fff;
-            color: #000;
-            border-color: #fff;
-            transform: scale(1.05);
-            box-shadow: 0 0 15px #0ff;
-        }
-
-        /* --- BUSCADOR --- */
-        .search-container { position: relative; margin: 30px 0; }
-        .search-container i {
-            position: absolute;
-            left: 18px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--accent-gray);
-        }
-        #playlistSearch {
-            width: 80%;
-            padding: 15px 15px 15px 50px;
-            background: #181818;
-            border: 1px solid var(--card-border);
-            border-radius: 50px;
-            color: white;
-            outline: none;
-            transition: 0.3s;
-        }
-        #playlistSearch:focus {
-            border-color: var(--primary-color);
-            background: #222;
-        }
-
-        /* --- CONTENIDO --- */
-        .hub-status {
-            font-size: 0.7rem;
-            color: var(--accent-gray);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-        }
-        h2 {
-            font-size: 1rem;
-            color: #eee;
-            border-left: 3px solid var(--primary-color);
-            padding-left: 10px;
-            margin-top: 40px;
-            text-transform: uppercase;
-        }
-        h3 {
-            font-size: 0.75rem;
-            color: var(--accent-gray);
-            margin-top: -10px;
-            margin-bottom: 20px;
-        }
-        ul {
-            list-style: none;
-            padding: 0;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
-            gap: 12px;
-        }
-        .playlist-item a {
-            display: flex;
-            align-items: center;
-            background: var(--card-bg);
-            padding: 14px;
-            border-radius: 6px;
-            text-decoration: none;
-            color: #ccc;
-            border: 1px solid var(--card-border);
-            transition: 0.3s;
-        }
-        .playlist-item a:hover {
-            background: #1e1e1e;
-            border-color: var(--primary-color);
-            color: #fff;
-            transform: translateX(5px);
-        }
-        .playlist-item i {
-            margin-right: 12px;
-            color: var(--primary-color);
-            width: 20px;
-            text-align: center;
-        }
-        .playlist-item a:hover i { filter: brightness(1.1); }
-
-        /* --- COLORES ICONOS --- */
-        .fa-spotify    { color: #1DB954; }
-        .fa-youtube    { color: #FF0000; }
-        .fa-soundcloud { color: #FF5500; }
-        .fa-discord    { color: #5865F2; }
-        .fa-whatsapp   { color: #25D366; }
-        .fa-reddit     { color: #FF4500; }
-        .fa-wikipedia-w{ color: #ffffff; }
-
-        .hidden { display: none !important; }
-        footer { margin-top: 60px; opacity: 0.4; font-size: 0.8rem; text-align: center; }
-
-        /* --- FRAME RITUAL --- */
-        .frame-box {
-            position: relative;
-            width: 100%;
-            height: 220px;
-            margin: 10px 0;
-            border-radius: 8px;
-            overflow: hidden;
-            border: 1px solid var(--card-border);
-            background: #050505;
-            transition: all 0.4s ease;
-        }
-        .frame-box.minimized { height: 42px; }
-        .frame-box::after {
-            content: "CONTENIDO BLOQUEADO";
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.65rem;
-            letter-spacing: 2px;
-            color: #555;
-            background: rgba(0,0,0,0.85);
-            pointer-events: none;
-            transition: opacity 0.3s;
-        }
-        .frame-box.unlocked::after { opacity: 0; }
-        .frame-box iframe { width: 100%; height: 100%; border: none; }
-
-        /* --- XVIDEOS BTN --- */
-        #xvideosBtn {
-            opacity: 0.5;
-            filter: grayscale(100%);
-            transition: all 0.3s ease;
-        }
-        #xvideosBtn.armed  { opacity: 1; filter: grayscale(0%); }
-        #xvideosBtn.pressing { animation: pulse 0.4s infinite alternate; }
-        @keyframes pulse {
-            from { transform: scale(1); }
-            to   { transform: scale(1.05); }
-        }
-
-        /* --- PUERTAS PESADAS --- */
-        .door {
-            position: absolute;
-            top: 0;
-            width: 50%;
-            height: 100%;
-            background: linear-gradient(to bottom, #0a0a0a, #000);
-            z-index: 5;
-            transition: transform 1.9s cubic-bezier(0.3,0.05,0.2,1), opacity 0.6s ease;
-            will-change: transform;
-        }
-        .door-left  { left: 0;  border-right: 1px solid #111; }
-        .door-right { right: 0; border-left:  1px solid #111; }
-
-        .door-sealed   .door-left  { transform: translateX(0); }
-        .door-sealed   .door-right { transform: translateX(0); }
-        .door-preopen  .door-left  { transform: translateX(-6%); }
-        .door-preopen  .door-right { transform: translateX(6%); }
-        .door-open     .door-left  { transform: translateX(-102%); opacity: 0; transition-delay: 0.15s; }
-        .door-open     .door-right { transform: translateX(102%);  opacity: 0; transition-delay: 0.3s; }
-
-        .door-lock {
-            position: absolute;
-            top: 50%; left: 50%;
-            transform: translate(-50%,-50%);
-            font-size: 1.2rem;
-            opacity: 0.35;
-            filter: grayscale(100%);
-            pointer-events: none;
-            z-index: 6;
-            transition: opacity 0.4s ease, transform 0.4s ease;
-        }
-        .door-open .door-lock { opacity: 0; transform: translate(-50%,-50%) scale(0.8); }
-
-        /* --- BOTÓN ? --- */
-        .avatar-help {
-            width: 26px !important;
-            height: 26px;
-            padding: 0;
-            margin: 10px auto 0 auto;
-            border-radius: 50%;
-            border: 1px solid #333;
-            background: rgba(255,255,255,0.08);
-            color: #bbb;
-            font-weight: bold;
-            font-size: 14px;
-            line-height: 24px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-        }
-        .avatar-help:hover {
-            background: rgba(255,255,255,0.25);
-            color: #fff;
-            transform: scale(1.15);
-        }
-
-        /* --- PUNTO ROJO --- */
-        .red-dot {
-            position: fixed;
-            top: 6px; left: 6px;
-            width: 6px; height: 6px;
-            background: #b00000;
-            border-radius: 50%;
-            opacity: 0.45;
-            z-index: 9999;
-            cursor: pointer;
-            transition: opacity 0.2s ease, transform 0.2s ease;
-        }
-        .red-dot:hover { opacity: 0.9; transform: scale(1.3); }
-
-        /* --- BOTÓN SYSTEM FAIL --- */
-        #systemFailBtn {
-            margin-top: 40px;
-            padding: 12px 24px;
-            background: transparent;
-            color: #ff2e2e;
-            border: 1px solid #331111;
-            border-radius: 6px;
-            font-size: 0.8rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        #systemFailBtn:hover {
-            background: #1a0000;
-            box-shadow: 0 0 12px rgba(255,0,0,0.4);
-        }
-        #systemFailBtn:active { transform: scale(0.96); }
-
-        /* --- KERNEL OVERLAY --- */
-        #kernelOverlay {
-            position: fixed;
-            inset: 0;
-            background: #050505;
-            color: #00ff88;
-            font-family: monospace;
-            font-size: 14px;
-            padding: 20px;
-            display: none;
-            overflow-y: auto;
-            z-index: 20000;
-        }
-        #kernelConsole { white-space: pre-wrap; }
-
-        @keyframes glitch {
-            0%   { transform: translate(2px,-2px); }
-            25%  { transform: translate(-2px,2px); }
-            50%  { transform: translate(1px,-1px); }
-            75%  { transform: translate(-1px,1px); }
-            100% { transform: translate(0,0); }
-        }
+        body { margin:0; font-family:'Segoe UI',Roboto,sans-serif; background-color:var(--bg-dark); color:var(--text-color); overflow-x:hidden; }
+        .container { max-width:850px; margin:0 auto; padding:40px 20px; }
+        header { text-align:center; margin-bottom:20px; }
+        .header-img { width:150px; height:auto; margin-bottom:10px; }
+        .core-access { text-align:center; margin:30px 0; }
+        .core-button { display:inline-flex; align-items:center; gap:10px; padding:12px 22px; border-radius:50px; text-decoration:none; color:#b3b3b3; border:1px solid var(--card-border); background:rgba(255,255,255,0.02); transition:0.3s; }
+        .core-button:hover { color:#fff; border-color:var(--primary-color); background:rgba(29,185,84,0.1); box-shadow:0 0 15px rgba(29,185,84,0.2); }
+        #hub-avatar { position:fixed; top:20px; right:20px; width:60px; height:60px; border-radius:50%; z-index:10000; cursor:pointer; background:rgba(0,0,0,0.8); backdrop-filter:blur(8px); border:2px solid var(--card-border); transition:all 0.3s cubic-bezier(0.175,0.885,0.32,1.275); display:flex; align-items:center; justify-content:center; overflow:hidden; box-shadow:0 4px 15px rgba(0,0,0,0.5); }
+        #hub-avatar:hover { transform:scale(1.1); border-color:var(--primary-color); }
+        #hub-avatar img { width:110%; height:110%; object-fit:cover; }
+        #avatar-panel { position:fixed; top:90px; right:20px; width:200px; padding:15px; border-radius:12px; background:rgba(15,15,15,0.98); backdrop-filter:blur(12px); border:1px solid var(--card-border); display:none; z-index:9999; box-shadow:0 10px 30px rgba(0,0,0,0.8); }
+        #avatar-panel button { width:100%; margin-top:8px; background:#1a1a1a; border:1px solid #333; color:#ccc; padding:8px; border-radius:6px; cursor:pointer; font-size:0.75rem; }
+        .boton-hub { display:inline-block; padding:12px 20px; background-color:#111; color:#fff; text-decoration:none; border:2px solid #444; border-radius:8px; transition:all 0.3s ease; }
+        .boton-hub:hover { background-color:#fff; color:#000; border-color:#fff; transform:scale(1.05); box-shadow:0 0 15px #0ff; }
+        .search-container { position:relative; margin:30px 0; }
+        .search-container i { position:absolute; left:18px; top:50%; transform:translateY(-50%); color:var(--accent-gray); }
+        #playlistSearch { width:80%; padding:15px 15px 15px 50px; background:#181818; border:1px solid var(--card-border); border-radius:50px; color:white; outline:none; transition:0.3s; }
+        #playlistSearch:focus { border-color:var(--primary-color); background:#222; }
+        .hub-status { font-size:0.7rem; color:var(--accent-gray); letter-spacing:1px; text-transform:uppercase; margin-bottom:20px; }
+        h2 { font-size:1rem; color:#eee; border-left:3px solid var(--primary-color); padding-left:10px; margin-top:40px; text-transform:uppercase; }
+        h3 { font-size:0.75rem; color:var(--accent-gray); margin-top:-10px; margin-bottom:20px; }
+        ul { list-style:none; padding:0; display:grid; grid-template-columns:repeat(auto-fill,minmax(250px,1fr)); gap:12px; }
+        .playlist-item a { display:flex; align-items:center; background:var(--card-bg); padding:14px; border-radius:6px; text-decoration:none; color:#ccc; border:1px solid var(--card-border); transition:0.3s; }
+        .playlist-item a:hover { background:#1e1e1e; border-color:var(--primary-color); color:#fff; transform:translateX(5px); }
+        .playlist-item i { margin-right:12px; color:var(--primary-color); width:20px; text-align:center; }
+        .playlist-item a:hover i { filter:brightness(1.1); }
+        .fa-spotify { color:#1DB954; } .fa-youtube { color:#FF0000; } .fa-soundcloud { color:#FF5500; }
+        .fa-discord { color:#5865F2; } .fa-whatsapp { color:#25D366; } .fa-reddit { color:#FF4500; }
+        .fa-wikipedia-w { color:#ffffff; }
+        .hidden { display:none !important; }
+        footer { margin-top:60px; opacity:0.4; font-size:0.8rem; text-align:center; }
+        .frame-box { position:relative; width:100%; height:220px; margin:10px 0; border-radius:8px; overflow:hidden; border:1px solid var(--card-border); background:#050505; transition:all 0.4s ease; }
+        .frame-box.minimized { height:42px; }
+        .frame-box::after { content:"CONTENIDO BLOQUEADO"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:0.65rem; letter-spacing:2px; color:#555; background:rgba(0,0,0,0.85); pointer-events:none; transition:opacity 0.3s; }
+        .frame-box.unlocked::after { opacity:0; }
+        .frame-box iframe { width:100%; height:100%; border:none; }
+        #xvideosBtn { opacity:0.5; filter:grayscale(100%); transition:all 0.3s ease; }
+        #xvideosBtn.armed { opacity:1; filter:grayscale(0%); }
+        #xvideosBtn.pressing { animation:pulse 0.4s infinite alternate; }
+        @keyframes pulse { from{transform:scale(1);} to{transform:scale(1.05);} }
+        .door { position:absolute; top:0; width:50%; height:100%; background:linear-gradient(to bottom,#0a0a0a,#000); z-index:5; transition:transform 1.9s cubic-bezier(0.3,0.05,0.2,1),opacity 0.6s ease; will-change:transform; }
+        .door-left { left:0; border-right:1px solid #111; }
+        .door-right { right:0; border-left:1px solid #111; }
+        .door-sealed .door-left { transform:translateX(0); }
+        .door-sealed .door-right { transform:translateX(0); }
+        .door-preopen .door-left { transform:translateX(-6%); }
+        .door-preopen .door-right { transform:translateX(6%); }
+        .door-open .door-left { transform:translateX(-102%); opacity:0; transition-delay:0.15s; }
+        .door-open .door-right { transform:translateX(102%); opacity:0; transition-delay:0.3s; }
+        .door-lock { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:1.2rem; opacity:0.35; filter:grayscale(100%); pointer-events:none; z-index:6; transition:opacity 0.4s ease,transform 0.4s ease; }
+        .door-open .door-lock { opacity:0; transform:translate(-50%,-50%) scale(0.8); }
+        .avatar-help { width:26px !important; height:26px; padding:0; margin:10px auto 0 auto; border-radius:50%; border:1px solid #333; background:rgba(255,255,255,0.08); color:#bbb; font-weight:bold; font-size:14px; line-height:24px; cursor:pointer; transition:all 0.25s ease; }
+        .avatar-help:hover { background:rgba(255,255,255,0.25); color:#fff; transform:scale(1.15); }
+        .red-dot { position:fixed; top:6px; left:6px; width:6px; height:6px; background:#b00000; border-radius:50%; opacity:0.45; z-index:9999; cursor:pointer; transition:opacity 0.2s ease,transform 0.2s ease; }
+        .red-dot:hover { opacity:0.9; transform:scale(1.3); }
+        #systemFailBtn { margin-top:40px; padding:12px 24px; background:transparent; color:#ff2e2e; border:1px solid #331111; border-radius:6px; font-size:0.8rem; letter-spacing:1px; text-transform:uppercase; cursor:pointer; transition:all 0.3s ease; }
+        #systemFailBtn:hover { background:#1a0000; box-shadow:0 0 12px rgba(255,0,0,0.4); }
+        #systemFailBtn:active { transform:scale(0.96); }
+        #kernelOverlay { position:fixed; inset:0; background:#050505; color:#00ff88; font-family:monospace; font-size:14px; padding:20px; display:none; overflow-y:auto; z-index:20000; }
+        #kernelConsole { white-space:pre-wrap; }
+        @keyframes glitch { 0%{transform:translate(2px,-2px);} 25%{transform:translate(-2px,2px);} 50%{transform:translate(1px,-1px);} 75%{transform:translate(-1px,1px);} 100%{transform:translate(0,0);} }
     </style>
 </head>
 <body>
@@ -389,13 +89,10 @@
             <a href="https://baphomet1984.github.io/systemtag/gate/?lvl=core&go=signal-core" class="core-button">
                 <i class="fa-solid fa-layer-group"></i> Acceder a Signal Core
             </a>
-            <p style="font-size:0.75rem;color:#666;margin-top:8px;">
-                Contenido general disponible para todos los usuarios
-            </p>
+            <p style="font-size:0.75rem;color:#666;margin-top:8px;">Contenido general disponible para todos los usuarios</p>
         </div>
     </header>
 
-    <!-- AVATAR FIJO -->
     <div id="hub-avatar"><img id="avatar" alt="System Avatar"></div>
     <div id="avatar-panel">
         <p style="margin:0 0 10px 0;color:var(--primary-color);font-weight:bold;">🜏SYSTEM // UNLKD🔑</p>
@@ -406,13 +103,11 @@
             ontouchstart="helpPressStart(event)" ontouchend="helpPressEnd(event)">?</button>
     </div>
 
-    <!-- STATUS -->
     <div class="hub-status">
         <span>Estado: <b id="hub-status" style="color:var(--primary-color)"></b></span> |
         <span>Sinc: <b id="hub-date"></b></span>
     </div>
 
-    <!-- BUSCADOR -->
     <div class="search-container">
         <i class="fa fa-search"></i>
         <input type="text" id="playlistSearch" placeholder="Filtrar protocolos o webs...">
@@ -421,7 +116,6 @@
     <main>
         <a href="../../../alliados/" class="boton-hub">Portal de Aliados</a>
 
-        <!-- PERFIL SONORO -->
         <section class="search-section">
             <h2>Perfil Sonoro</h2>
             <h3>> Selección personal del portador</h3>
@@ -431,10 +125,13 @@
                 <li class="playlist-item"><a href="https://open.spotify.com/artist/22WZ7M8sxp5THdruNY3gXt"><i class="fab fa-spotify"></i> 3. The Doors</a></li>
                 <li class="playlist-item"><a href="https://open.spotify.com/artist/3IYUoQ0nMeR4omDzq7sZGp"><i class="fab fa-spotify"></i> 4. Creedence</a></li>
                 <li class="playlist-item"><a href="https://open.spotify.com/artist/3KUHGSmEIcFBWNnbvJXBEd"><i class="fab fa-spotify"></i> 5. Exodus</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/artist/5eIbEEFmdCUSFXH1xJpRqf"><i class="fab fa-spotify"></i> 6. King Buffalo</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/artist/7Ev0XPSVQ3OMlOVHfMd1Z8"><i class="fab fa-spotify"></i> 7. Smokehouse</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/artist/3RNrq3jvMZxD9ZyoOZbQOD"><i class="fab fa-spotify"></i> 8. Korn</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/artist/6JsGF8GYdBOhWNpTrUnYwp"><i class="fab fa-spotify"></i> 9. Therion</a></li>
             </ul>
         </section>
 
-        <!-- MULTIMEDIA -->
         <section class="search-section">
             <h2>Multimedia</h2>
             <h3>> Radio / Cine</h3>
@@ -452,23 +149,17 @@
             </div>
         </section>
 
-        <!-- CINÉFILOS -->
         <section class="search-section">
             <h2>CINEFILOS</h2>
             <ul>
                 <li class="playlist-item"><a href="https://www.lacartoons.com/"><i class="fa-solid fa-tv"></i> CARTOONS</a></li>
-                <p style="font-size:0.75rem;color:var(--accent-gray);margin-top:10px;">
-                    Si CARTOONS pide VPN, usa
-                    <a href="https://play.google.com/store/apps/details?id=com.free.vpn.mexico.proxy.planet"
-                       style="color:var(--primary-color);text-decoration:none;">Planet VPN aquí</a>.
-                </p>
+                <p style="font-size:0.75rem;color:var(--accent-gray);margin-top:10px;">Si CARTOONS pide VPN, usa <a href="https://play.google.com/store/apps/details?id=com.free.vpn.mexico.proxy.planet" style="color:var(--primary-color);text-decoration:none;">Planet VPN aquí</a>.</p>
                 <li class="playlist-item"><a href="https://www.cinecalidad.ec/"><i class="fa-solid fa-clapperboard"></i> SERIES/MOVIES</a></li>
                 <li class="playlist-item"><a href="https://la.movie/"><i class="fa-solid fa-film"></i> SERIES/MOVIES (Sin basura)</a></li>
                 <li class="playlist-item"><a href="https://www.xvideos.com/" id="xvideosBtn"><i class="fa-solid fa-mask"></i> ACCESO DENEGADO</a></li>
             </ul>
         </section>
 
-        <!-- OCIO -->
         <section class="search-section">
             <h2>OCIO</h2>
             <h3>>audio y video</h3>
@@ -480,7 +171,6 @@
             </ul>
         </section>
 
-        <!-- CONVIVENCIA -->
         <section class="search-section">
             <h2>CONVIVENCIA</h2>
             <h3>>redes</h3>
@@ -491,7 +181,6 @@
             </ul>
         </section>
 
-        <!-- UNDERGROUND -->
         <section class="search-section">
             <h2>UNDERGROUND</h2>
             <h3>>webs absurdas pero necesarias</h3>
@@ -502,7 +191,6 @@
             </ul>
         </section>
 
-        <!-- CAOS CONTROLADO -->
         <section class="search-section">
             <h2>CAOS CONTROLADO</h2>
             <h3>>quieres discutir algo?</h3>
@@ -512,7 +200,6 @@
             </ul>
         </section>
 
-        <!-- EXPLORACIÓN -->
         <section class="search-section">
             <h2>EXPLORACION</h2>
             <h3>>conocimiento prohibido o casi</h3>
@@ -524,7 +211,6 @@
             </ul>
         </section>
 
-        <!-- SYSTEM FAIL -->
         <button id="systemFailBtn">Falla del Sistema</button>
         <div id="kernelOverlay"><div id="kernelConsole"></div></div>
 
@@ -537,20 +223,16 @@
     </footer>
 </div>
 
-<!-- PUNTO ROJO OCULTO -->
 <div class="red-dot"
      onmousedown="redDotStart(event)" onmouseup="redDotEnd(event)"
      ontouchstart="redDotStart(event)" ontouchend="redDotEnd(event)"
      aria-label="acceso oculto"></div>
 
-<!-- WIDGET WHATSAPP -->
 <script src="https://elfsightcdn.com/platform.js" async></script>
 <div class="elfsight-app-1c4d0ae1-891a-4847-86b0-00553260b99b" data-elfsight-app-lazy></div>
 
 <script>
-/* ===============================
-   BUSCADOR
-================================ */
+/* BUSCADOR */
 document.getElementById('playlistSearch').addEventListener('keyup', function() {
     let filter = this.value.toLowerCase();
     document.querySelectorAll('.search-section').forEach(section => {
@@ -566,85 +248,48 @@ document.getElementById('playlistSearch').addEventListener('keyup', function() {
     });
 });
 
-/* ===============================
-   ESTADO DINÁMICO
-================================ */
+/* ESTADO */
 function updateStatus() {
     const h = new Date().getHours();
-    let s = h >= 6 && h < 12  ? "Despertando"
-          : h >= 12 && h < 18 ? "Activo"
-          : h >= 18 && h < 23 ? "Observándote"
-          : "Viendo que no duermes";
+    let s = h>=6&&h<12?"Despertando":h>=12&&h<18?"Activo":h>=18&&h<23?"Observándote":"Viendo que no duermes";
     document.getElementById("hub-status").textContent = s.toUpperCase();
     document.getElementById("hub-date").textContent = new Date().toLocaleDateString("es-MX");
 }
 updateStatus();
 
-/* ===============================
-   AVATAR
-================================ */
+/* AVATAR */
 const avatar    = document.getElementById("avatar");
 const avatarBox = document.getElementById("hub-avatar");
 const panel     = document.getElementById("avatar-panel");
 const base      = "https://api.dicebear.com/7.x/bottts/svg";
 avatar.src = base + "?seed=systemfail&backgroundColor=000000";
 
-/* ===============================
-   RITUAL STATE
-================================ */
-const ritual = { step: 0, stealth: false, panelOpen: false, unlocked: false };
+const ritual = { step:0, stealth:false, panelOpen:false, unlocked:false };
 let clickCount = 0, lastClickTime = 0;
 
-/* ===============================
-   AVATAR — MOVIMIENTO ANTI-BRUTE
-================================ */
 function moveAvatar() {
     const x = Math.random() * (window.innerWidth  - avatarBox.offsetWidth  - 20);
     const y = Math.random() * (window.innerHeight - avatarBox.offsetHeight - 20);
-    avatarBox.style.transform = `translate(${x}px, ${y}px) scale(1.05)`;
+    avatarBox.style.transform = `translate(${x}px,${y}px) scale(1.05)`;
 }
 
-/* ===============================
-   AVATAR — CLICK
-================================ */
 avatarBox.addEventListener("click", e => {
     e.stopPropagation();
     const now = Date.now();
     clickCount = (now - lastClickTime < 600) ? clickCount + 1 : 1;
     lastClickTime = now;
-
-    // Anti brute-force
-    if (clickCount >= 5 && !ritual.unlocked) {
-        moveAvatar();
-        clickCount = 0;
-        return;
-    }
-    // Post-desbloqueo → Google Drive
-    if (ritual.unlocked) {
-        window.location.href = "https://drive.google.com/drive/folders/0B0F9Kqt9_0moV0pKa3pGd0NIUlk";
-        return;
-    }
-    // Paso final del ritual
-    if (ritual.step === 3 && panel.style.display === "none") {
-        unlockDoor();
-        return;
-    }
-    // Toggle panel
+    if (clickCount >= 5 && !ritual.unlocked) { moveAvatar(); clickCount = 0; return; }
+    if (ritual.unlocked) { window.location.href = "https://drive.google.com/drive/folders/0B0F9Kqt9_0moV0pKa3pGd0NIUlk"; return; }
+    if (ritual.step === 3 && panel.style.display === "none") { unlockDoor(); return; }
     panel.style.display = panel.style.display === "block" ? "none" : "block";
     ritual.panelOpen = panel.style.display === "block";
 });
 
-/* ===============================
-   MUTAR AVATAR
-================================ */
 function changeAvatar() {
     avatar.src = base + "?seed=" + Math.random().toString(36).substring(7);
     ritual.step = ritual.step === 0 ? 1 : 0;
 }
 
-/* ===============================
-   MODO SIGILO
-================================ */
 function toggleStealth() {
     ritual.stealth = !ritual.stealth;
     avatar.style.opacity = ritual.stealth ? "0.2" : "1";
@@ -652,16 +297,12 @@ function toggleStealth() {
     else ritual.step = 0;
 }
 
-/* ===============================
-   BOTÓN ?
-================================ */
+/* BOTÓN ? */
 let helpPressTimer = null, helpLongPress = false, helpHandled = false;
-
 function helpPressStart(e) {
     e.preventDefault();
     if (helpHandled) return;
-    helpHandled = true;
-    helpLongPress = false;
+    helpHandled = true; helpLongPress = false;
     helpPressTimer = setTimeout(() => {
         helpLongPress = true;
         window.location.href = "https://chat.whatsapp.com/D7xEqrGxJgABFHbRQXM6tg?mode=gi_c";
@@ -674,9 +315,7 @@ function helpPressEnd(e) {
     setTimeout(() => { helpHandled = false; }, 50);
 }
 
-/* ===============================
-   CLIC FUERA — PASO 3
-================================ */
+/* CLIC FUERA */
 document.addEventListener("click", e => {
     if (!avatarBox.contains(e.target) && !panel.contains(e.target)) {
         if (panel.style.display === "block") {
@@ -687,20 +326,18 @@ document.addEventListener("click", e => {
     }
 });
 
-/* ===============================
-   DESBLOQUEO
-================================ */
+/* DESBLOQUEO */
 function unlockDoor() {
     ritual.unlocked = true;
     avatarBox.style.borderColor = "var(--primary-color)";
     avatarBox.style.boxShadow   = "0 0 25px rgba(29,185,84,0.6)";
     avatarBox.style.transform   = "scale(1.15)";
     document.querySelectorAll("[data-frame]").forEach(frame => {
-        frame.classList.remove("minimized", "door-sealed");
+        frame.classList.remove("minimized","door-sealed");
         frame.classList.add("door-preopen");
         setTimeout(() => {
             frame.classList.remove("door-preopen");
-            frame.classList.add("door-open", "unlocked");
+            frame.classList.add("door-open","unlocked");
         }, 120);
         frame.querySelectorAll("iframe").forEach(i => {
             if (!i.src && i.dataset.src) i.src = i.dataset.src;
@@ -708,11 +345,8 @@ function unlockDoor() {
     });
 }
 
-/* ===============================
-   PUNTO ROJO → DEATH POINT
-================================ */
+/* PUNTO ROJO */
 let redDotTimer = null, redDotActivated = false;
-
 function redDotStart(e) {
     e.preventDefault();
     if (redDotActivated) return;
@@ -728,19 +362,15 @@ function redDotEnd(e) {
     setTimeout(() => { redDotActivated = false; }, 50);
 }
 
-/* ===============================
-   ACCESO DENEGADO
-================================ */
+/* ACCESO DENEGADO */
 const xvBtn = document.getElementById("xvideosBtn");
 let pressTimer = null, vibrationInterval = null, xvUnlocked = false;
-
 xvBtn.addEventListener("click", e => { if (!xvUnlocked) e.preventDefault(); });
 xvBtn.addEventListener("mousedown",  startPress);
 xvBtn.addEventListener("mouseup",    cancelPress);
 xvBtn.addEventListener("mouseleave", cancelPress);
 xvBtn.addEventListener("touchstart", startPress);
 xvBtn.addEventListener("touchend",   cancelPress);
-
 function startPress(e) {
     if (xvUnlocked) return;
     xvBtn.classList.add("pressing");
@@ -749,7 +379,7 @@ function startPress(e) {
         xvUnlocked = true;
         xvBtn.classList.add("armed");
         xvBtn.innerHTML = '<i class="fa-solid fa-mask"></i> ACCESO CONCEDIDO';
-        if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+        if (navigator.vibrate) navigator.vibrate([200,100,200]);
         clearInterval(vibrationInterval);
     }, 3000);
 }
@@ -759,52 +389,39 @@ function cancelPress() {
     clearInterval(vibrationInterval);
 }
 
-/* ===============================
-   SYSTEM FAIL — KERNEL MODE
-================================ */
+/* KERNEL MODE */
 const systemBtn     = document.getElementById("systemFailBtn");
 const kernelOverlay = document.getElementById("kernelOverlay");
 const kernelConsole = document.getElementById("kernelConsole");
 let holdTimeout, kernelActive = false;
-
 function startHold()  { if (kernelActive) return; systemBtn.classList.add("pressing"); holdTimeout = setTimeout(activateKernel, 3000); }
 function cancelHold() { systemBtn.classList.remove("pressing"); clearTimeout(holdTimeout); }
-
 systemBtn.addEventListener("mousedown",  startHold);
 systemBtn.addEventListener("mouseup",    cancelHold);
 systemBtn.addEventListener("mouseleave", cancelHold);
 systemBtn.addEventListener("touchstart", startHold);
 systemBtn.addEventListener("touchend",   cancelHold);
-
 function activateKernel() {
     kernelActive = true;
-    if (navigator.vibrate) navigator.vibrate([200, 100, 200]);
+    if (navigator.vibrate) navigator.vibrate([200,100,200]);
     kernelOverlay.style.display = "block";
     kernelConsole.innerHTML = "";
     runKernelSequence();
 }
-
 function typeLine(text, speed = 25) {
     return new Promise(resolve => {
         let i = 0;
         const interval = setInterval(() => {
-            kernelConsole.innerHTML += text.charAt(i);
-            i++;
-            if (i >= text.length) {
-                clearInterval(interval);
-                kernelConsole.innerHTML += "\n";
-                resolve();
-            }
+            kernelConsole.innerHTML += text.charAt(i); i++;
+            if (i >= text.length) { clearInterval(interval); kernelConsole.innerHTML += "\n"; resolve(); }
         }, speed);
     });
 }
-
 async function runKernelSequence() {
-    const cpu         = navigator.hardwareConcurrency || "unknown";
-    const memory      = navigator.deviceMemory || "unknown";
-    const battery     = navigator.getBattery ? await navigator.getBattery() : null;
-    const batteryLevel= battery ? Math.floor(battery.level * 100) + "%" : "unknown";
-
+    const cpu          = navigator.hardwareConcurrency || "unknown";
+    const memory       = navigator.deviceMemory || "unknown";
+    const battery      = navigator.getBattery ? await navigator.getBattery() : null;
+    const batteryLevel = battery ? Math.floor(battery.level * 100) + "%" : "unknown";
     const lines = [
         "[BOOT] Initializing Signal Core...",
         "[KERNEL] Mounting anomaly layer...",
@@ -819,11 +436,9 @@ async function runKernelSequence() {
         "[ROOT ACCESS] granted",
         "[WARNING] You are not supposed to be here."
     ];
-
     for (let line of lines) await typeLine(line);
     unlockSystem();
 }
-
 function unlockSystem() {
     const msg = document.createElement("div");
     msg.style.color = "#ff2e2e";
