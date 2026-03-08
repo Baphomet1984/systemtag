@@ -28,6 +28,8 @@
     window.location.href = "../signal/core/";
   } else if (target === "signal-unlkd") {
     window.location.href = "../signal/unlkd/";
+  } else if (target === "signal-unlkd-2") {
+    window.location.href = "../signal/unlkd-2/";
   } else {
     window.location.href = "../denied.html";
   }
