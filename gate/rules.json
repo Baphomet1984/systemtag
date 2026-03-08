@@ -3,8 +3,8 @@
     "access": ["signal-core", "signal-unlkd"],
     "expires": false
   },
-  "unlkd": {
-    "access": ["signal-unlkd"],
+ "unlkd": {
+    "access": ["signal-unlkd", "signal-unlkd-2"],
     "expires": true
   },
   "blocked": {
