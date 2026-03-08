@@ -1,6 +1,6 @@
 {
   "core": {
-    "access": ["signal-core", "signal-unlkd"],
+    "access": ["signal-core", "signal-unlkd","signal-unlkd-2"],
     "expires": false
   },
  "unlkd": {
