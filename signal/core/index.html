@@ -1,301 +1,525 @@
-<!--<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Signal Core</title>
-</head>
-<body>
-
-  <script src="protect.js"></script>
-
-  <h1>Signal Core</h1>
-  <p>Si estás aquí, el Gate te dejó pasar.</p>
-
-</body>
-</html>-->
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Door-01 | Signal Core</title>
-    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600&display=swap');
+
         :root {
-            --primary-color: #1DB954; /* Verde oficial de Spotify */
-            --bg-overlay: rgba(0, 0, 0, 0.75);
-            --card-bg: rgba(255, 255, 255, 0.08);
-            --text-color: #ffffff;
+            --cyan:    #00ffe7;
+            --magenta: #ff00cc;
+            --purple:  #cc44ff;
+            --green:   #1DB954;
+            --bg:      #050508;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            margin: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background-image: url("signal-fondo4.jfif");
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            background-repeat: no-repeat;
-            color: var(--text-color);
-        }
-        .header-img {
-            width: 300px; /* Ajusta el tamaño de tu imagen aquí */
-            height: 50px;
-            /*border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--primary-color);*/
-            }
-        
-        .overlay {
-            background: var(--bg-overlay);
+            background: var(--bg);
+            color: #f0f0f0;
+            font-family: 'Rajdhani', sans-serif;
             min-height: 100vh;
-            padding: 40px 20px;
+            overflow-x: hidden;
+            cursor: crosshair;
+        }
+
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background: repeating-linear-gradient(
+                0deg, transparent, transparent 3px,
+                rgba(0,255,231,0.012) 3px, rgba(0,255,231,0.012) 4px
+            );
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        body::after {
+            content: '';
+            position: fixed; inset: 0;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.75) 100%);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        canvas { position: fixed; inset: 0; z-index: 0; }
+
+        .overlay {
+            position: relative; z-index: 10;
+            min-height: 100vh;
+            padding: 30px 20px 60px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
-        .container {
-            max-width: 850px;
+        .container { max-width: 860px; width: 100%; }
+
+        /* STATUS BAR */
+        .status-bar {
             width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.8rem;
+            padding: 0.4rem 0.75rem;
+            border: 1px solid rgba(0,255,231,0.1);
+            background: rgba(0,255,231,0.02);
         }
 
-        h1, h2 {
-            text-align: center;
+        .status-item {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 0.15em;
+            color: var(--cyan);
+            opacity: 0.55;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .dot-live {
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: var(--green);
+            animation: blink 1.5s infinite;
+        }
+
+        @keyframes blink {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
+
+        /* HEADER */
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .header-img {
+            width: 240px; height: auto;
+            filter: drop-shadow(0 0 14px var(--cyan)) brightness(1.1);
+            margin-bottom: 1.2rem;
+        }
+
+        /* NAV BUTTONS */
+        .nav-buttons {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1.8rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            position: relative;
+            background: transparent;
+            border: 1px solid var(--purple);
+            color: var(--purple);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 0.25em;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            padding: 0.55rem 1.4rem;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            overflow: hidden;
+            transition: color 0.25s;
+            clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
         }
 
-        h1 { 
-            color: var(--primary-color); 
-            margin-bottom: 30px;
-            font-size: 1.8rem;
+        .nav-btn::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(90deg, var(--purple), var(--magenta));
+            opacity: 0;
+            transition: opacity 0.25s;
+            z-index: 0;
         }
 
-        h2 { 
-            font-size: 1.1rem; 
-            margin-top: 45px; 
-            color: #aaa;
-            border-bottom: 1px solid #444;
-            padding-bottom: 10px;
-            display: block; 
+        .nav-btn::after {
+            content: '';
+            position: absolute; left: 0; top: 0;
+            width: 2px; height: 100%;
+            background: linear-gradient(180deg, transparent, var(--magenta), transparent);
+            transform: translateY(-100%);
         }
 
-        /* Contenedor de la lista */
+        .nav-btn:hover::after { transform: translateY(100%); transition: transform 0.4s ease; }
+        .nav-btn:hover::before { opacity: 1; }
+        .nav-btn:hover { color: #050508; box-shadow: 0 0 20px rgba(204,68,255,0.6), 0 0 40px rgba(204,68,255,0.2); }
+        .nav-btn span { position: relative; z-index: 1; }
+
+        .nav-btn .dot {
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: var(--magenta);
+            animation: blink 1.8s infinite;
+            position: relative; z-index: 1;
+            flex-shrink: 0;
+        }
+
+        .nav-btn.disabled {
+            border-color: rgba(204,68,255,0.22);
+            color: rgba(204,68,255,0.28);
+            cursor: not-allowed;
+        }
+        .nav-btn.disabled .dot { background: rgba(255,68,204,0.22); animation: none; }
+        .nav-btn.disabled:hover { color: rgba(204,68,255,0.28); box-shadow: none; }
+        .nav-btn.disabled:hover::before { opacity: 0; }
+
+        /* TITLE */
+        .core-title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(0.9rem, 3vw, 1.5rem);
+            font-weight: 700;
+            color: var(--green);
+            text-align: center;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 20px rgba(29,185,84,0.5);
+            position: relative;
+        }
+
+        .core-title::before {
+            content: attr(data-text);
+            position: absolute; left: 0; top: 0; width: 100%;
+            color: var(--cyan);
+            animation: tGlitch 7s infinite;
+            clip-path: polygon(0 30%, 100% 30%, 100% 55%, 0 55%);
+            opacity: 0;
+        }
+
+        @keyframes tGlitch {
+            0%,93%,100% { opacity: 0; transform: translate(0); }
+            94% { opacity: 0.5; transform: translate(-3px,1px); }
+            96% { opacity: 0.5; transform: translate(3px,-1px); }
+            98% { opacity: 0; }
+        }
+
+        /* SECTION HEADERS */
+        h2 {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--cyan);
+            margin: 2.5rem 0 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            opacity: 0.8;
+        }
+
+        h2::before { content: '//'; color: var(--magenta); opacity: 0.7; }
+        h2::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--cyan), transparent); opacity: 0.25; }
+
+        /* PLAYLIST LIST */
         ul {
             list-style: none;
             padding: 0;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 12px;
-            margin-top: 20px;
+            gap: 8px;
+            margin-top: 0.5rem;
         }
 
-        /* Estilo de los botones con icono */
         li a {
             display: flex;
             align-items: center;
-            background: var(--card-bg);
-            padding: 14px 18px;
-            border-radius: 50px; /* Bordes redondeados estilo Spotify */
+            background: rgba(0,255,231,0.025);
+            padding: 11px 14px;
+            border: 1px solid rgba(0,255,231,0.1);
+            border-left: 2px solid var(--green);
             text-decoration: none;
-            color: white;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid rgba(255,255,255,0.1);
-            backdrop-filter: blur(8px);
+            color: rgba(255,255,255,0.7);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.88rem;
             font-weight: 500;
-        }
-
-        li a i {
-            margin-right: 12px;
-            font-size: 1.4rem;
-            color: var(--primary-color);
-            transition: color 0.3s ease;
-        }
-
-        li a:hover {
-            background: var(--primary-color);
-            transform: scale(1.03);
-            border-color: var(--primary-color);
-        }
-
-        li a:hover i {
-            color: white; /* El icono se vuelve blanco al pasar el mouse */
-        }
-
-        .widget-container {
-            margin-top: 50px;
-            background: #000;
-            border-radius: 15px;
+            letter-spacing: 0.04em;
+            position: relative;
             overflow: hidden;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-            border: 1px solid #333;
+            transition: all 0.2s ease;
         }
 
+        li a::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(90deg, rgba(29,185,84,0.1), transparent);
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        li a:hover::before { opacity: 1; }
+        li a:hover { border-color: var(--green); color: #fff; transform: translateX(4px); box-shadow: -2px 0 14px rgba(29,185,84,0.25); }
+
+        li a i { margin-right: 12px; font-size: 1rem; color: var(--green); flex-shrink: 0; transition: color 0.2s; }
+        li a:hover i { color: #fff; }
+
+        /* PODCAST */
+        .widget-container {
+            margin-top: 1rem;
+            background: rgba(0,0,0,0.5);
+            border: 1px solid rgba(0,255,231,0.08);
+            border-top: 2px solid var(--cyan);
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.8rem;
+            position: relative;
+        }
+
+        .widget-container::before {
+            content: 'PODCAST_STREAM';
+            position: absolute; top: -0.5rem; left: 1rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.5rem; letter-spacing: 0.2em;
+            color: var(--cyan); background: var(--bg);
+            padding: 0 0.5rem;
+        }
+
+        .podcast-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.58rem; letter-spacing: 0.22em;
+            color: var(--magenta); text-transform: uppercase;
+            align-self: flex-start; opacity: 0.75;
+        }
+
+        .widget-container iframe {
+            max-width: 750px; width: 100%;
+            border-radius: 3px;
+            border: 1px solid rgba(0,255,231,0.08);
+            box-shadow: 0 0 18px rgba(0,255,231,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .widget-container iframe:hover {
+            transform: scale(1.01);
+            box-shadow: 0 0 28px rgba(0,255,231,0.12);
+        }
+
+        .fade-frame {
+            opacity: 0; transform: translateY(30px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .fade-frame.visible { opacity: 1; transform: translateY(0); }
+
+        /* FOOTER */
         .footer-counter {
-            margin-top: 40px;
-            text-align: center;
-            opacity: 0.6;
+            margin-top: 3rem; text-align: center;
+            opacity: 0.35; font-family: 'Share Tech Mono', monospace;
+            font-size: 0.55rem; letter-spacing: 0.2em;
         }
-.widget-container {
-    margin-top: 50px;
-    background: #000;
-    border-radius: 15px;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-    border: 1px solid #333;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 30px;              /* ← separación real entre iframes */
-    padding: 40px 20px;     /* ← espacio interno elegante */
-}
-.widget-container iframe {
-    max-width: 750px;
-    width: 100%;
-    border-radius: 12px;
-}
-.widget-container iframe {
-    max-width: 750px;
-    width: 100%;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-    transition: transform 0.3s ease;
-}
-
-.widget-container iframe:hover {
-    transform: scale(1.02);
-}
-/* Estado inicial oculto */
-.fade-frame {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-}
-
-/* Cuando entra en pantalla */
-.fade-frame.visible {
-    opacity: 1;
-    transform: translateY(0);
-}
     </style>
 </head>
 <body>
 <script src="protect.js"></script>
-    <div class="overlay">
-        <div class="container">
-            
-            <header>
-            <img src="../../assets/img/logo-systemtag2.png" class="header-img">
-                <h1 id="core-title"><i class="fab fa-spotify"></i> Playlists Top México</h1>
-                <!-- Elfsight WhatsApp Chat | Untitled WhatsApp Chat -->
-<script src="https://elfsightcdn.com/platform.js" async></script>
-<div class="elfsight-app-1c4d0ae1-891a-4847-86b0-00553260b99b" data-elfsight-app-lazy></div>
-            </header>
+<canvas id="bg"></canvas>
 
-            <main>
-                <ul>
-                    <li><a href="https://open.spotify.com/playlist/37i9dQZEVXbO3qyFxbkOE1?si=wIVFtcz8SgGbBb6hjx1THQ"><i class="fab fa-spotify"></i> 1. TOP 50: MEXICO</a></li>
-                    <li><a href="https://open.spotify.com/playlist/37i9dQZEVXbLuUZrygauiA?si=njyQxmBESZyrGAHogoaIug"><i class="fab fa-spotify"></i> 2. VIRAL 50: MEXICO</a></li>
-                    <li><a href="https://open.spotify.com/playlist/37i9dQZF1DX5BAPG29mHS8?si=69rtevaFTw-aYvAVSMCTmQ"><i class="fab fa-spotify"></i> 3. EXITOS MEXICO</a></li>
-                    <li><a href="https://open.spotify.com/playlist/37i9dQZF1DWWhMyyrqZlaY?si=OMDlxjXnSzm_DfU3I2gdwQ"><i class="fab fa-spotify"></i> 4. CORRIDOS TUMBADOS</a></li>
-                    <li><a href="https://open.spotify.com/playlist/37i9dQZF1DX5hrSNdL1ktS?si=dJJFlH5hTCC5WUOIqrP1Sw"><i class="fab fa-spotify"></i> 5. REGGAETON MX</a></li>
-                    <li><a href="https://open.spotify.com/playlist/37i9dQZF1DWTmGGCbcoQhY?si=9htAtALLTWqE3o3LG9TqNg"><i class="fab fa-spotify"></i> 6. CUMBIA SONIDERA</a></li>
-                    <li><a href="https://open.spotify.com/playlist/1z9BMuPLZE7bVemN5E85rV?si=vs4BVFxjTgyUycoBLQpARQ"><i class="fab fa-spotify"></i> 7. HITS TIKTOK MEXICO</a></li>
-                </ul>
+<div class="overlay">
+    <div class="container">
 
-                <h2>Sección Alternativa</h2>
-                <ul>
-                    <li><a href="https://open.spotify.com/playlist/37i9dQZF1EIea0ChiRU7ji?si=l1tpgnOTSceRtCiN5SMSWQ"><i class="fab fa-spotify"></i> 8. METAL DENSO</a></li>
-                    <li><a href="https://open.spotify.com/playlist/37i9dQZF1DWYMHB55fgZrY?si=C0gKOkwdS_OKb2gXXrERkQ"><i class="fab fa-spotify"></i> 9. ROCK MEXICANO</a></li>
-                    <li><a href="https://open.spotify.com/playlist/37i9dQZF1EIcM7vKLqtJgT?si=MU8P6kObS_efOEAuU7b73A"><i class="fab fa-spotify"></i> 10. TECHNO OSCURO</a></li>
-                    <li><a href="https://open.spotify.com/playlist/37i9dQZF1DWTe5ECpTKzMo?si=8IR6Y2vHRByTr_w5FnmT_w"><i class="fab fa-spotify"></i> 11. HIP-HOP MX 24K</a></li>
-                </ul>
-<h2>PODCAST PATROCINADORES</h2>
-                <div class="widget-container">
+        <div class="status-bar">
+            <span class="status-item"><span class="dot-live"></span> SIGNAL CORE · ONLINE</span>
+            <span class="status-item" id="clock">--:--:--</span>
+            <span class="status-item">NODE · MX-01</span>
+        </div>
 
-<h2>LAS BROMAS DEL PANDA SHOW</h2>
-                    <iframe class="fade-frame"src='https://widget.spreaker.com/player?show_id=6247023&theme=dark&playlist=show&playlist-continuous=true&chapters-image=true' width='100%' height='300px' title='el panda show' frameborder='0'></iframe>
+        <header>
+            <img src="../../assets/img/logo-systemtag2.png" class="header-img" alt="SystemTag">
 
-<h2>PODCAST: CRIMEN Y CASTIGO</h2>
-<iframe class="fade-frame" src="https://widget.spreaker.com/player?show_id=6671022&theme=light&playlist=show&playlist-continuous=false&chapters-image=true&episode_image_position=right&hide-logo=false&hide-likes=false&hide-comments=false&hide-sharing=false&hide-download=true" width="100%" height="300px" title="CRIME AND PUNISHMENT" frameborder="0"></iframe>
- 
- <h2>PODCAST PSICOCATARSIS</h2>             
-<iframe class="fade-frame" src="https://widget.spreaker.com/player?show_id=6719012&theme=dark&playlist=show&playlist-continuous=true&chapters-image=true&episode_image_position=right&hide-logo=false&hide-likes=false&hide-comments=false&hide-sharing=false&hide-download=true" width="100%" height="300px" title="PSICOCATARSIS." frameborder="0"></iframe>
+            <div class="nav-buttons">
+                <button class="nav-btn disabled" disabled>
+                    <span class="dot"></span><span>Shopping</span>
+                </button>
+                <a class="nav-btn" href="https://baphomet1984.github.io/alliados/">
+                    <span class="dot"></span><span>Aliados</span>
+                </a>
+            </div>
 
- </div>
-            </main>
+            <h1 class="core-title" id="core-title" data-text="Playlists Top México">
+                <i class="fab fa-spotify"></i> Playlists Top México
+            </h1>
+        </header>
+
+        <script src="https://elfsightcdn.com/platform.js" async></script>
+        <div class="elfsight-app-1c4d0ae1-891a-4847-86b0-00553260b99b" data-elfsight-app-lazy></div>
+
+        <main>
+            <h2>Top Tendencias</h2>
+            <ul>
+                <li><a href="https://open.spotify.com/playlist/37i9dQZEVXbO3qyFxbkOE1?si=wIVFtcz8SgGbBb6hjx1THQ"><i class="fab fa-spotify"></i> 1. TOP 50: MEXICO</a></li>
+                <li><a href="https://open.spotify.com/playlist/37i9dQZEVXbLuUZrygauiA?si=njyQxmBESZyrGAHogoaIug"><i class="fab fa-spotify"></i> 2. VIRAL 50: MEXICO</a></li>
+                <li><a href="https://open.spotify.com/playlist/37i9dQZF1DX5BAPG29mHS8?si=69rtevaFTw-aYvAVSMCTmQ"><i class="fab fa-spotify"></i> 3. EXITOS MEXICO</a></li>
+                <li><a href="https://open.spotify.com/playlist/37i9dQZF1DWWhMyyrqZlaY?si=OMDlxjXnSzm_DfU3I2gdwQ"><i class="fab fa-spotify"></i> 4. CORRIDOS TUMBADOS</a></li>
+                <li><a href="https://open.spotify.com/playlist/37i9dQZF1DX5hrSNdL1ktS?si=dJJFlH5hTCC5WUOIqrP1Sw"><i class="fab fa-spotify"></i> 5. REGGAETON MX</a></li>
+                <li><a href="https://open.spotify.com/playlist/37i9dQZF1DWTmGGCbcoQhY?si=9htAtALLTWqE3o3LG9TqNg"><i class="fab fa-spotify"></i> 6. CUMBIA SONIDERA</a></li>
+                <li><a href="https://open.spotify.com/playlist/1z9BMuPLZE7bVemN5E85rV?si=vs4BVFxjTgyUycoBLQpARQ"><i class="fab fa-spotify"></i> 7. HITS TIKTOK MEXICO</a></li>
+            </ul>
+
+            <h2>Sección Alternativa</h2>
+            <ul>
+                <li><a href="https://open.spotify.com/playlist/37i9dQZF1EIea0ChiRU7ji?si=l1tpgnOTSceRtCiN5SMSWQ"><i class="fab fa-spotify"></i> 8. METAL DENSO</a></li>
+                <li><a href="https://open.spotify.com/playlist/37i9dQZF1DWYMHB55fgZrY?si=C0gKOkwdS_OKb2gXXrERkQ"><i class="fab fa-spotify"></i> 9. ROCK MEXICANO</a></li>
+                <li><a href="https://open.spotify.com/playlist/37i9dQZF1EIcM7vKLqtJgT?si=MU8P6kObS_efOEAuU7b73A"><i class="fab fa-spotify"></i> 10. TECHNO OSCURO</a></li>
+                <li><a href="https://open.spotify.com/playlist/37i9dQZF1DWTe5ECpTKzMo?si=8IR6Y2vHRByTr_w5FnmT_w"><i class="fab fa-spotify"></i> 11. HIP-HOP MX 24K</a></li>
+            </ul>
+
+            <h2>Podcast Patrocinadores</h2>
+            <div class="widget-container">
+                <span class="podcast-label">// Las Bromas del Panda Show</span>
+                <iframe class="fade-frame" src='https://widget.spreaker.com/player?show_id=6247023&theme=dark&playlist=show&playlist-continuous=true&chapters-image=true' width='100%' height='300px' title='el panda show' frameborder='0'></iframe>
+
+                <span class="podcast-label">// Podcast: Crimen y Castigo</span>
+                <iframe class="fade-frame" src="https://widget.spreaker.com/player?show_id=6671022&theme=light&playlist=show&playlist-continuous=false&chapters-image=true&episode_image_position=right&hide-logo=false&hide-likes=false&hide-comments=false&hide-sharing=false&hide-download=true" width="100%" height="300px" title="CRIME AND PUNISHMENT" frameborder="0"></iframe>
+
+                <span class="podcast-label">// Podcast Psicocatarsis</span>
+                <iframe class="fade-frame" src="https://widget.spreaker.com/player?show_id=6719012&theme=dark&playlist=show&playlist-continuous=true&chapters-image=true&episode_image_position=right&hide-logo=false&hide-likes=false&hide-comments=false&hide-sharing=false&hide-download=true" width="100%" height="300px" title="PSICOCATARSIS." frameborder="0"></iframe>
+            </div>
+        </main>
+
+        <footer class="footer-counter">
+            <script type="text/javascript" src="https://contador.websiteout.com/js/2/5/0/0"></script>
+        </footer>
+    </div>
+</div>
+
 <script>
-(() => {
-    // Evita que ocurra más de una vez por sesión
-    if (sessionStorage.getItem("coreTextMutated")) return;
+// ── CANVAS CYBERPUNK BG ───────────────────────────────────────────
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+let W, H;
 
+function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resize();
+window.addEventListener('resize', resize);
+
+const particles = Array.from({length: 90}, () => resetParticle({}));
+function resetParticle(p) {
+    p.x = Math.random() * (W || window.innerWidth);
+    p.y = Math.random() * (H || window.innerHeight);
+    p.size = Math.random() * 1.2 + 0.2;
+    p.vy = -(Math.random() * 0.3 + 0.08);
+    p.vx = (Math.random() - 0.5) * 0.12;
+    p.opacity = Math.random() * 0.5 + 0.1;
+    p.color = Math.random() > 0.55 ? '#00ffe7' : Math.random() > 0.5 ? '#cc44ff' : '#ff00cc';
+    return p;
+}
+
+// matrix rain
+const COL_W = 20;
+let cols, drops;
+function initRain() {
+    cols = Math.floor(W / COL_W);
+    drops = Array.from({length: cols}, () => Math.random() * -120);
+}
+initRain();
+window.addEventListener('resize', initRain);
+
+const rainChars = '01アカサタナ{}[]<>/\\;:!@#$%^&*~`';
+
+let frame = 0;
+function animate() {
+    ctx.clearRect(0, 0, W, H);
+
+    // grid
+    ctx.strokeStyle = 'rgba(0,255,231,0.022)';
+    ctx.lineWidth = 1;
+    for (let x = 0; x < W; x += 55) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+    for (let y = 0; y < H; y += 55) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+    // rain (every other frame for perf)
+    if (frame % 2 === 0) {
+        ctx.font = '10px "Share Tech Mono", monospace';
+        drops.forEach((y, i) => {
+            const char = rainChars[Math.floor(Math.random() * rainChars.length)];
+            ctx.globalAlpha = 0.55;
+            ctx.fillStyle = '#00ffe7';
+            ctx.fillText(char, i * COL_W, y);
+            ctx.globalAlpha = 0.06;
+            ctx.fillText(rainChars[Math.floor(Math.random() * rainChars.length)], i * COL_W, y - COL_W);
+            drops[i] = y > H + 40 ? Math.random() * -180 : y + (Math.random() * 1 + 0.4);
+        });
+    }
+
+    // particles
+    particles.forEach(p => {
+        ctx.globalAlpha = p.opacity;
+        ctx.fillStyle = p.color;
+        ctx.fillRect(p.x, p.y, p.size, p.size);
+        p.x += p.vx; p.y += p.vy; p.opacity -= 0.0007;
+        if (p.y < -5 || p.opacity <= 0) { p.y = H + 5; resetParticle(p); p.y = H; }
+    });
+
+    // corner brackets
+    const corners = [[0,0,1,1],[W,0,-1,1],[0,H,1,-1],[W,H,-1,-1]];
+    ctx.globalAlpha = 0.2; ctx.lineWidth = 1.5;
+    corners.forEach(([cx,cy,dx,dy]) => {
+        ctx.strokeStyle = '#cc44ff';
+        ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+dx*70,cy); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx,cy+dy*70); ctx.stroke();
+    });
+
+    ctx.globalAlpha = 1;
+    frame++;
+    requestAnimationFrame(animate);
+}
+animate();
+
+// ── CLOCK ─────────────────────────────────────────────────────────
+function tick() {
+    const t = new Date();
+    document.getElementById('clock').textContent = t.toTimeString().slice(0,8);
+}
+setInterval(tick, 1000); tick();
+
+// ── TITLE MUTATION ────────────────────────────────────────────────
+(() => {
+    if (sessionStorage.getItem("coreTextMutated")) return;
     const title = document.getElementById("core-title");
     if (!title) return;
-
-    const originalHTML = title.innerHTML;
-
+    const orig = title.innerHTML;
     const variants = [
         '<i class="fab fa-spotify"></i> Selección Activa',
         '<i class="fab fa-spotify"></i> Acceso Autorizado',
         '<i class="fab fa-spotify"></i> Flujo Detectado',
         '<i class="fab fa-spotify"></i> Señal Estable'
     ];
-
-    // Espera un poco para que el usuario "se asiente"
-    const delay = Math.random() * 4000 + 3000; // 3–7 segundos
-
     setTimeout(() => {
-        const variant = variants[Math.floor(Math.random() * variants.length)];
+        const v = variants[Math.floor(Math.random() * variants.length)];
         title.style.transition = "opacity 0.4s ease";
         title.style.opacity = "0";
-
         setTimeout(() => {
-            title.innerHTML = variant;
-            title.style.opacity = "1";
-
-            // Regresa al texto original
+            title.innerHTML = v; title.style.opacity = "1";
             setTimeout(() => {
                 title.style.opacity = "0";
-
                 setTimeout(() => {
-                    title.innerHTML = originalHTML;
-                    title.style.opacity = "1";
+                    title.innerHTML = orig; title.style.opacity = "1";
                     sessionStorage.setItem("coreTextMutated", "true");
                 }, 400);
-
             }, 1400);
-
         }, 400);
-
-    }, delay);
+    }, Math.random() * 4000 + 3000);
 })();
-</script>
-            <footer class="footer-counter">
-                <script type="text/javascript" src="https://contador.websiteout.com/js/2/5/0/0"></script>
-            </footer>
-        </div>
-    </div>
-<script>
+
+// ── FADE IFRAMES ──────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
-    const frames = document.querySelectorAll(".fade-frame");
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add("visible");
-                observer.unobserve(entry.target);
-            }
-        });
-    }, {
-        threshold: 0.2
-    });
-
-    frames.forEach(frame => {
-        observer.observe(frame);
-    });
+    const obs = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); obs.unobserve(e.target); } });
+    }, { threshold: 0.15 });
+    document.querySelectorAll(".fade-frame").forEach(f => obs.observe(f));
 });
 </script>
 </body>
