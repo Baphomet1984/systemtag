@@ -5,580 +5,709 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Door-01 | Key#01</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-<!--<script src="protect.js" defer></script>-->
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600&display=swap');
+
         :root {
-            --primary-color: #1DB954; 
-            --bg-dark: #000000; 
-            --card-bg: #121212; 
-            --card-border: #282828; 
-            --text-color: #ffffff;
-            --accent-gray: #666;
+            --cyan:    #00ffe7;
+            --magenta: #ff00cc;
+            --purple:  #cc44ff;
+            --green:   #1DB954;
+            --red:     #ff2e2e;
+            --amber:   #ffb300;
+            --bg:      #050508;
+            --card-bg: rgba(255,255,255,0.025);
+            --card-border: rgba(255,255,255,0.07);
+            --text:    #d0d0d0;
         }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            margin: 0;
-            font-family: 'Segoe UI', Roboto, sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-color);
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Rajdhani', sans-serif;
+            min-height: 100vh;
             overflow-x: hidden;
+            cursor: crosshair;
         }
 
+        /* ── SCANLINES ── */
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background: repeating-linear-gradient(
+                0deg, transparent, transparent 3px,
+                rgba(0,255,231,0.01) 3px, rgba(0,255,231,0.01) 4px
+            );
+            pointer-events: none; z-index: 1;
+        }
+
+        /* ── VIGNETTE ── */
+        body::after {
+            content: '';
+            position: fixed; inset: 0;
+            background: radial-gradient(ellipse at center, transparent 35%, rgba(0,0,0,0.75) 100%);
+            pointer-events: none; z-index: 1;
+        }
+
+        canvas { position: fixed; inset: 0; z-index: 0; }
+
+        /* ── LAYOUT ── */
         .container {
-            max-width: 850px;
+            position: relative; z-index: 10;
+            max-width: 860px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 30px 20px 80px;
         }
 
-        /* --- HEADER & CORE --- */
-        header { text-align: center; margin-bottom: 20px; }
-        .header-img { width: 150px; height: auto; margin-bottom: 10px; }
+        /* ── STATUS BAR ── */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.35rem 0.75rem;
+            border: 1px solid rgba(0,255,231,0.1);
+            background: rgba(0,255,231,0.02);
+            margin-bottom: 2rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.52rem;
+            letter-spacing: 0.15em;
+            color: var(--cyan);
+            opacity: 0.6;
+        }
 
-        .core-access { text-align: center; margin: 30px 0; }
-        .core-button {
+        .dot-live {
+            display: inline-block;
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: var(--green);
+            animation: blink 1.5s infinite;
+            margin-right: 0.4rem;
+            vertical-align: middle;
+        }
+
+        /* ── HEADER ── */
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .header-img {
+            width: 150px; height: auto;
+            filter: drop-shadow(0 0 14px var(--cyan)) brightness(1.1);
+            margin-bottom: 1.2rem;
+        }
+
+        /* ── NAV BUTTONS ── */
+        .nav-buttons {
+            display: flex;
+            gap: 0.65rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .nav-btn {
+            position: relative;
+            background: transparent;
+            border: 1px solid var(--purple);
+            color: var(--purple);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.58rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            padding: 0.5rem 1.2rem;
+            cursor: pointer;
+            text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 12px 22px;
-            border-radius: 50px;
-            text-decoration: none;
-            color: #b3b3b3;
-            border: 1px solid var(--card-border);
-            background: rgba(255,255,255,0.02);
-            transition: 0.3s;
-        }
-        .core-button:hover {
-            color: #fff;
-            border-color: var(--primary-color);
-            background: rgba(29, 185, 84, 0.1);
-            box-shadow: 0 0 15px rgba(29, 185, 84, 0.2);
-        }
-
-        /* --- AVATAR SYSTEM (FIJO Y CORREGIDO) --- */
-        #hub-avatar {
-            position: fixed; 
-            top: 20px; 
-            right: 20px; 
-            width: 60px; 
-            height: 60px;
-            border-radius: 50%; 
-            z-index: 10000; /* Siempre al frente */
-            cursor: pointer;
-            background: rgba(0,0,0,0.8); 
-            backdrop-filter: blur(8px);
-            border: 2px solid var(--card-border); 
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            gap: 0.45rem;
             overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            transition: color 0.25s;
+            clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
         }
 
-        #hub-avatar:hover { 
-            transform: scale(1.1); 
-            border-color: var(--primary-color);
+        .nav-btn::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(90deg, var(--purple), var(--magenta));
+            opacity: 0; transition: opacity 0.25s; z-index: 0;
         }
 
-        #hub-avatar img { 
-            width: 110%; 
-            height: 110%; 
-            object-fit: cover; 
+        .nav-btn::after {
+            content: '';
+            position: absolute; left: 0; top: 0;
+            width: 2px; height: 100%;
+            background: linear-gradient(180deg, transparent, var(--magenta), transparent);
+            transform: translateY(-100%);
         }
+
+        .nav-btn:hover::after { transform: translateY(100%); transition: transform 0.4s ease; }
+        .nav-btn:hover::before { opacity: 1; }
+        .nav-btn:hover { color: var(--bg); box-shadow: 0 0 20px rgba(204,68,255,0.6), 0 0 40px rgba(204,68,255,0.2); }
+        .nav-btn span { position: relative; z-index: 1; }
+
+        .nav-btn .dot {
+            width: 5px; height: 5px; border-radius: 50%;
+            background: var(--magenta);
+            animation: blink 1.8s infinite;
+            position: relative; z-index: 1; flex-shrink: 0;
+        }
+
+        .nav-btn.disabled {
+            border-color: rgba(204,68,255,0.22);
+            color: rgba(204,68,255,0.28); cursor: not-allowed;
+        }
+        .nav-btn.disabled .dot { background: rgba(255,68,204,0.22); animation: none; }
+        .nav-btn.disabled:hover { color: rgba(204,68,255,0.28); box-shadow: none; }
+        .nav-btn.disabled:hover::before { opacity: 0; }
+
+        /* ── HEADER TAGLINE ── */
+        .tagline {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.2em;
+            color: var(--cyan);
+            opacity: 0.5;
+            margin-bottom: 1.5rem;
+        }
+
+        /* ── HUB STATUS ── */
+        .hub-status {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.58rem;
+            color: rgba(255,255,255,0.35);
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-bottom: 1.2rem;
+        }
+
+        .hub-status b { color: var(--green); }
+
+        /* ── SEARCH ── */
+        .search-container {
+            position: relative;
+            margin: 1.5rem 0;
+        }
+
+        .search-container i {
+            position: absolute; left: 16px; top: 50%;
+            transform: translateY(-50%);
+            color: rgba(0,255,231,0.4);
+            font-size: 0.85rem;
+        }
+
+        #playlistSearch {
+            width: 100%; padding: 12px 16px 12px 46px;
+            background: rgba(0,255,231,0.03);
+            border: 1px solid rgba(0,255,231,0.12);
+            border-radius: 2px;
+            color: var(--cyan);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 0.1em;
+            outline: none;
+            transition: border-color 0.3s, background 0.3s;
+            clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+        }
+
+        #playlistSearch::placeholder { color: rgba(0,255,231,0.3); }
+        #playlistSearch:focus {
+            border-color: var(--cyan);
+            background: rgba(0,255,231,0.06);
+            box-shadow: 0 0 20px rgba(0,255,231,0.08);
+        }
+
+        /* ── SECTION HEADERS ── */
+        h2 {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--cyan);
+            margin: 2.5rem 0 0.25rem;
+            display: flex; align-items: center; gap: 0.6rem;
+            opacity: 0.85;
+        }
+
+        h2::before { content: '//'; color: var(--magenta); opacity: 0.7; }
+        h2::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--cyan), transparent); opacity: 0.2; }
+
+        h3 {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.52rem;
+            color: rgba(255,255,255,0.25);
+            letter-spacing: 0.2em;
+            margin-bottom: 1rem;
+        }
+
+        /* ── PLAYLIST ITEMS ── */
+        ul {
+            list-style: none; padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 8px;
+        }
+
+        .playlist-item a {
+            display: flex; align-items: center;
+            background: var(--card-bg);
+            padding: 11px 14px;
+            border: 1px solid var(--card-border);
+            border-left: 2px solid transparent;
+            text-decoration: none;
+            color: rgba(255,255,255,0.6);
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 0.88rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            position: relative; overflow: hidden;
+            transition: all 0.2s ease;
+        }
+
+        .playlist-item a::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(90deg, rgba(0,255,231,0.06), transparent);
+            opacity: 0; transition: opacity 0.2s;
+        }
+
+        .playlist-item a:hover::before { opacity: 1; }
+        .playlist-item a:hover {
+            border-color: var(--cyan);
+            border-left-color: var(--green);
+            color: #fff;
+            transform: translateX(4px);
+            box-shadow: -2px 0 12px rgba(0,255,231,0.15);
+        }
+
+        .playlist-item i {
+            margin-right: 12px; font-size: 1rem;
+            width: 20px; text-align: center;
+            transition: filter 0.2s; flex-shrink: 0;
+        }
+
+        .fa-spotify  { color: #1DB954; }
+        .fa-youtube  { color: #FF0000; }
+        .fa-soundcloud { color: #FF5500; }
+        .fa-discord  { color: #5865F2; }
+        .fa-whatsapp { color: #25D366; }
+        .fa-reddit   { color: #FF4500; }
+        .fa-wikipedia-w { color: #ffffff; }
+
+        .playlist-item a:hover i { filter: brightness(1.2); }
+
+        /* ── FRAME BOX (puertas) ── */
+        .frame-box {
+            position: relative;
+            width: 100%; height: 220px;
+            margin: 10px 0;
+            border: 1px solid rgba(0,255,231,0.1);
+            border-top: 2px solid var(--cyan);
+            background: #030305;
+            transition: all 0.4s ease;
+            overflow: hidden;
+        }
+
+        .frame-box.minimized { height: 42px; }
+
+        .frame-box::after {
+            content: "// ACCESO RESTRINGIDO";
+            position: absolute; inset: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.55rem; letter-spacing: 0.25em;
+            color: rgba(0,255,231,0.25);
+            background: rgba(0,0,0,0.85);
+            pointer-events: none; transition: opacity 0.3s;
+        }
+
+        .frame-box.unlocked::after { opacity: 0; }
+        .frame-box iframe { width: 100%; height: 100%; border: none; }
+
+        /* ── DOORS ── */
+        .door {
+            position: absolute; top: 0; width: 50%; height: 100%;
+            background: linear-gradient(to bottom, #06060a, #030305);
+            z-index: 5;
+            transition: transform 1.9s cubic-bezier(0.3,0.05,0.2,1), opacity 0.6s ease;
+            will-change: transform;
+        }
+
+        .door-left  { left: 0;  border-right: 1px solid rgba(0,255,231,0.08); }
+        .door-right { right: 0; border-left:  1px solid rgba(0,255,231,0.08); }
+
+        .door-preopen .door-left  { transform: translateX(-6%); }
+        .door-preopen .door-right { transform: translateX(6%); }
+
+        .door-open .door-left  { transform: translateX(-102%); opacity: 0; transition-delay: 0.15s; }
+        .door-open .door-right { transform: translateX(102%);  opacity: 0; transition-delay: 0.3s; }
+
+        .door-lock {
+            position: absolute; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 1rem; opacity: 0.3;
+            pointer-events: none; z-index: 6;
+            filter: grayscale(100%);
+            transition: opacity 0.4s ease;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.55rem; letter-spacing: 0.3em;
+            color: rgba(0,255,231,0.4);
+        }
+
+        .door-open .door-lock { opacity: 0; }
+
+        /* ── AVATAR SYSTEM ── */
+        #hub-avatar {
+            position: fixed; top: 20px; right: 20px;
+            width: 56px; height: 56px;
+            border-radius: 50%; z-index: 10000;
+            cursor: pointer;
+            background: rgba(5,5,8,0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0,255,231,0.2);
+            transition: all 0.3s cubic-bezier(0.175,0.885,0.32,1.275);
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 0 20px rgba(0,255,231,0.08), 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        #hub-avatar:hover {
+            transform: scale(1.1);
+            border-color: var(--cyan);
+            box-shadow: 0 0 25px rgba(0,255,231,0.3);
+        }
+
+        #hub-avatar img { width: 110%; height: 110%; object-fit: cover; }
 
         #avatar-panel {
-            position: fixed; 
-            top: 90px; 
-            right: 20px; 
-            width: 200px; 
-            padding: 15px;
-            border-radius: 12px; 
-            background: rgba(15, 15, 15, 0.98);
-            backdrop-filter: blur(12px); 
-            border: 1px solid var(--card-border);
-            display: none; 
-            z-index: 9999; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            position: fixed; top: 86px; right: 20px; width: 190px;
+            padding: 14px;
+            background: rgba(5,5,8,0.97);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(0,255,231,0.15);
+            display: none; z-index: 9999;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 20px rgba(0,255,231,0.05);
+        }
+
+        .panel-title {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.55rem; letter-spacing: 0.2em;
+            color: var(--green); margin-bottom: 10px;
+            text-transform: uppercase;
         }
 
         #avatar-panel button {
-            width: 100%; margin-top: 8px; background: #1a1a1a;
-            border: 1px solid #333; color: #ccc; padding: 8px;
-            border-radius: 6px; cursor: pointer; font-size: 0.75rem;
-        }
-        .boton-hub {
-  display: inline-block;
-  padding: 12px 20px;
-  background-color: #111;
-  color: #fff;
-  text-decoration: none;
-  border: 2px solid #444;
-  border-radius: 8px;
-  transition: all 0.3s ease;
-    }
-
-.boton-hub:hover {
-  background-color: #fff;
-  color: #000;
-  border-color: #fff;
-    }
-.boton-hub:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 15px #0ff;
-}
-
-        
-        /* --- BUSCADOR --- */
-        .search-container { position: relative; margin: 30px 0; }
-        .search-container i { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--accent-gray); }
-        #playlistSearch {
-            width: 80%; padding: 15px 15px 15px 50px;
-            background: #181818; border: 1px solid var(--card-border);
-            border-radius: 50px; color: white; outline: none; transition: 0.3s;
-        }
-        #playlistSearch:focus { border-color: var(--primary-color); background: #222; }
-
-        /* --- CONTENIDO --- */
-        .hub-status { font-size: 0.7rem; color: var(--accent-gray); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 20px;}
-        h2 { font-size: 1rem; color: #eee; border-left: 3px solid var(--primary-color); padding-left: 10px; margin-top: 40px; text-transform: uppercase;}
-        h3 { font-size: 0.75rem; color: var(--accent-gray); margin-top: -10px; margin-bottom: 20px;}
-
-        ul {
-            list-style: none; padding: 0; display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px;
-        }
-        .playlist-item a {
-            display: flex; align-items: center; background: var(--card-bg);
-            padding: 14px; border-radius: 6px; text-decoration: none;
-            color: #ccc; border: 1px solid var(--card-border); transition: 0.3s;
-        }
-        .playlist-item a:hover {
-            background: #1e1e1e; border-color: var(--primary-color);
-            color: #fff; transform: translateX(5px);
-        }
-  .playlist-item i {
-    margin-right: 12px;
-    color: var(--primary-color);
-    width: 20px;
-    text-align: center;
-}
-
-/* Colores oficiales suaves */
-.fa-spotify { color: #1DB954; }
-.fa-youtube { color: #FF0000; }
-.fa-soundcloud { color: #FF5500; }
-.fa-discord { color: #5865F2; }
-.fa-whatsapp { color: #25D366; }
-.fa-reddit { color: #FF4500; }
-.fa-wikipedia-w { color: #ffffff; }
-
-.playlist-item a:hover i {
-    filter: brightness(1.1);
-}
-        .miniVideo {
-            width: 100%; height: 200px; border-radius: 8px;
-            border: 1px solid var(--card-border); margin: 10px 0;
-            background: #050505;
+            width: 100%; margin-top: 7px;
+            background: rgba(0,255,231,0.03);
+            border: 1px solid rgba(0,255,231,0.1);
+            color: rgba(255,255,255,0.6);
+            padding: 7px 10px;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.62rem; letter-spacing: 0.1em;
+            cursor: pointer; text-align: left;
+            transition: all 0.2s ease;
         }
 
+        #avatar-panel button:hover {
+            background: rgba(0,255,231,0.07);
+            border-color: var(--cyan); color: var(--cyan);
+        }
+
+        .avatar-help {
+            display: flex !important; align-items: center; justify-content: center;
+            width: 28px !important; height: 28px;
+            border-radius: 50% !important;
+            margin: 10px auto 0 auto !important;
+            font-size: 13px; color: rgba(255,255,255,0.4);
+            font-weight: bold;
+        }
+
+        /* ── SYSTEM FAIL BUTTON ── */
+        #systemFailBtn {
+            margin-top: 3rem;
+            padding: 10px 22px;
+            background: transparent;
+            color: rgba(255,46,46,0.6);
+            border: 1px solid rgba(255,46,46,0.2);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.6rem; letter-spacing: 0.2em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+        }
+
+        #systemFailBtn:hover {
+            background: rgba(255,46,46,0.06);
+            border-color: var(--red);
+            color: var(--red);
+            box-shadow: 0 0 15px rgba(255,46,46,0.2);
+        }
+
+        #systemFailBtn:active { transform: scale(0.97); }
+
+        /* ── KERNEL OVERLAY ── */
+        #kernelOverlay {
+            position: fixed; inset: 0;
+            background: #030305;
+            color: var(--green);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 13px; line-height: 1.6;
+            padding: 24px;
+            display: none; overflow-y: auto;
+            z-index: 20000;
+        }
+
+        #kernelConsole { white-space: pre-wrap; }
+
+        /* ── XVIDEOS BTN ── */
+        #xvideosBtn {
+            opacity: 0.4;
+            filter: grayscale(100%);
+            transition: all 0.3s ease;
+        }
+
+        #xvideosBtn.armed {
+            opacity: 1; filter: grayscale(0%);
+        }
+
+        #xvideosBtn.pressing { animation: pulseBtn 0.4s infinite alternate; }
+
+        @keyframes pulseBtn {
+            from { transform: scale(1); }
+            to   { transform: scale(1.04); }
+        }
+
+        /* ── RED DOT ── */
+        .red-dot {
+            position: fixed; top: 6px; left: 6px;
+            width: 6px; height: 6px;
+            background: #b00000; border-radius: 50%;
+            opacity: 0.4; z-index: 9999; cursor: pointer;
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .red-dot:hover { opacity: 0.85; transform: scale(1.3); }
+
+        /* ── MISC ── */
         .hidden { display: none !important; }
 
-        footer { margin-top: 60px; opacity: 0.4; font-size: 0.8rem; text-align: center; }
+        @keyframes blink {
+            0%,100% { opacity: 1; }
+            50% { opacity: 0.2; }
+        }
 
-/* --- FRAME RITUAL --- */
-.frame-box {
-    position: relative;
-    width: 100%;
-    height: 220px;
-    margin: 10px 0;
-    border-radius: 8px;
-    overflow: hidden;
-    border: 1px solid var(--card-border);
-    background: #050505;
-    transition: all 0.4s ease;
-}
+        @keyframes glitch {
+            0%  { transform: translate(2px,-2px); }
+            25% { transform: translate(-2px,2px); }
+            50% { transform: translate(1px,-1px); }
+            75% { transform: translate(-1px,1px); }
+            100%{ transform: translate(0,0); }
+        }
 
-.frame-box.minimized {
-    height: 42px;
-}
+        /* ── FOOTER ── */
+        footer {
+            margin-top: 4rem; text-align: center;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.52rem; letter-spacing: 0.15em;
+            opacity: 0.25;
+        }
 
-.frame-box::after {
-    content: "CONTENIDO BLOQUEADO";
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.65rem;
-    letter-spacing: 2px;
-    color: #555;
-    background: rgba(0,0,0,0.85);
-    pointer-events: none;
-    transition: opacity 0.3s;
-}
+        /* Note text */
+        .note-text {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.55rem; letter-spacing: 0.1em;
+            color: rgba(255,255,255,0.25);
+            margin-top: 8px;
+        }
 
-.frame-box.unlocked::after {
-    opacity: 0;
-}
+        .note-text a { color: var(--green); text-decoration: none; }
+        .note-text a:hover { color: var(--cyan); }
 
-.frame-box iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-}
-
-#xvideosBtn {
-    opacity: 0.5;
-    filter: grayscale(100%);
-    transition: all 0.3s ease;
-}
-
-#xvideosBtn.armed {
-    opacity: 1;
-    filter: grayscale(0%);
-}
-#xvideosBtn.pressing {
-    animation: pulse 0.4s infinite alternate;
-}
-
-@keyframes pulse {
-    from { transform: scale(1); }
-    to { transform: scale(1.05); }
-}
-/* --- PUERTAS --- */
-/* --- PUERTAS (PESADAS) --- */
-.door {
-    position: absolute;
-    top: 0;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(
-        to bottom,
-        #0a0a0a,
-        #000
-    );
-    z-index: 5;
-
-    /* PUERTA PESADA */
-    transition:
-        transform 1.9s cubic-bezier(0.3, 0.05, 0.2, 1),
-        opacity 0.6s ease;
-
-    will-change: transform;
-}
-.door-left {
-    left: 0;
-    border-right: 1px solid #111;
-}
-
-.door-right {
-    right: 0;
-    border-left: 1px solid #111;
-}
-
-/* Estado sellado */
-.door-sealed .door-left {
-    transform: translateX(0);
-}
-.door-sealed .door-right {
-    transform: translateX(0);
-}
-
-/* Resistencia inicial */
-.door-preopen .door-left {
-    transform: translateX(-6%);
-}
-
-.door-preopen .door-right {
-    transform: translateX(6%);
-}
-
-/* Estado desbloqueado - apertura pesada */
-.door-open .door-left {
-    transform: translateX(-102%);
-    opacity: 0;
-    transition-delay: 0.15s;
-}
-
-.door-open .door-right {
-    transform: translateX(102%);
-    opacity: 0;
-    transition-delay: 0.3s;
-}
-
-.door-lock {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-size: 1.2rem;
-    opacity: 0.35;
-    filter: grayscale(100%);
-    pointer-events: none;
-    z-index: 6;
-    transition: opacity 0.4s ease, transform 0.4s ease;
-}
-
-/* Al abrir */
-.door-open .door-lock {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.8);
-}
-.avatar-help {
-    width: 26px !important;
-    height: 26px;
-    padding: 0;
-    margin: 10px auto 0 auto;
-
-    border-radius: 50%;
-    border: 1px solid #333;
-
-    background: rgba(255,255,255,0.08);
-    color: #bbb;
-
-    font-weight: bold;
-    font-size: 14px;
-    line-height: 24px;
-
-    cursor: pointer;
-    transition: all 0.25s ease;
-}
-
-.avatar-help:hover {
-    background: rgba(255,255,255,0.25);
-    color: #fff;
-    transform: scale(1.15);
-}
-.red-dot {
-    position: fixed;
-    top: 6px;
-    left: 6px;
-    width: 6px;
-    height: 6px;
-    background: #b00000;
-    border-radius: 50%;
-    opacity: 0.45;
-    z-index: 9999;
-    cursor: pointer;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.red-dot:hover {
-    opacity: 0.9;
-    transform: scale(1.3);
-}
-
-/*botón Falla del sistema*/
-#systemFailBtn {
-  margin-top: 40px;
-  padding: 12px 24px;
-  background: transparent;
-  color: #ff2e2e;
-  border: 1px solid #331111;
-  border-radius: 6px;
-  font-size: 0.8rem;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-#systemFailBtn:hover {
-  background: rgba(255, 0, 0, 0.08);
-  border-color: #ff2e2e;
-  box-shadow: 0 0 10px rgba(255, 0, 0, 0.2);
-}
-
-#systemFailBtn:active {
-  transform: scale(0.96);
-}
-#kernelOverlay {
-  position: fixed;
-  inset: 0;
-  background: #050505;
-  color: #00ff88;
-  font-family: monospace;
-  font-size: 14px;
-  padding: 20px;
-  display: none;
-  overflow-y: auto;
-  z-index: 20000;
-}
-
-#kernelConsole {
-  white-space: pre-wrap;
-}
-@keyframes glitch {
-  0% { transform: translate(2px, -2px); }
-  25% { transform: translate(-2px, 2px); }
-  50% { transform: translate(1px, -1px); }
-  75% { transform: translate(-1px, 1px); }
-  100% { transform: translate(0,0); }
-}
-#systemFailBtn {
-  margin-top: 30px;
-  transition: all 0.3s ease;
-}
-
-#systemFailBtn:hover {
-  background: #1a0000;
-  box-shadow: 0 0 12px rgba(255, 0, 0, 0.4);
-}
+        /* Section divider */
+        .section-wrap { margin-bottom: 0.5rem; }
     </style>
 </head>
 <body>
 
+<canvas id="bg"></canvas>
+
 <div class="container">
-    <header>
-        <img src="../../assets/img/sytemtag-gif2.gif" class="header-img" onerror="this.src='https://via.placeholder.com/150x25?text=SIGNAL+UNLKD'">
-        <h2>UNLKD-USR: Si algo no tiene sentido, no es error.
-Es filtro.</h2>
 
-        <div class="core-access">
-            <a href="https://baphomet1984.github.io/systemtag/gate/?lvl=core&go=signal-core" class="core-button">
-                <i class="fa-solid fa-layer-group"></i> Acceder a Signal Core
-            </a>
-            <p style="font-size: 0.75rem; color: #666; margin-top: 8px;">Contenido general disponible para todos los usuarios</p>
-        </div>
-    </header>
-
-    <div id="hub-avatar"><img id="avatar" alt="System Avatar"></div>
-    <div id="avatar-panel">
-        <p style="margin: 0 0 10px 0; color: var(--primary-color); font-weight: bold;">🜏SYSTEM // UNLKD🔑</p>
-        <button onclick="changeAvatar()"><i class="fa-solid fa-dna"></i> Mutar identidad</button>
-        <button onclick="toggleStealth()"><i class="fa-solid fa-user-secret"></i> Modo sigilo</button>
-
-<button class="avatar-help"
-    onmousedown="helpPressStart(event)"
-    onmouseup="helpPressEnd(event)"
-    ontouchstart="helpPressStart(event)"
-    ontouchend="helpPressEnd(event)">
-    ?
-</button>
-</div>
-    <div class="hub-status">
-        <span>Estado: <b id="hub-status" style="color:var(--primary-color)"></b></span> | 
-        <span>Sinc: <b id="hub-date"></b></span>
+    <!-- STATUS BAR -->
+    <div class="status-bar">
+        <span><span class="dot-live"></span>UNLKD · KEY#01 · ONLINE</span>
+        <span id="clock">--:--:--</span>
+        <span>NODE · MX-01</span>
     </div>
 
+    <header>
+        <img src="../../assets/img/sytemtag-gif2.gif" class="header-img"
+             onerror="this.src='https://via.placeholder.com/150x25?text=SIGNAL+UNLKD'">
+
+        <!-- NAV BUTTONS -->
+        <div class="nav-buttons">
+            <a class="nav-btn" href="https://baphomet1984.github.io/systemtag/gate/?lvl=core&go=signal-core">
+                <span class="dot"></span><span>S.Core</span>
+            </a>
+            <button class="nav-btn disabled" disabled>
+                <span class="dot"></span><span>Shopping</span>
+            </button>
+            <a class="nav-btn" href="https://baphomet1984.github.io/alliados/">
+                <span class="dot"></span><span>Aliados</span>
+            </a>
+            <a class="nav-btn" href="https://baphomet1984.github.io/fail-news/">
+                <span class="dot"></span><span>Fail News</span>
+            </a>
+        </div>
+
+        <div class="tagline">// SI ALGO NO TIENE SENTIDO, NO ES ERROR. ES FILTRO.</div>
+    </header>
+
+    <!-- AVATAR -->
+    <div id="hub-avatar"><img id="avatar" alt="System Avatar"></div>
+    <div id="avatar-panel">
+        <p class="panel-title">🜏 SYSTEM // UNLKD 🔑</p>
+        <button onclick="changeAvatar()"><i class="fa-solid fa-dna"></i> &nbsp;Mutar identidad</button>
+        <button onclick="toggleStealth()"><i class="fa-solid fa-user-secret"></i> &nbsp;Modo sigilo</button>
+        <button class="avatar-help"
+            onmousedown="helpPressStart(event)"
+            onmouseup="helpPressEnd(event)"
+            ontouchstart="helpPressStart(event)"
+            ontouchend="helpPressEnd(event)">?</button>
+    </div>
+
+    <!-- STATUS -->
+    <div class="hub-status">
+        Estado: <b id="hub-status"></b> &nbsp;|&nbsp; Sinc: <b id="hub-date"></b>
+    </div>
+
+    <!-- SEARCH -->
     <div class="search-container">
         <i class="fa fa-search"></i>
-        <input type="text" id="playlistSearch" placeholder="Filtrar protocolos o webs...">
+        <input type="text" id="playlistSearch" placeholder="// filtrar protocolos o webs...">
     </div>
 
     <main>
-        <a href="../../../alliados/" class="boton-hub">Portal de Aliados</a>
 
-        <section class="search-section">
+        <!-- PERFIL SONORO -->
+        <div class="section-wrap search-section">
             <h2>Perfil Sonoro</h2>
-            <h3>> Selección personal del portador</h3>
+            <h3>>> selección personal del portador</h3>
             <ul>
-                <li class="playlist-item"><a href="  https://open.spotify.com/intl-es/artist/5rmRF0n79RhrXPeAW3xp29"><i class="fab fa-spotify"></i> 1. System Fail</a></li>
-                <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1E4xadFD2IyUbd?si=k3iJLuTITFaWM7hiddSyBQ"><i class="fab fa-spotify"></i> 2. Gotico</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/intl-es/artist/5rmRF0n79RhrXPeAW3xp29"><i class="fab fa-spotify"></i> 1. System Fail</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1E4xadFD2IyUbd?si=k3iJLuTITFaWM7hiddSyBQ"><i class="fab fa-spotify"></i> 2. Gótico</a></li>
                 <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1DXcfZ6moR6J0G?si=EnT90tSRRwaTbFD2N0vfGQ"><i class="fab fa-spotify"></i> 3. New Metal</a></li>
                 <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1DWTe5ECpTKzMo?si=dTi2iGlEQJqUDQCHhXrLrQ"><i class="fab fa-spotify"></i> 4. Hip Hop MX 24K</a></li>
                 <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1EIea0ChiRU7ji?si=Eh1WKcBvQBqTfx3IcVPR-Q"><i class="fab fa-spotify"></i> 5. Doom</a></li>
-                <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1DWYMHB55fgZrY?si=C0gKOkwdS_OKb2gXXrERkQ"><i class="fab fa-spotify"></i> 6. ROCK MEXICANO</a></li>
-                <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1EIcM7vKLqtJgT?si=MU8P6kObS_efOEAuU7b73A"><i class="fab fa-spotify"></i> 7. TECHNO OSCURO</a></li>
-
-             <li class="playlist-item"><a href="  https://open.spotify.com/artist/4uqzzJg3ww5eH7IgGV7DMT?si=NPlGvGWKQxiu6jX0D1TMVQ"><i class="fab fa-spotify"></i> 8. Bumbury</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1DWYMHB55fgZrY?si=C0gKOkwdS_OKb2gXXrERkQ"><i class="fab fa-spotify"></i> 6. Rock Mexicano</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1EIcM7vKLqtJgT?si=MU8P6kObS_efOEAuU7b73A"><i class="fab fa-spotify"></i> 7. Techno Oscuro</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/artist/4uqzzJg3ww5eH7IgGV7DMT?si=NPlGvGWKQxiu6jX0D1TMVQ"><i class="fab fa-spotify"></i> 8. Bunbury</a></li>
                 <li class="playlist-item"><a href="https://open.spotify.com/artist/2VYQTNDsvvKN9wmU5W7xpj?si=SfbtSbFzSbeNS24q1zvq0Q"><i class="fab fa-spotify"></i> 9. Manson</a></li>
                 <li class="playlist-item"><a href="https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8?si=CSAnyZ_DSHaJudXWw0Ju6g"><i class="fab fa-spotify"></i> 10. Slipknot</a></li>
                 <li class="playlist-item"><a href="https://open.spotify.com/artist/6olE6TJLqED3rqDCT0FyPh?si=FGTISvXWRpWNAIqufEY5fQ"><i class="fab fa-spotify"></i> 11. Nirvana</a></li>
-                <li class="playlist-item"><a href="https://open.spotify.com/artist/22WZ7M8sxp5THdruNY3gXt?si=bxMr3U9gSIeADK0YnqZTaQ"><i class="fab fa-spotify"></i> 12.The Doors</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/artist/22WZ7M8sxp5THdruNY3gXt?si=bxMr3U9gSIeADK0YnqZTaQ"><i class="fab fa-spotify"></i> 12. The Doors</a></li>
                 <li class="playlist-item"><a href="https://open.spotify.com/artist/6POnYCFgbMN07RiEujnqw5?si=U1oOp6vIRO6pVG_HFrmI3A"><i class="fab fa-spotify"></i> 13. Anabantha</a></li>
-                <li class="playlist-item"><a href="https://open.spotify.com/playlist/2yCqbxs4ztf1kmRTIIujeo?si=f77lTbl4SEiBLWdCY7Ix7w"><i class="fab fa-spotify"></i> 14. Simphonic Metal</a></li>
-
-               <li class="playlist-item"><a href="https://open.spotify.com/artist/7E7V95LId9MPJ6anIK1qrM?si=K8MEfY3UQQOpWx5WalIrZQ"><i class="fab fa-spotify"></i> 15. Ignea</a></li>
-
-
+                <li class="playlist-item"><a href="https://open.spotify.com/playlist/2yCqbxs4ztf1kmRTIIujeo?si=f77lTbl4SEiBLWdCY7Ix7w"><i class="fab fa-spotify"></i> 14. Symphonic Metal</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/artist/7E7V95LId9MPJ6anIK1qrM?si=K8MEfY3UQQOpWx5WalIrZQ"><i class="fab fa-spotify"></i> 15. Ignea</a></li>
                 <li class="playlist-item"><a href="https://open.spotify.com/playlist/0zAIYxVODVj9ZoVqAwxQ6G?si=EvtM-HjtT4GrU1rre1U0XQ"><i class="fab fa-spotify"></i> 16. Sonora Santanera</a></li>
             </ul>
-        </section>
+        </div>
 
-        <section class="search-section">
+        <!-- MULTIMEDIA -->
+        <div class="section-wrap search-section">
             <h2>Multimedia</h2>
-            <h3>> Radio / Cine</h3>
+            <h3>>> radio / cine</h3>
             <div class="frame-box minimized door-sealed" data-frame>
-    <div class="door door-left"></div>
-    <div class="door door-right"></div>
-    <div class="door-lock">🔐</div>
-    <iframe src="https://myradioenvivo.mx/universal-88-1-fm"></iframe>
-</div>
+                <div class="door door-left"></div>
+                <div class="door door-right"></div>
+                <div class="door-lock">// LOCKED</div>
+                <iframe src="https://myradioenvivo.mx/universal-88-1-fm"></iframe>
+            </div>
+            <div class="frame-box minimized door-sealed" data-frame>
+                <div class="door door-left"></div>
+                <div class="door door-right"></div>
+                <div class="door-lock">// LOCKED</div>
+                <iframe data-src="https://la.movie/"></iframe>
+            </div>
+        </div>
 
-<div class="frame-box minimized door-sealed" data-frame>
-    <div class="door door-left"></div>
-    <div class="door door-right"></div>
-    <div class="door-lock">🔐</div>
-    <iframe data-src="https://la.movie/"></iframe>
-</div>
-
-        </section>
-
-        <section class="search-section">
-            <h2>CINEFILOS</h2>
+        <!-- CINÉFILOS -->
+        <div class="section-wrap search-section">
+            <h2>Cinéfilos</h2>
             <ul>
                 <li class="playlist-item"><a href="https://www.lacartoons.com/"><i class="fa-solid fa-tv"></i> CARTOONS</a></li>
+                <li class="playlist-item"><a href="https://www.cinecalidad.ec/"><i class="fa-solid fa-clapperboard"></i> SERIES / MOVIES</a></li>
+                <li class="playlist-item"><a href="https://la.movie/"><i class="fa-solid fa-film"></i> SERIES / MOVIES (Sin basura)</a></li>
+                <li class="playlist-item"><a href="https://www.xvideos.com/" id="xvideosBtn"><i class="fa-solid fa-mask"></i> ACCESO DENEGADO</a></li>
+            </ul>
+            <p class="note-text">Si CARTOONS pide VPN → <a href="https://play.google.com/store/apps/details?id=com.free.vpn.mexico.proxy.planet">Planet VPN</a></p>
+        </div>
 
-           <p style="font-size: 0.75rem; color: var(--accent-gray); margin-top: 10px;">Si CARTOONS pide VPN, usa <a href="https://play.google.com/store/apps/details?id=com.free.vpn.mexico.proxy.planet" style="color:var(--primary-color); text-decoration: none;">Planet VPN aquí</a>.</p>
-                <li class="playlist-item"><a href="https://www.cinecalidad.ec/"><i class="fa-solid fa-clapperboard"></i> SERIES/MOVIES</a></li>
-                <li class="playlist-item"><a href="https://la.movie/"><i class="fa-solid fa-film"></i> SERIES/MOVIES (Sin basura)</a></li>
-                <li class="playlist-item"><a href="https://www.xvideos.com/" id="xvideosBtn"><i class="fa-solid fa-mask"></i>ACCESO DENEGADO</a></li>
-            </ul>
-            </section>
-        <section class="search-section">
-            <h2>OCIO</h2>
-            <h3>>audio y video</h3>
+        <!-- OCIO -->
+        <div class="section-wrap search-section">
+            <h2>Ocio</h2>
+            <h3>>> audio y video</h3>
             <ul>
-    <li class="playlist-item"><a href="https://somafm.com"><i class="fa-solid fa-radio"></i> Dark Radio</a></li>                
-    <li class="playlist-item"><a href="https://open.spotify.com"><i class="fab fa-spotify"></i> Spotify</a></li>
-    <li class="playlist-item"><a href="https://www.youtube.com"><i class="fab fa-youtube"></i> YouTube</a></li>
-    <li class="playlist-item"><a href="https://soundcloud.com"><i class="fab fa-soundcloud"></i> SoundCloud</a></li>
-            </ul>    
-            </section>
-        <section class="search-section">
-            <h2>CONVIVENCIA</h2>
-            <h3>>redes</h3>
-            <ul>
-    <li class="playlist-item"><a href="https://discord.com"><i class="fab fa-discord"></i> Discord</a></li>
-    <li class="playlist-item"><a href="https://web.whatsapp.com"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
-    <li class="playlist-item"><a href="https://mail.google.com/mail/mu/mp/535/#tl/priority/%5Esmartlabel_personal"><i class="fa-solid fa-envelope"></i> GMAIL</a></li>
+                <li class="playlist-item"><a href="https://somafm.com"><i class="fa-solid fa-radio"></i> Dark Radio</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com"><i class="fab fa-spotify"></i> Spotify</a></li>
+                <li class="playlist-item"><a href="https://www.youtube.com"><i class="fab fa-youtube"></i> YouTube</a></li>
+                <li class="playlist-item"><a href="https://soundcloud.com"><i class="fab fa-soundcloud"></i> SoundCloud</a></li>
             </ul>
-            </section>
-        <section class="search-section">
-            <h2>UNDERGROUND</h2>
-            <h3>>webs absurdas pero necesarias</h3>
-            <ul>
-            <li class="playlist-item"><a href="https://neal.fun"><i class="fa-solid fa-flask"></i> Simulador</a></li>
-            <li class="playlist-item"><a href="https://excuses.ai"><i class="fa-solid fa-comment-dots"></i> Generador de excusas</a></li>
-            <li class="playlist-item"><a href="https://theuselessweb.com"><i class="fa-solid fa-dice"></i>🍀</a></li>
-            </ul>
-            </section>
-        <section class="search-section">
-            <h2>CAOS CONTROLADO</h2>
-            <h3>>quieres discutir algo?</h3>
-            <ul>
-            <li class="playlist-item"><a href="https://www.reddit.com"><i class="fab fa-reddit"></i> Reddit</a></li>
-            <li class="playlist-item"><a href="https://www.moltbook.com/m"><i class="fa-solid fa-robot"></i>SOLO OBSERVA</a></li>
-            </ul>
-            </section>
-        <section class="search-section">
-            <h2>EXPLORACION</h2>
-            <h3>>conocimiento prohibido o casi</h3>
-            <ul>
-            <li class="playlist-item"><a href="https://archive.org"><i class="fa-solid fa-box-archive"></i> Internet Archive</a></li>
-            <li class="playlist-item"><a href="https://www.gutenberg.org"><i class="fa-solid fa-book"></i> Proyecto Gutenberg</a></li>
-            <li class="playlist-item"><a href="https://es.wikipedia.org"><i class="fab fa-wikipedia-w"></i> Wikipedia</a></li>
-            <li class="playlist-item"><a href="https://github.com/"><i class="fa-solid fa-box-archive"></i>desarrolla</a></li>
-            </ul>
-            </section>
-            
-            <button id="systemFailBtn">Falla del Sistema</button>
+        </div>
 
-    <div id="kernelOverlay">
-      <div id="kernelConsole"></div>
-    </div>
-        </section>
+        <!-- CONVIVENCIA -->
+        <div class="section-wrap search-section">
+            <h2>Convivencia</h2>
+            <h3>>> redes</h3>
+            <ul>
+                <li class="playlist-item"><a href="https://discord.com"><i class="fab fa-discord"></i> Discord</a></li>
+                <li class="playlist-item"><a href="https://web.whatsapp.com"><i class="fab fa-whatsapp"></i> WhatsApp</a></li>
+                <li class="playlist-item"><a href="https://mail.google.com/mail/mu/mp/535/#tl/priority/%5Esmartlabel_personal"><i class="fa-solid fa-envelope"></i> Gmail</a></li>
+            </ul>
+        </div>
+
+        <!-- UNDERGROUND -->
+        <div class="section-wrap search-section">
+            <h2>Underground</h2>
+            <h3>>> webs absurdas pero necesarias</h3>
+            <ul>
+                <li class="playlist-item"><a href="https://neal.fun"><i class="fa-solid fa-flask"></i> Simulador</a></li>
+                <li class="playlist-item"><a href="https://excuses.ai"><i class="fa-solid fa-comment-dots"></i> Generador de excusas</a></li>
+                <li class="playlist-item"><a href="https://theuselessweb.com"><i class="fa-solid fa-dice"></i> 🍀</a></li>
+            </ul>
+        </div>
+
+        <!-- CAOS CONTROLADO -->
+        <div class="section-wrap search-section">
+            <h2>Caos Controlado</h2>
+            <h3>>> ¿quieres discutir algo?</h3>
+            <ul>
+                <li class="playlist-item"><a href="https://www.reddit.com"><i class="fab fa-reddit"></i> Reddit</a></li>
+                <li class="playlist-item"><a href="https://www.moltbook.com/m"><i class="fa-solid fa-robot"></i> SOLO OBSERVA</a></li>
+            </ul>
+        </div>
+
+        <!-- EXPLORACIÓN -->
+        <div class="section-wrap search-section">
+            <h2>Exploración</h2>
+            <h3>>> conocimiento prohibido o casi</h3>
+            <ul>
+                <li class="playlist-item"><a href="https://archive.org"><i class="fa-solid fa-box-archive"></i> Internet Archive</a></li>
+                <li class="playlist-item"><a href="https://www.gutenberg.org"><i class="fa-solid fa-book"></i> Proyecto Gutenberg</a></li>
+                <li class="playlist-item"><a href="https://es.wikipedia.org"><i class="fab fa-wikipedia-w"></i> Wikipedia</a></li>
+                <li class="playlist-item"><a href="https://github.com/"><i class="fa-solid fa-code-branch"></i> Desarrolla</a></li>
+            </ul>
+        </div>
+
+        <button id="systemFailBtn">⚠ Falla del Sistema</button>
+        <div id="kernelOverlay"><div id="kernelConsole"></div></div>
+
     </main>
 
     <footer>
@@ -588,423 +717,7 @@ Es filtro.</h2>
     </footer>
 </div>
 
-<script>
-/* ===============================
-   BUSCADOR
-================================ */
-document.getElementById('playlistSearch').addEventListener('keyup', function() {
-    let filter = this.value.toLowerCase();
-    let sections = document.querySelectorAll('.search-section');
-
-    sections.forEach(section => {
-        let items = section.querySelectorAll('.playlist-item');
-        let hasVisibleItems = false;
-
-        items.forEach(item => {
-            let text = item.textContent.toLowerCase();
-            if (text.includes(filter)) {
-                item.classList.remove('hidden');
-                hasVisibleItems = true;
-            } else {
-                item.classList.add('hidden');
-            }
-        });
-
-        let sectionTitle = section.querySelector('h2').textContent.toLowerCase();
-        section.classList.toggle('hidden', !hasVisibleItems && !sectionTitle.includes(filter));
-    });
-});
-
-/* ===============================
-   ESTADO
-================================ */
-function updateStatus() {
-    const statusElement = document.getElementById("hub-status");
-    const hour = new Date().getHours();
-    let statusText = "";
-
-    if (hour >= 6 && hour < 12) statusText = "Despertando";
-    else if (hour >= 12 && hour < 18) statusText = "Activo";
-    else if (hour >= 18 && hour < 23) statusText = "Observándote";
-    else statusText = "Viendo que no duermes";
-
-    statusElement.textContent = statusText.toUpperCase();
-    document.getElementById("hub-date").textContent =
-        new Date().toLocaleDateString("es-MX");
-}
-updateStatus();
-
-/* ===============================
-   AVATAR BASE
-================================ */
-const avatar = document.getElementById("avatar");
-const avatarBox = document.getElementById("hub-avatar");
-const panel = document.getElementById("avatar-panel");
-const base = "https://api.dicebear.com/7.x/bottts/svg";
-
-avatar.src = `${base}?seed=systemfail&backgroundColor=000000`;
-
-/* ===============================
-   RITUAL STATE
-================================ */
-const ritual = {
-    step: 0,
-    stealth: false,
-    panelOpen: false,
-    unlocked: false
-};
-
-/* ===============================
-   BRUTE FORCE STATE (GLOBAL)
-================================ */
-let clickCount = 0;
-let lastClickTime = 0;
-
-/* ===============================
-   AVATAR MOVE
-================================ */
-function moveAvatar() {
-    const maxX = window.innerWidth - avatarBox.offsetWidth;
-    const maxY = window.innerHeight - avatarBox.offsetHeight;
-
-    const padding = 20;
-const x = Math.random() * (maxX - padding);
-const y = Math.random() * (maxY - padding);
-    avatarBox.style.transform = `translate(${x}px, ${y}px) scale(1.05)`;
-}
-
-/* ===============================
-   AVATAR CLICK
-================================ */
-avatarBox.addEventListener("click", (e) => {
-    e.stopPropagation();
-
-    const now = Date.now();
-
-    if (now - lastClickTime < 600) {
-        clickCount++;
-    } else {
-        clickCount = 1;
-    }
-    lastClickTime = now;
-
-    // --- BRUTE FORCE DETECTADO ---
-    if (clickCount >= 5 && !ritual.unlocked) {
-    moveAvatar();
-    clickCount = 0;
-    lastClickTime = 0;
-    return;
-}
-
-    // --- YA DESBLOQUEADO ---
-    if (ritual.unlocked) {
-        window.location.href =
-            "https://drive.google.com/drive/folders/0B0F9Kqt9_0moV0pKa3pGd0NIUlk";
-        return;
-    }
-
-    // --- RITUAL FINAL ---
-    if (ritual.step === 3 && panel.style.display === "none") {
-        unlockDoor();
-        return;
-    }
-
-    panel.style.display = panel.style.display === "block" ? "none" : "block";
-    ritual.panelOpen = panel.style.display === "block";
-});
-
-/* ===============================
-   MUTAR AVATAR
-================================ */
-function changeAvatar() {
-    avatar.src = `${base}?seed=${Math.random().toString(36).substring(7)}`;
-    ritual.step = ritual.step === 0 ? 1 : 0;
-}
-
-/* ===============================
-   SIGILO
-================================ */
-function toggleStealth() {
-    ritual.stealth = !ritual.stealth;
-    avatar.style.opacity = ritual.stealth ? "0.2" : "1";
-
-    if (ritual.step === 1 && ritual.stealth) {
-        ritual.step = 2;
-    } else {
-        ritual.step = 0;
-    }
-}
-
-let helpPressTimer = null;
-let helpLongPress = false;
-let helpHandled = false;
-
-function helpPressStart(e) {
-    e.preventDefault();
-    if (helpHandled) return;
-
-    helpHandled = true;
-    helpLongPress = false;
-
-    helpPressTimer = setTimeout(() => {
-        helpLongPress = true;
-        window.location.href =
-            "https://chat.whatsapp.com/D7xEqrGxJgABFHbRQXM6tg?mode=gi_c";
-    }, 800);
-}
-
-function helpPressEnd(e) {
-    e.preventDefault();
-    clearTimeout(helpPressTimer);
-
-    if (!helpLongPress) {
-        alert(
-            "No todo responde a la primera.\n" +
-            "Algunas cosas se activan cuando insistes."
-        );
-    }
-
-    // Reinicio limpio
-    setTimeout(() => {
-        helpHandled = false;
-    }, 50);
-}
-/* ===============================
-   CLICK FUERA
-================================ */
-document.addEventListener("click", (e) => {
-    if (!avatarBox.contains(e.target) && !panel.contains(e.target)) {
-        if (panel.style.display === "block") {
-            panel.style.display = "none";
-
-            if (ritual.step === 2) {
-                ritual.step = 3;
-            } else {
-                ritual.step = 0;
-            }
-        }
-    }
-});
-
-/* ===============================
-   DESBLOQUEO
-================================ */
-function unlockDoor() {
-    ritual.unlocked = true;
-
-    avatarBox.style.borderColor = "var(--primary-color)";
-    avatarBox.style.boxShadow = "0 0 25px rgba(29,185,84,0.6)";
-    avatarBox.style.transform = "scale(1.15)";
-
-    document.querySelectorAll("[data-frame]").forEach(frame => {
-        frame.classList.remove("minimized", "door-sealed");
-        frame.classList.add("door-preopen");
-
-        // Resistencia inicial
-        setTimeout(() => {
-            frame.classList.remove("door-preopen");
-            frame.classList.add("door-open", "unlocked");
-        }, 120);
-
-        frame.querySelectorAll("iframe").forEach(i => {
-            if (!i.src && i.dataset.src) {
-                i.src = i.dataset.src;
-            }
-        });
-    });
-}
-   // el grotesco punto rojo
-let redDotTimer = null;
-let redDotActivated = false;
-
-function redDotStart(e) {
-    e.preventDefault();
-    if (redDotActivated) return;
-
-    redDotActivated = true;
-
-    redDotTimer = setTimeout(() => {
-if (navigator.vibrate) navigator.vibrate(60);
-        window.location.href ="https://baphomet1984.github.io/death-point/";
-    }, 1000); // 1 segundo. No accidental.
-}
-
-function redDotEnd(e) {
-    e.preventDefault();
-    clearTimeout(redDotTimer);
-
-    setTimeout(() => {
-        redDotActivated = false;
-    }, 50);
-}
-//activación de botón xvideos
-const xvBtn = document.getElementById("xvideosBtn");
-
-let pressTimer = null;
-let vibrationInterval = null;
-let unlocked = false;
-
-xvBtn.addEventListener("click", (e) => {
-    if (!unlocked) {
-        e.preventDefault();
-    }
-});
-
-// Mouse
-xvBtn.addEventListener("mousedown", startPress);
-xvBtn.addEventListener("mouseup", cancelPress);
-xvBtn.addEventListener("mouseleave", cancelPress);
-
-// Touch
-xvBtn.addEventListener("touchstart", startPress);
-xvBtn.addEventListener("touchend", cancelPress);
-
-function startPress(e) {
-    if (unlocked) return;
-xvBtn.classList.add("pressing");
-    // Vibración intermitente cada 200ms
-    vibrationInterval = setInterval(() => {
-        if (navigator.vibrate) {
-            navigator.vibrate(50);
-        }
-    }, 200);
-
-    pressTimer = setTimeout(() => {
-        unlocked = true;
-        xvBtn.classList.add("armed");
-        xvBtn.innerHTML = '<i class="fa-solid fa-mask"></i> ACCESO CONCEDIDO';
-
-        if (navigator.vibrate) {
-            navigator.vibrate([200, 100, 200]); // vibración final más intensa
-        }
-
-        clearInterval(vibrationInterval);
-    }, 3000);
-}
-
-function cancelPress() {
-xvBtn.classList.remove("pressing");
-    clearTimeout(pressTimer);
-    clearInterval(vibrationInterval);
-}
-//función del botón Falla del sistema 
-/* ===============================
-   SYSTEM FAIL - KERNEL MODE
-================================ */
-
-const systemBtn = document.getElementById("systemFailBtn");
-const kernelOverlay = document.getElementById("kernelOverlay");
-const kernelConsole = document.getElementById("kernelConsole");
-
-let holdTimeout;
-let kernelActive = false;
-
-// ---- ACTIVACIÓN POR PRESIÓN 3 SEG ----
-function startHold() {
-    if (kernelActive) return;
-
-    systemBtn.classList.add("pressing");
-
-    holdTimeout = setTimeout(() => {
-        activateKernel();
-    }, 3000);
-}
-
-function cancelHold() {
-    systemBtn.classList.remove("pressing");
-    clearTimeout(holdTimeout);
-}
-
-// Mouse
-systemBtn.addEventListener("mousedown", startHold);
-systemBtn.addEventListener("mouseup", cancelHold);
-systemBtn.addEventListener("mouseleave", cancelHold);
-
-// Touch (móvil)
-systemBtn.addEventListener("touchstart", startHold);
-systemBtn.addEventListener("touchend", cancelHold);
-
-// ---- ACTIVACIÓN REAL ----
-function activateKernel() {
-    kernelActive = true;
-
-    if (navigator.vibrate) {
-        navigator.vibrate([200,100,200]);
-    }
-
-    kernelOverlay.style.display = "block";
-    kernelOverlay.style.zIndex = "20000";
-    kernelConsole.innerHTML = "";
-
-    runKernelSequence();
-}
-
-// ---- EFECTO ESCRITURA ----
-function typeLine(text, speed = 25) {
-    return new Promise(resolve => {
-        let i = 0;
-        const interval = setInterval(() => {
-            kernelConsole.innerHTML += text.charAt(i);
-            i++;
-            if (i >= text.length) {
-                clearInterval(interval);
-                kernelConsole.innerHTML += "\n";
-                resolve();
-            }
-        }, speed);
-    });
-}
-
-// ---- SECUENCIA ----
-async function runKernelSequence() {
-
-    const cpu = navigator.hardwareConcurrency || "unknown";
-    const memory = navigator.deviceMemory || "unknown";
-    const battery = navigator.getBattery ? await navigator.getBattery() : null;
-    const batteryLevel = battery ? Math.floor(battery.level * 100) + "%" : "unknown";
-
-    const lines = [
-        "[BOOT] Initializing Signal Core...",
-        "[KERNEL] Mounting anomaly layer...",
-        `[SCAN] CPU threads: ${cpu}`,
-        `[SCAN] RAM blocks: ${memory}GB`,
-        `[SCAN] Battery integrity: ${batteryLevel}`,
-        "[SYS] Checking entropy pool...",
-        "[OK] Entropy stabilized",
-        "[WARN] Behavioral anomaly detected",
-        "[KERNEL] Switching execution layer...",
-        "[MODE] KERNEL_DIVERGENCE_ACTIVE",
-        "[ROOT ACCESS] granted",
-        "[WARNING] You are not supposed to be here."
-    ];
-
-    for (let line of lines) {
-        await typeLine(line);
-    }
-
-    unlockSystem();
-}
-
-// ---- DESBLOQUEO FINAL ----
-function unlockSystem() {
-
-    const msg = document.createElement("div");
-    msg.style.color = "#ff2e2e";
-    msg.innerHTML = "\n⚠ ACCESO OCULTO DESBLOQUEADO ⚠";
-    kernelConsole.appendChild(msg);
-
-    // Cambia estado del hub
-    document.getElementById("hub-status").textContent = "CRÍTICO";
-
-    // Cierra overlay al tocar
-    kernelOverlay.addEventListener("click", () => {
-        kernelOverlay.style.display = "none";
-    });
-}
-overlay.style.animation = "glitch 0.4s";
-</script>
-
-<!-- Elfsight WhatsApp Chat | SystemTag clients Chat -->
+<!-- Elfsight -->
 <script src="https://elfsightcdn.com/platform.js" async></script>
 <div class="elfsight-app-1c4d0ae1-891a-4847-86b0-00553260b99b" data-elfsight-app-lazy></div>
 
@@ -1014,5 +727,289 @@ overlay.style.animation = "glitch 0.4s";
      ontouchstart="redDotStart(event)"
      ontouchend="redDotEnd(event)"
      aria-label="acceso oculto"></div>
+
+<script>
+// ── CANVAS CYBERPUNK BG ───────────────────────────────────────────
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+let W, H;
+
+function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+resize();
+window.addEventListener('resize', () => { resize(); initRain(); });
+
+// particles
+const particles = Array.from({length: 80}, () => mkParticle({}));
+function mkParticle(p) {
+    p.x = Math.random() * (W||innerWidth); p.y = Math.random() * (H||innerHeight);
+    p.size = Math.random() * 1.1 + 0.2;
+    p.vy = -(Math.random() * 0.3 + 0.07);
+    p.vx = (Math.random() - 0.5) * 0.1;
+    p.opacity = Math.random() * 0.45 + 0.08;
+    p.color = Math.random() > 0.55 ? '#00ffe7' : Math.random() > 0.5 ? '#cc44ff' : '#ff00cc';
+    return p;
+}
+
+// matrix rain
+const COL = 22;
+let cols, drops;
+function initRain() {
+    cols = Math.floor((W||innerWidth) / COL);
+    drops = Array.from({length: cols}, () => Math.random() * -150);
+}
+initRain();
+const RC = '01アカサタナ{}[]<>/\\;:!@#$%&*~`';
+
+let frame = 0;
+function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // grid
+    ctx.strokeStyle = 'rgba(0,255,231,0.02)'; ctx.lineWidth = 1;
+    for (let x = 0; x < W; x += 55) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+    for (let y = 0; y < H; y += 55) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+    // rain (every 2nd frame)
+    if (frame % 2 === 0) {
+        ctx.font = `10px "Share Tech Mono", monospace`;
+        drops.forEach((y, i) => {
+            const ch = RC[Math.floor(Math.random()*RC.length)];
+            ctx.globalAlpha = 0.5; ctx.fillStyle = '#00ffe7';
+            ctx.fillText(ch, i*COL, y);
+            ctx.globalAlpha = 0.05;
+            ctx.fillText(RC[Math.floor(Math.random()*RC.length)], i*COL, y-COL);
+            drops[i] = y > H+40 ? Math.random()*-180 : y + (Math.random()*1+0.4);
+        });
+    }
+
+    // particles
+    particles.forEach(p => {
+        ctx.globalAlpha = p.opacity;
+        ctx.fillStyle = p.color;
+        ctx.fillRect(p.x, p.y, p.size, p.size);
+        p.x += p.vx; p.y += p.vy; p.opacity -= 0.0006;
+        if (p.y < -5 || p.opacity <= 0) { mkParticle(p); p.y = H; }
+    });
+
+    // corner brackets
+    ctx.globalAlpha = 0.18; ctx.lineWidth = 1.5;
+    [[0,0,1,1],[W,0,-1,1],[0,H,1,-1],[W,H,-1,-1]].forEach(([cx,cy,dx,dy]) => {
+        ctx.strokeStyle = '#cc44ff';
+        ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+dx*65,cy); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx,cy+dy*65); ctx.stroke();
+    });
+
+    ctx.globalAlpha = 1;
+    frame++;
+    requestAnimationFrame(draw);
+}
+draw();
+
+// ── CLOCK ─────────────────────────────────────────────────────────
+function tick() { document.getElementById('clock').textContent = new Date().toTimeString().slice(0,8); }
+setInterval(tick, 1000); tick();
+
+// ── STATUS ────────────────────────────────────────────────────────
+function updateStatus() {
+    const h = new Date().getHours();
+    const s = h>=6&&h<12 ? "Despertando" : h>=12&&h<18 ? "Activo" : h>=18&&h<23 ? "Observándote" : "Viendo que no duermes";
+    document.getElementById("hub-status").textContent = s.toUpperCase();
+    document.getElementById("hub-date").textContent = new Date().toLocaleDateString("es-MX");
+}
+updateStatus();
+
+// ── BUSCADOR ──────────────────────────────────────────────────────
+document.getElementById('playlistSearch').addEventListener('keyup', function() {
+    let filter = this.value.toLowerCase();
+    document.querySelectorAll('.search-section').forEach(section => {
+        let items = section.querySelectorAll('.playlist-item');
+        let visible = false;
+        items.forEach(item => {
+            const show = item.textContent.toLowerCase().includes(filter);
+            item.classList.toggle('hidden', !show);
+            if (show) visible = true;
+        });
+        const titleMatch = section.querySelector('h2').textContent.toLowerCase().includes(filter);
+        section.classList.toggle('hidden', !visible && !titleMatch);
+    });
+});
+
+// ── AVATAR ────────────────────────────────────────────────────────
+const avatar   = document.getElementById("avatar");
+const avatarBox = document.getElementById("hub-avatar");
+const panel    = document.getElementById("avatar-panel");
+const base     = "https://api.dicebear.com/7.x/bottts/svg";
+avatar.src = `${base}?seed=systemfail&backgroundColor=000000`;
+
+const ritual = { step:0, stealth:false, panelOpen:false, unlocked:false };
+let clickCount = 0, lastClickTime = 0;
+
+function moveAvatar() {
+    const maxX = window.innerWidth - avatarBox.offsetWidth;
+    const maxY = window.innerHeight - avatarBox.offsetHeight;
+    const x = Math.random() * (maxX - 20);
+    const y = Math.random() * (maxY - 20);
+    avatarBox.style.transform = `translate(${x}px, ${y}px) scale(1.05)`;
+}
+
+avatarBox.addEventListener("click", e => {
+    e.stopPropagation();
+    const now = Date.now();
+    clickCount = (now - lastClickTime < 600) ? clickCount + 1 : 1;
+    lastClickTime = now;
+    if (clickCount >= 5 && !ritual.unlocked) { moveAvatar(); clickCount = 0; return; }
+    if (ritual.unlocked) { window.location.href = "https://drive.google.com/drive/folders/0B0F9Kqt9_0moV0pKa3pGd0NIUlk"; return; }
+    if (ritual.step === 3 && panel.style.display === "none") { unlockDoor(); return; }
+    panel.style.display = panel.style.display === "block" ? "none" : "block";
+    ritual.panelOpen = panel.style.display === "block";
+});
+
+function changeAvatar() {
+    avatar.src = `${base}?seed=${Math.random().toString(36).substring(7)}`;
+    ritual.step = ritual.step === 0 ? 1 : 0;
+}
+
+function toggleStealth() {
+    ritual.stealth = !ritual.stealth;
+    avatar.style.opacity = ritual.stealth ? "0.2" : "1";
+    if (ritual.step === 1 && ritual.stealth) ritual.step = 2;
+    else ritual.step = 0;
+}
+
+let helpPressTimer = null, helpLongPress = false, helpHandled = false;
+function helpPressStart(e) {
+    e.preventDefault(); if (helpHandled) return;
+    helpHandled = true; helpLongPress = false;
+    helpPressTimer = setTimeout(() => { helpLongPress = true; window.location.href = "https://chat.whatsapp.com/D7xEqrGxJgABFHbRQXM6tg?mode=gi_c"; }, 800);
+}
+function helpPressEnd(e) {
+    e.preventDefault(); clearTimeout(helpPressTimer);
+    if (!helpLongPress) alert("No todo responde a la primera.\nAlgunas cosas se activan cuando insistes.");
+    setTimeout(() => { helpHandled = false; }, 50);
+}
+
+document.addEventListener("click", e => {
+    if (!avatarBox.contains(e.target) && !panel.contains(e.target)) {
+        if (panel.style.display === "block") {
+            panel.style.display = "none";
+            if (ritual.step === 2) ritual.step = 3;
+            else ritual.step = 0;
+        }
+    }
+});
+
+function unlockDoor() {
+    ritual.unlocked = true;
+    avatarBox.style.borderColor = "var(--cyan)";
+    avatarBox.style.boxShadow = "0 0 25px rgba(0,255,231,0.5)";
+    avatarBox.style.transform = "scale(1.15)";
+    document.querySelectorAll("[data-frame]").forEach(frame => {
+        frame.classList.remove("minimized", "door-sealed");
+        frame.classList.add("door-preopen");
+        setTimeout(() => { frame.classList.remove("door-preopen"); frame.classList.add("door-open", "unlocked"); }, 120);
+        frame.querySelectorAll("iframe").forEach(i => { if (!i.src && i.dataset.src) i.src = i.dataset.src; });
+    });
+}
+
+// ── RED DOT ───────────────────────────────────────────────────────
+let rdTimer = null, rdActive = false;
+function redDotStart(e) {
+    e.preventDefault(); if (rdActive) return; rdActive = true;
+    rdTimer = setTimeout(() => { if (navigator.vibrate) navigator.vibrate(60); window.location.href = "https://baphomet1984.github.io/death-point/"; }, 1000);
+}
+function redDotEnd(e) {
+    e.preventDefault(); clearTimeout(rdTimer);
+    setTimeout(() => { rdActive = false; }, 50);
+}
+
+// ── XVIDEOS ───────────────────────────────────────────────────────
+const xvBtn = document.getElementById("xvideosBtn");
+let pressTimer = null, vibInterval = null, xvUnlocked = false;
+
+xvBtn.addEventListener("click", e => { if (!xvUnlocked) e.preventDefault(); });
+["mousedown","touchstart"].forEach(ev => xvBtn.addEventListener(ev, startPress));
+["mouseup","mouseleave","touchend"].forEach(ev => xvBtn.addEventListener(ev, cancelPress));
+
+function startPress(e) {
+    if (xvUnlocked) return;
+    xvBtn.classList.add("pressing");
+    vibInterval = setInterval(() => { if (navigator.vibrate) navigator.vibrate(50); }, 200);
+    pressTimer = setTimeout(() => {
+        xvUnlocked = true;
+        xvBtn.classList.add("armed");
+        xvBtn.innerHTML = '<i class="fa-solid fa-mask"></i> ACCESO CONCEDIDO';
+        if (navigator.vibrate) navigator.vibrate([200,100,200]);
+        clearInterval(vibInterval);
+    }, 3000);
+}
+function cancelPress() {
+    xvBtn.classList.remove("pressing");
+    clearTimeout(pressTimer); clearInterval(vibInterval);
+}
+
+// ── SYSTEM FAIL / KERNEL ──────────────────────────────────────────
+const systemBtn    = document.getElementById("systemFailBtn");
+const kernelOverlay = document.getElementById("kernelOverlay");
+const kernelConsole = document.getElementById("kernelConsole");
+let holdTimeout, kernelActive = false;
+
+function startHold() {
+    if (kernelActive) return;
+    holdTimeout = setTimeout(activateKernel, 3000);
+}
+function cancelHold() { clearTimeout(holdTimeout); }
+
+["mousedown","touchstart"].forEach(ev => systemBtn.addEventListener(ev, startHold));
+["mouseup","mouseleave","touchend"].forEach(ev => systemBtn.addEventListener(ev, cancelHold));
+
+async function activateKernel() {
+    kernelActive = true;
+    if (navigator.vibrate) navigator.vibrate([200,100,200]);
+    kernelOverlay.style.display = "block";
+    kernelConsole.innerHTML = "";
+
+    const cpu = navigator.hardwareConcurrency || "unknown";
+    const mem = navigator.deviceMemory || "unknown";
+    const bat = navigator.getBattery ? await navigator.getBattery() : null;
+    const batLevel = bat ? Math.floor(bat.level*100)+"%" : "unknown";
+
+    const lines = [
+        "[BOOT] Initializing Signal Core...",
+        "[KERNEL] Mounting anomaly layer...",
+        `[SCAN] CPU threads: ${cpu}`,
+        `[SCAN] RAM blocks: ${mem}GB`,
+        `[SCAN] Battery integrity: ${batLevel}`,
+        "[SYS] Checking entropy pool...",
+        "[OK] Entropy stabilized",
+        "[WARN] Behavioral anomaly detected",
+        "[KERNEL] Switching execution layer...",
+        "[MODE] KERNEL_DIVERGENCE_ACTIVE",
+        "[ROOT ACCESS] granted",
+        "[WARNING] You are not supposed to be here."
+    ];
+
+    for (let line of lines) await typeLine(line);
+    unlockSystem();
+}
+
+function typeLine(text, speed=25) {
+    return new Promise(resolve => {
+        let i = 0;
+        const iv = setInterval(() => {
+            kernelConsole.innerHTML += text.charAt(i++);
+            if (i >= text.length) { clearInterval(iv); kernelConsole.innerHTML += "\n"; resolve(); }
+        }, speed);
+    });
+}
+
+function unlockSystem() {
+    const msg = document.createElement("div");
+    msg.style.color = "#ff2e2e";
+    msg.innerHTML = "\n⚠ ACCESO OCULTO DESBLOQUEADO ⚠";
+    kernelConsole.appendChild(msg);
+    document.getElementById("hub-status").textContent = "CRÍTICO";
+    kernelOverlay.addEventListener("click", () => { kernelOverlay.style.display = "none"; });
+}
+</script>
 </body>
 </html>
