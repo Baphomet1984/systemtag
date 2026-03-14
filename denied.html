@@ -1,11 +1,97 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Acceso denegado</title>
+<meta charset="UTF-8">
+<title>ACCESS DENIED</title>
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
+
+body{
+background:black;
+color:#ff3366;
+font-family:'Space Mono', monospace;
+height:100vh;
+margin:0;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+text-align:center;
+overflow:hidden;
+}
+
+/* fondo glitch */
+body::before{
+content:"";
+position:fixed;
+inset:0;
+background-size:cover;
+background-position:center;
+opacity:0.15;
+z-index:-1;
+filter:contrast(160%) hue-rotate(20deg);
+}
+
+/* texto principal */
+.denied{
+font-size:3rem;
+letter-spacing:0.2em;
+text-shadow:0 0 10px #ff3366;
+margin-bottom:1rem;
+}
+
+/* texto terminal */
+.log{
+font-size:0.8rem;
+letter-spacing:0.15em;
+opacity:0.7;
+}
+
+/* cursor parpadeante */
+.cursor::after{
+content:"_";
+animation:blink 1s infinite;
+}
+
+@keyframes blink{
+0%,100%{opacity:1;}
+50%{opacity:0;}
+}
+
+</style>
 </head>
+
 <body>
-  <h1>Acceso denegado</h1>
-  <p>Este contenido no es para ti.</p>
+
+<div class="denied">ACCESS DENIED</div>
+
+<div class="log cursor">
+unauthorized node detected<br>
+connection blocked<br>
+systemtag gate protocol active
+</div>
+
+<script>
+
+/* imágenes glitch aleatorias */
+
+const glitches = [
+"https://baphomet1984.github.io/systemtag/img/glitch1.jpg",
+"https://baphomet1984.github.io/systemtag/img/glitch2.jpg",
+"https://baphomet1984.github.io/systemtag/img/glitch3.jpg",
+"https://baphomet1984.github.io/systemtag/img/glitch4.jpg"
+];
+
+const rand = Math.floor(Math.random()*glitches.length);
+
+document.body.style.setProperty(
+"background-image",
+`url(${glitches[rand]})`
+);
+
+</script>
+
 </body>
 </html>
