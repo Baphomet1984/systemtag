@@ -44,12 +44,16 @@ margin-bottom:1rem;
 
 /* texto terminal */
 .log{
-font-size:0.8rem;
-letter-spacing:0.15em;
-opacity:0.7;
+white-space: pre-line;
 }
 
 /* cursor parpadeante */
+.cursor{
+display:inline-block;
+width:10px;
+margin-left:4px;
+}
+
 .cursor::after{
 content:"_";
 animation:blink 1s infinite;
@@ -60,6 +64,10 @@ animation:blink 1s infinite;
 50%{opacity:0;}
 }
 
+@keyframes blink{
+0%,100%{opacity:1;}
+50%{opacity:0;}
+}
 </style>
 </head>
 
@@ -68,7 +76,7 @@ animation:blink 1s infinite;
 <div class="denied">ACCESS DENIED</div>
 
 <div class="log" id="log"></div>
-
+<span class="cursor"></span>
 <script>
 
 /* imágenes glitch aleatorias */
@@ -98,7 +106,7 @@ const log = document.getElementById("log");
 
 function typeWriter(){
 if(i < text.length){
-log.innerHTML += text.charAt(i);
+log.textContent += text.charAt(i);
 i++;
 setTimeout(typeWriter, speed);
 }
@@ -106,6 +114,5 @@ setTimeout(typeWriter, speed);
 
 typeWriter();
 </script>
-
 </body>
 </html>
