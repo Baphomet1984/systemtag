@@ -67,11 +67,7 @@ animation:blink 1s infinite;
 
 <div class="denied">ACCESS DENIED</div>
 
-<div class="log cursor">
-unauthorized node detected<br>
-connection blocked<br>
-systemtag gate protocol active
-</div>
+<div class="log" id="log"></div>
 
 <script>
 
@@ -90,7 +86,25 @@ document.body.style.setProperty(
 "background-image",
 `url(${glitches[rand]})`
 );
+const text = `
+unauthorized node detected
+connection blocked
+systemtag gate protocol active
+`;
 
+let i = 0;
+const speed = 35;
+const log = document.getElementById("log");
+
+function typeWriter(){
+if(i < text.length){
+log.innerHTML += text.charAt(i);
+i++;
+setTimeout(typeWriter, speed);
+}
+}
+
+typeWriter();
 </script>
 
 </body>
