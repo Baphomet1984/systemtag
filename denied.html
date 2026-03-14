@@ -23,16 +23,6 @@ overflow:hidden;
 }
 
 /* fondo glitch */
-body::before{
-content:"";
-position:fixed;
-inset:0;
-background-size:cover;
-background-position:center;
-opacity:0.15;
-z-index:-1;
-filter:contrast(160%) hue-rotate(20deg);
-}
 
 /* texto principal */
 .denied{
@@ -92,10 +82,9 @@ const glitches = [
 
 const rand = Math.floor(Math.random()*glitches.length);
 
-document.body.style.setProperty(
-"background-image",
-`url(${glitches[rand]})`
-);
+document.body.style.backgroundImage = `url(${glitches[rand]})`;
+document.body.style.backgroundSize = "cover";
+document.body.style.backgroundPosition = "center";
 const text = `
 unauthorized node detected
 connection blocked
