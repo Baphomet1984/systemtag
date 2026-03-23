@@ -289,7 +289,7 @@
             max-width: 94vw;
             z-index: 1000;
             display: flex;
-            align-items: center; /* centra el tab verticalmente */
+            align-items: flex-start;
             transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
@@ -300,10 +300,11 @@
         /* ── Lengüeta / Tab ── */
         #podcast-tab {
             width: 42px;
-            /* 1/3 del alto del viewport como altura máxima */
             height: clamp(80px, 28vh, 160px);
             flex-shrink: 0;
-            align-self: center;
+            position: sticky;
+            top: calc(50vh - 80px);
+            align-self: flex-start;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -313,7 +314,6 @@
             cursor: pointer;
             user-select: none;
             border-radius: 8px 0 0 8px;
-            /* Fondo transparente con solo borde dorado */
             background: rgba(0, 0, 0, 0.18);
             backdrop-filter: blur(4px);
             border: 1px solid rgba(255, 215, 0, 0.55);
@@ -357,7 +357,8 @@
             border-right: none;
             padding: 1.3rem 1.1rem 1.3rem 1rem;
             overflow-y: auto;
-            max-height: 88vh;
+            max-height: 96vh;
+            height: 96vh;
             display: flex;
             flex-direction: column;
             gap: 1.1rem;
@@ -482,19 +483,19 @@
         <div class="podcast-item">
             <span class="podcast-label">// Las Bromas del Panda Show</span>
             <iframe src='https://widget.spreaker.com/player?show_id=6247023&theme=dark&playlist=show&playlist-continuous=true&chapters-image=true'
-                width='100%' height='210px' title='el panda show' frameborder='0'></iframe>
+                width='100%' height='400px' title='el panda show' frameborder='0'></iframe>
         </div>
 
         <div class="podcast-item">
             <span class="podcast-label">// Podcast: Crimen y Castigo</span>
             <iframe src="https://widget.spreaker.com/player?show_id=6671022&theme=light&playlist=show&playlist-continuous=false&chapters-image=true&episode_image_position=right&hide-logo=false&hide-likes=false&hide-comments=false&hide-sharing=false&hide-download=true"
-                width="100%" height="210px" title="CRIME AND PUNISHMENT" frameborder="0"></iframe>
+                width="100%" height="400px" title="CRIME AND PUNISHMENT" frameborder="0"></iframe>
         </div>
 
         <div class="podcast-item">
             <span class="podcast-label">// Podcast Psicocatarsis</span>
             <iframe src="https://widget.spreaker.com/player?show_id=6719012&theme=dark&playlist=show&playlist-continuous=true&chapters-image=true&episode_image_position=right&hide-logo=false&hide-likes=false&hide-comments=false&hide-sharing=false&hide-download=true"
-                width="100%" height="210px" title="PSICOCATARSIS." frameborder="0"></iframe>
+                width="100%" height="400px" title="PSICOCATARSIS." frameborder="0"></iframe>
         </div>
     </div>
 </div>
