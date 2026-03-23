@@ -284,12 +284,12 @@
             position: fixed;
             top: 50%;
             right: 0;
-            transform: translateY(-50%) translateX(calc(100% - 14px));
+            transform: translateY(-50%) translateX(calc(100% - 42px));
             width: 430px;
             max-width: 94vw;
             z-index: 1000;
             display: flex;
-            align-items: stretch;
+            align-items: center; /* centra el tab verticalmente */
             transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
@@ -299,8 +299,11 @@
 
         /* ── Lengüeta / Tab ── */
         #podcast-tab {
-            width: 14px;
+            width: 42px;
+            /* 1/3 del alto del viewport como altura máxima */
+            height: clamp(80px, 28vh, 160px);
             flex-shrink: 0;
+            align-self: center;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -309,31 +312,41 @@
             padding: 0;
             cursor: pointer;
             user-select: none;
-            border-radius: 6px 0 0 6px;
-            background: transparent;
-            box-shadow: none;
+            border-radius: 8px 0 0 8px;
+            /* Fondo transparente con solo borde dorado */
+            background: rgba(0, 0, 0, 0.18);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 215, 0, 0.55);
+            border-right: none;
+            box-shadow:
+                -2px 0 16px rgba(255,215,0,0.18),
+                inset 0 0 12px rgba(255,215,0,0.04);
             position: relative;
             overflow: hidden;
         }
 
-        /* Ocultar texto, mostrar solo ícono micrófono */
+        /* Ocultar texto */
         #podcast-tab .tab-text {
             display: none;
         }
 
+        /* Ícono micrófono con glow dorado */
         #podcast-tab .tab-icon {
             display: block;
-            font-size: 0.5rem;
-            color: rgba(255, 215, 0, 0.95);
-            text-shadow: 0 0 7px rgba(255,215,0,0.9), 0 0 14px rgba(255,200,0,0.5);
+            font-size: 1.3rem;
+            color: rgba(255, 215, 0, 1);
+            text-shadow:
+                0 0 8px rgba(255,215,0,1),
+                0 0 18px rgba(255,200,0,0.8),
+                0 0 32px rgba(255,180,0,0.4);
             animation: tabPulse 2.5s ease-in-out infinite;
             position: relative;
             z-index: 1;
         }
 
         @keyframes tabPulse {
-            0%,100% { transform: scale(1);    }
-            50%      { transform: scale(0.88); }
+            0%,100% { transform: scale(1);   text-shadow: 0 0 8px rgba(255,215,0,1), 0 0 18px rgba(255,200,0,0.8), 0 0 32px rgba(255,180,0,0.4); }
+            50%      { transform: scale(0.9); text-shadow: 0 0 4px rgba(255,215,0,0.7), 0 0 10px rgba(255,200,0,0.5), 0 0 20px rgba(255,180,0,0.2); }
         }
 
         /* ── Panel de contenido ── */
@@ -648,63 +661,64 @@ tab.addEventListener('click', ()=> panel.classList.contains('open') ? closePanel
 closeBtn.addEventListener('click', closePanel);
 overlay.addEventListener('click', closePanel);
 
-/* ── LUZ DORADA RECORRIENDO EL BORDE DEL TAB (canvas) ── */
+/* ── LUZ DORADA RECORRIENDO EL CONTORNO DEL TAB (canvas) ── */
 (function goldGlow(){
-    const gc  = document.getElementById('tab-glow-canvas');
-    const gCtx= gc.getContext('2d');
+    const gc    = document.getElementById('tab-glow-canvas');
+    const gCtx  = gc.getContext('2d');
     const tabEl = document.getElementById('podcast-tab');
 
     let gW, gH;
     function resizeGC(){
         gW = gc.width  = tabEl.offsetWidth  || 42;
-        gH = gc.height = tabEl.offsetHeight || 200;
+        gH = gc.height = tabEl.offsetHeight || 120;
     }
     resizeGC();
-    window.addEventListener('resize', resizeGC);
+    window.addEventListener('resize', () => { resizeGC(); });
 
-    const PERIOD = 5000; // ms — ciclo completo cada 5 s
+    const PERIOD   = 5000;  // ms — ciclo completo cada 5 s
+    const SPARK    = 0.22;  // fracción del perímetro que ocupa la chispa
 
-    function perimToPoint(d, w, h){
-        // recorre el borde: top → right → bottom → left
-        if (d < w)            return { x: d,       y: 0     };
+    // Convierte distancia lineal a punto en el perímetro del rectángulo
+    // Sentido: top-left → top-right → bottom-right → bottom-left → top-left
+    function perimPt(d, w, h){
+        d = ((d % (2*(w+h))) + 2*(w+h)) % (2*(w+h));
+        if (d < w)        return [d,     0    ];
         d -= w;
-        if (d < h)            return { x: w,       y: d     };
+        if (d < h)        return [w,     d    ];
         d -= h;
-        if (d < w)            return { x: w - d,   y: h     };
+        if (d < w)        return [w-d,   h    ];
         d -= w;
-                              return { x: 0,       y: h - d };
+                          return [0,     h-d  ];
     }
 
     function drawGlow(ts){
-        if(!gW||!gH) resizeGC();
+        if(!gW || !gH) resizeGC();
         gCtx.clearRect(0, 0, gW, gH);
 
-        // Solo pintamos la orilla izquierda (el borde visible del tab)
-        // La chispa sube y baja por esa línea vertical de longitud gH
-        const progress = (ts % PERIOD) / PERIOD; // 0..1
-        // va y viene: sube en la primera mitad, baja en la segunda
-        const t = progress < 0.5 ? progress * 2 : (1 - progress) * 2; // 0→1→0
-        const sparkCenter = t * gH;
-        const sparkHalf   = gH * 0.18;
+        const perim     = 2 * (gW + gH);
+        const sparkLen  = perim * SPARK;
+        const headPos   = ((ts % PERIOD) / PERIOD) * perim;
+        const SEG       = 70;
 
-        const SEG = 60;
         gCtx.save();
         for(let i = 0; i < SEG; i++){
-            const frac = i / SEG;
-            const y1 = sparkCenter - sparkHalf + frac * sparkHalf * 2;
-            const y2 = sparkCenter - sparkHalf + (frac + 1/SEG) * sparkHalf * 2;
+            const t  = i / SEG;
+            const d1 = (headPos - t * sparkLen + perim * 4) % perim;
+            const d2 = (headPos - (t + 1/SEG) * sparkLen + perim * 4) % perim;
+            const [x1,y1] = perimPt(d1, gW, gH);
+            const [x2,y2] = perimPt(d2, gW, gH);
 
-            // alpha: máximo en el centro de la chispa
-            const distFromCenter = Math.abs((y1 + y2) / 2 - sparkCenter) / sparkHalf;
-            const alpha = Math.pow(1 - distFromCenter, 2);
+            // alpha: máximo en la cabeza, se apaga hacia la cola
+            const alpha  = Math.pow(1 - t, 1.4);
+            const bright = 1 - t * 0.4;
 
             gCtx.beginPath();
-            gCtx.moveTo(0, y1);
-            gCtx.lineTo(0, y2);
-            gCtx.strokeStyle = `rgba(255,${Math.round(210 + alpha*45)},0,${(alpha).toFixed(2)})`;
-            gCtx.lineWidth   = 3;
-            gCtx.shadowColor = `rgba(255,230,0,${(alpha*0.9).toFixed(2)})`;
-            gCtx.shadowBlur  = 10;
+            gCtx.moveTo(x1, y1);
+            gCtx.lineTo(x2, y2);
+            gCtx.strokeStyle = `rgba(255,${Math.round(200 + bright*55)},${Math.round(bright*40)},${alpha.toFixed(2)})`;
+            gCtx.lineWidth   = 2.5;
+            gCtx.shadowColor = `rgba(255,220,0,${(alpha * 0.85).toFixed(2)})`;
+            gCtx.shadowBlur  = 12;
             gCtx.stroke();
         }
         gCtx.restore();
