@@ -32,7 +32,6 @@
             cursor: crosshair;
         }
 
-        /* ── SCANLINES ── */
         body::before {
             content: '';
             position: fixed; inset: 0;
@@ -43,7 +42,6 @@
             pointer-events: none; z-index: 1;
         }
 
-        /* ── VIGNETTE ── */
         body::after {
             content: '';
             position: fixed; inset: 0;
@@ -53,7 +51,6 @@
 
         canvas { position: fixed; inset: 0; z-index: 0; }
 
-        /* ── LAYOUT ── */
         .container {
             position: relative; z-index: 10;
             max-width: 860px;
@@ -61,7 +58,6 @@
             padding: 30px 20px 80px;
         }
 
-        /* ── STATUS BAR ── */
         .status-bar {
             display: flex;
             justify-content: space-between;
@@ -87,7 +83,6 @@
             vertical-align: middle;
         }
 
-        /* ── HEADER ── */
         header {
             display: flex;
             flex-direction: column;
@@ -102,7 +97,6 @@
             margin-bottom: 1.2rem;
         }
 
-        /* ── NAV BUTTONS ── */
         .nav-buttons {
             display: flex;
             gap: 0.65rem;
@@ -166,7 +160,6 @@
         .nav-btn.disabled:hover { color: rgba(204,68,255,0.28); box-shadow: none; }
         .nav-btn.disabled:hover::before { opacity: 0; }
 
-        /* ── HEADER TAGLINE ── */
         .tagline {
             font-family: 'Share Tech Mono', monospace;
             font-size: 0.6rem;
@@ -176,7 +169,6 @@
             margin-bottom: 1.5rem;
         }
 
-        /* ── HUB STATUS ── */
         .hub-status {
             font-family: 'Share Tech Mono', monospace;
             font-size: 0.58rem;
@@ -188,7 +180,6 @@
 
         .hub-status b { color: var(--green); }
 
-        /* ── SEARCH ── */
         .search-container {
             position: relative;
             margin: 1.5rem 0;
@@ -222,7 +213,6 @@
             box-shadow: 0 0 20px rgba(0,255,231,0.08);
         }
 
-        /* ── SECTION HEADERS ── */
         h2 {
             font-family: 'Share Tech Mono', monospace;
             font-size: 0.6rem;
@@ -245,7 +235,6 @@
             margin-bottom: 1rem;
         }
 
-        /* ── PLAYLIST ITEMS ── */
         ul {
             list-style: none; padding: 0;
             display: grid;
@@ -291,17 +280,16 @@
             transition: filter 0.2s; flex-shrink: 0;
         }
 
-        .fa-spotify  { color: #1DB954; }
-        .fa-youtube  { color: #FF0000; }
-        .fa-soundcloud { color: #FF5500; }
-        .fa-discord  { color: #5865F2; }
-        .fa-whatsapp { color: #25D366; }
-        .fa-reddit   { color: #FF4500; }
-        .fa-wikipedia-w { color: #ffffff; }
+        .fa-spotify      { color: #1DB954; }
+        .fa-youtube      { color: #FF0000; }
+        .fa-soundcloud   { color: #FF5500; }
+        .fa-discord      { color: #5865F2; }
+        .fa-whatsapp     { color: #25D366; }
+        .fa-reddit       { color: #FF4500; }
+        .fa-wikipedia-w  { color: #ffffff; }
 
         .playlist-item a:hover i { filter: brightness(1.2); }
 
-        /* ── FRAME BOX (puertas) ── */
         .frame-box {
             position: relative;
             width: 100%; height: 220px;
@@ -329,7 +317,6 @@
         .frame-box.unlocked::after { opacity: 0; }
         .frame-box iframe { width: 100%; height: 100%; border: none; }
 
-        /* ── DOORS ── */
         .door {
             position: absolute; top: 0; width: 50%; height: 100%;
             background: linear-gradient(to bottom, #06060a, #030305);
@@ -361,7 +348,6 @@
 
         .door-open .door-lock { opacity: 0; }
 
-        /* ── AVATAR SYSTEM ── */
         #hub-avatar {
             position: fixed; top: 20px; right: 20px;
             width: 56px; height: 56px;
@@ -427,7 +413,6 @@
             font-weight: bold;
         }
 
-        /* ── SYSTEM FAIL BUTTON ── */
         #systemFailBtn {
             margin-top: 3rem;
             padding: 10px 22px;
@@ -451,7 +436,6 @@
 
         #systemFailBtn:active { transform: scale(0.97); }
 
-        /* ── KERNEL OVERLAY ── */
         #kernelOverlay {
             position: fixed; inset: 0;
             background: #030305;
@@ -465,17 +449,13 @@
 
         #kernelConsole { white-space: pre-wrap; }
 
-        /* ── XVIDEOS BTN ── */
         #xvideosBtn {
             opacity: 0.4;
             filter: grayscale(100%);
             transition: all 0.3s ease;
         }
 
-        #xvideosBtn.armed {
-            opacity: 1; filter: grayscale(0%);
-        }
-
+        #xvideosBtn.armed { opacity: 1; filter: grayscale(0%); }
         #xvideosBtn.pressing { animation: pulseBtn 0.4s infinite alternate; }
 
         @keyframes pulseBtn {
@@ -483,7 +463,6 @@
             to   { transform: scale(1.04); }
         }
 
-        /* ── RED DOT ── */
         .red-dot {
             position: fixed; top: 6px; left: 6px;
             width: 6px; height: 6px;
@@ -494,7 +473,6 @@
 
         .red-dot:hover { opacity: 0.85; transform: scale(1.3); }
 
-        /* ── MISC ── */
         .hidden { display: none !important; }
 
         @keyframes blink {
@@ -502,15 +480,6 @@
             50% { opacity: 0.2; }
         }
 
-        @keyframes glitch {
-            0%  { transform: translate(2px,-2px); }
-            25% { transform: translate(-2px,2px); }
-            50% { transform: translate(1px,-1px); }
-            75% { transform: translate(-1px,1px); }
-            100%{ transform: translate(0,0); }
-        }
-
-        /* ── FOOTER ── */
         footer {
             margin-top: 4rem; text-align: center;
             font-family: 'Share Tech Mono', monospace;
@@ -518,7 +487,6 @@
             opacity: 0.25;
         }
 
-        /* Note text */
         .note-text {
             font-family: 'Share Tech Mono', monospace;
             font-size: 0.55rem; letter-spacing: 0.1em;
@@ -529,17 +497,229 @@
         .note-text a { color: var(--green); text-decoration: none; }
         .note-text a:hover { color: var(--cyan); }
 
-        /* Section divider */
         .section-wrap { margin-bottom: 0.5rem; }
+
+        /* ══════════════════════════════════════════════
+           PODCAST PANEL DESLIZANTE — LATERAL DERECHO
+        ══════════════════════════════════════════════ */
+        #podcast-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+        }
+        #podcast-overlay.active { display: block; }
+
+        #podcast-panel {
+
+    position: fixed;
+    top: 120px;   /* BAJA el panel debajo del avatar */
+    right: 0;
+
+    transform: translateX(calc(100% - 42px));
+
+    width: 430px;
+    max-width: 94vw;
+
+    z-index: 1000;
+
+    display: flex;
+    align-items: flex-start;
+
+    transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+}
+      
+       #podcast-panel.open {
+    transform: translateX(0);
+}
+
+        #podcast-tab {
+            width: 42px;
+            height: clamp(80px, 28vh, 160px);
+            flex-shrink: 0;
+            align-self: flex-start;
+            position: sticky;
+            top: calc(50vh - 80px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            padding: 0;
+            cursor: pointer;
+            user-select: none;
+            border-radius: 8px 0 0 8px;
+            background: rgba(0, 0, 0, 0.18);
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 215, 0, 0.55);
+            border-right: none;
+            box-shadow: -2px 0 16px rgba(255,215,0,0.18), inset 0 0 12px rgba(255,215,0,0.04);
+            overflow: hidden;
+        }
+
+        #podcast-tab .tab-text { display: none; }
+
+        #podcast-tab .tab-icon {
+            display: block;
+            font-size: 1.3rem;
+            color: rgba(255, 215, 0, 1);
+            text-shadow:
+                0 0 8px  rgba(255,215,0,1),
+                0 0 18px rgba(255,200,0,0.8),
+                0 0 32px rgba(255,180,0,0.4);
+            animation: pcTabPulse 2.5s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes pcTabPulse {
+            0%,100% { transform: scale(1);   text-shadow: 0 0 8px rgba(255,215,0,1), 0 0 18px rgba(255,200,0,0.8), 0 0 32px rgba(255,180,0,0.4); }
+            50%      { transform: scale(0.9); text-shadow: 0 0 4px rgba(255,215,0,0.7), 0 0 10px rgba(255,200,0,0.5); }
+        }
+
+        #podcast-content {
+            flex: 1;
+            background: rgba(5,5,8,0.97);
+            border: 1px solid rgba(255,215,0,0.22);
+            border-right: none;
+            padding: 1.3rem 1.1rem 1.3rem 1rem;
+            overflow-y: auto;
+            max-height: 96vh;
+            height: 96vh;
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+            position: relative;
+        }
+
+        #podcast-content::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #FFD700 40%, transparent);
+        }
+
+        #podcast-content::before {
+            content: 'PODCAST_STREAM';
+            position: absolute; top: -0.52rem; left: 0.9rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.46rem; letter-spacing: 0.22em;
+            color: #FFD700; background: #050508;
+            padding: 0 0.5rem;
+            opacity: 0.85;
+        }
+
+        .podcast-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 0.7rem;
+            border-bottom: 1px solid rgba(255,215,0,0.12);
+            flex-shrink: 0;
+        }
+
+        .podcast-panel-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.65rem;
+            color: #FFD700;
+            letter-spacing: 0.22em;
+            text-shadow: 0 0 10px rgba(255,215,0,0.45);
+        }
+
+        .podcast-close-btn {
+            background: none;
+            border: 1px solid rgba(255,215,0,0.28);
+            color: #FFD700;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.58rem;
+            cursor: pointer;
+            padding: 3px 8px;
+            letter-spacing: 0.12em;
+            transition: all 0.2s;
+        }
+        .podcast-close-btn:hover {
+            background: rgba(255,215,0,0.1);
+            box-shadow: 0 0 8px rgba(255,215,0,0.3);
+        }
+
+        .podcast-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.5rem;
+            letter-spacing: 0.2em;
+            color: #FFD700;
+            text-transform: uppercase;
+            opacity: 0.7;
+            margin-bottom: 0.35rem;
+            display: block;
+        }
+
+        .podcast-item {
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateX(18px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            flex-shrink: 0;
+        }
+
+        #podcast-panel.open .podcast-item:nth-child(2) { opacity:1; transform:none; transition-delay:0.12s; }
+        #podcast-panel.open .podcast-item:nth-child(3) { opacity:1; transform:none; transition-delay:0.22s; }
+        #podcast-panel.open .podcast-item:nth-child(4) { opacity:1; transform:none; transition-delay:0.32s; }
+
+        .podcast-item iframe {
+            width: 100%;
+            border-radius: 3px;
+            border: 1px solid rgba(255,215,0,0.1);
+            box-shadow: 0 0 10px rgba(255,215,0,0.04);
+            transition: box-shadow 0.3s;
+            display: block;
+        }
+        .podcast-item iframe:hover { box-shadow: 0 0 20px rgba(255,215,0,0.14); }
+
+        #podcast-content::-webkit-scrollbar { width: 3px; }
+        #podcast-content::-webkit-scrollbar-track { background: rgba(255,215,0,0.04); }
+        #podcast-content::-webkit-scrollbar-thumb { background: rgba(255,215,0,0.28); border-radius: 2px; }
     </style>
 </head>
 <body>
 <!--<script src="protect.js"></script>-->
 <canvas id="bg"></canvas>
 
+<!-- ══ PODCAST PANEL LATERAL DERECHO ══ -->
+<div id="podcast-overlay"></div>
+<div id="podcast-panel">
+    <div id="podcast-tab" title="Ver / cerrar Podcasts">
+        <span class="tab-icon">🎙</span>
+        <span class="tab-text">Podcasts</span>
+        <canvas id="tab-glow-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;border-radius:8px 0 0 8px;"></canvas>
+    </div>
+    <div id="podcast-content">
+        <div class="podcast-panel-header">
+            <span class="podcast-panel-title">// Podcast Feed</span>
+            <button class="podcast-close-btn" id="podcast-close">[ X ]</button>
+        </div>
+        <div class="podcast-item">
+            <span class="podcast-label">// Las Bromas del Panda Show</span>
+            <iframe src="https://widget.spreaker.com/player?show_id=6247023&theme=dark&playlist=show&playlist-continuous=true&chapters-image=true"
+                width="100%" height="400px" title="el panda show" frameborder="0"></iframe>
+        </div>
+        <div class="podcast-item">
+            <span class="podcast-label">// Podcast: Crimen y Castigo</span>
+            <iframe src="https://widget.spreaker.com/player?show_id=6671022&theme=light&playlist=show&playlist-continuous=false&chapters-image=true&episode_image_position=right&hide-logo=false&hide-likes=false&hide-comments=false&hide-sharing=false&hide-download=true"
+                width="100%" height="400px" title="CRIME AND PUNISHMENT" frameborder="0"></iframe>
+        </div>
+        <div class="podcast-item">
+            <span class="podcast-label">// Podcast Psicocatarsis</span>
+            <iframe src="https://widget.spreaker.com/player?show_id=6719012&theme=dark&playlist=show&playlist-continuous=true&chapters-image=true&episode_image_position=right&hide-logo=false&hide-likes=false&hide-comments=false&hide-sharing=false&hide-download=true"
+                width="100%" height="400px" title="PSICOCATARSIS." frameborder="0"></iframe>
+        </div>
+    </div>
+</div>
+<!-- ══ FIN PODCAST PANEL ══ -->
+
 <div class="container">
 
-    <!-- STATUS BAR -->
     <div class="status-bar">
         <span><span class="dot-live"></span>UNLKD · KEY#01 · ONLINE</span>
         <span id="clock">--:--:--</span>
@@ -550,15 +730,12 @@
         <img src="../../assets/img/sytemtag-gif2.gif" class="header-img"
              onerror="this.src='https://via.placeholder.com/150x25?text=SIGNAL+UNLKD'">
 
-        <!-- NAV BUTTONS -->
         <div class="nav-buttons">
             <a class="nav-btn" href="https://baphomet1984.github.io/systemtag/gate/?lvl=core&go=signal-core">
                 <span class="dot"></span><span>S.Core</span>
             </a>
-            <!--<button class="nav-btn disabled" disabled>-->
             <a class="nav-btn" href="https://baphomet1984.github.io/shopping/">
                 <span class="dot"></span><span>Shopping</span>
-            <!--</button>-->
             </a>
             <a class="nav-btn" href="https://baphomet1984.github.io/alliados/">
                 <span class="dot"></span><span>Aliados</span>
@@ -571,7 +748,6 @@
         <div class="tagline">// SI ALGO NO TIENE SENTIDO, NO ES ERROR. ES FILTRO.</div>
     </header>
 
-    <!-- AVATAR -->
     <div id="hub-avatar"><img id="avatar" alt="System Avatar"></div>
     <div id="avatar-panel">
         <p class="panel-title">🜏 SYSTEM // UNLKD 🔑</p>
@@ -584,12 +760,10 @@
             ontouchend="helpPressEnd(event)">?</button>
     </div>
 
-    <!-- STATUS -->
     <div class="hub-status">
         Estado: <b id="hub-status"></b> &nbsp;|&nbsp; Sinc: <b id="hub-date"></b>
     </div>
 
-    <!-- SEARCH -->
     <div class="search-container">
         <i class="fa fa-search"></i>
         <input type="text" id="playlistSearch" placeholder="// filtrar protocolos o webs...">
@@ -597,32 +771,22 @@
 
     <main>
 
-        <!-- PERFIL SONORO -->
         <div class="section-wrap search-section">
             <h2>Perfil Sonoro</h2>
             <h3>>> selección personal del portador</h3>
             <ul>
-                <li class="playlist-item"><a href="https://open.spotify.com/intl-es/artist/5rmRF0n79RhrXPeAW3xp29"><i class="fab fa-spotify"></i> 1. System Fail</a></li>
-                <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1E4xadFD2IyUbd?si=k3iJLuTITFaWM7hiddSyBQ"><i class="fab fa-spotify"></i> 2. Gótico</a></li>
-                <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1DXcfZ6moR6J0G?si=EnT90tSRRwaTbFD2N0vfGQ"><i class="fab fa-spotify"></i> 3. New Metal</a></li>
-                <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1DWTe5ECpTKzMo?si=dTi2iGlEQJqUDQCHhXrLrQ"><i class="fab fa-spotify"></i> 4. Hip Hop MX 24K</a></li>
-                <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1EIea0ChiRU7ji?si=Eh1WKcBvQBqTfx3IcVPR-Q"><i class="fab fa-spotify"></i> 5. Doom</a></li>
-                <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1DWYMHB55fgZrY?si=C0gKOkwdS_OKb2gXXrERkQ"><i class="fab fa-spotify"></i> 6. Rock Mexicano</a></li>
-                <li class="playlist-item"><a href="https://open.spotify.com/playlist/37i9dQZF1EIcM7vKLqtJgT?si=MU8P6kObS_efOEAuU7b73A"><i class="fab fa-spotify"></i> 7. Techno Oscuro</a></li>
-                <li class="playlist-item"><a href="https://open.spotify.com/artist/4uqzzJg3ww5eH7IgGV7DMT?si=NPlGvGWKQxiu6jX0D1TMVQ"><i class="fab fa-spotify"></i> 8. Bunbury</a></li>
-                <li class="playlist-item"><a href="https://open.spotify.com/artist/2VYQTNDsvvKN9wmU5W7xpj?si=SfbtSbFzSbeNS24q1zvq0Q"><i class="fab fa-spotify"></i> 9. Manson</a></li>
-                <li class="playlist-item"><a href="https://open.spotify.com/artist/05fG473iIaoy82BF1aGhL8?si=CSAnyZ_DSHaJudXWw0Ju6g"><i class="fab fa-spotify"></i> 10. Slipknot</a></li>
-                <li class="playlist-item"><a href="https://open.spotify.com/artist/6olE6TJLqED3rqDCT0FyPh?si=FGTISvXWRpWNAIqufEY5fQ"><i class="fab fa-spotify"></i> 11. Nirvana</a></li>
-                <li class="playlist-item"><a href="https://open.spotify.com/artist/22WZ7M8sxp5THdruNY3gXt?si=bxMr3U9gSIeADK0YnqZTaQ"><i class="fab fa-spotify"></i> 12. The Doors</a></li>
-                <li class="playlist-item"><a href="https://open.spotify.com/artist/6POnYCFgbMN07RiEujnqw5?si=U1oOp6vIRO6pVG_HFrmI3A"><i class="fab fa-spotify"></i> 13. Anabantha</a></li>
-                <li class="playlist-item"><a href="https://open.spotify.com/playlist/2yCqbxs4ztf1kmRTIIujeo?si=f77lTbl4SEiBLWdCY7Ix7w"><i class="fab fa-spotify"></i> 14. Symphonic Metal</a></li>
-                <li class="playlist-item"><a href="https://open.spotify.com/artist/7E7V95LId9MPJ6anIK1qrM?si=K8MEfY3UQQOpWx5WalIrZQ"><i class="fab fa-spotify"></i> 15. Ignea</a></li>
-                <li class="playlist-item"><a href="https://open.spotify.com/playlist/0zAIYxVODVj9ZoVqAwxQ6G?si=EvtM-HjtT4GrU1rre1U0XQ"><i class="fab fa-spotify"></i> 16. Sonora Santanera</a></li>
-               <li class="playlist-item"><a href="https://open.spotify.com/playlist/5uBzsq62Ltwu0KWougAS0S?si=wwtbKlZJRueT19135ncFjg"><i class="fab fa-spotify"></i> 17. Xhaparra♥️</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/artist/2ye2Wgw4gimLv2eAKyk1NB"><i class="fab fa-spotify"></i> 1. Metallica</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/intl-es/artist/2tRsMl4eGxwoNabM08Dm4I?si=R12n_75XR2KpcNjxArVxYg"><i class="fab fa-spotify"></i> 2. Judas Priest</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/artist/22WZ7M8sxp5THdruNY3gXt"><i class="fab fa-spotify"></i> 3. The Doors</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/intl-es/artist/3IYUhFvPQItj6xySrBmZkd?si=QLqGcraHRmuDg9uKnopjPw"><i class="fab fa-spotify"></i> 4. Creedence</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/intl-es/artist/76S65NHJHrNy4JTrXHP2BH?si=CyKs-43kSUCIw4tAyEy9FQ"><i class="fab fa-spotify"></i> 5. Exodus</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/intl-es/artist/06D0YfeNZgBA7XWQ79Y42R?si=tJoX4bPKTfKxcqzAMhMP-w"><i class="fab fa-spotify"></i> 6. King Buffalo</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/intl-es/artist/1DnxfiR4j3tp1B7zMSFmDq?si=-GtiFFfMSXq9YV5O2gIeQg"><i class="fab fa-spotify"></i> 7. Smokehouse</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/artist/3RNrq3jvMZxD9ZyoOZbQOD"><i class="fab fa-spotify"></i> 8. Korn</a></li>
+                <li class="playlist-item"><a href="https://open.spotify.com/intl-es/artist/5c8Cw62ZYj9XO6iDLRDEsi?si=U3kEgIHCRdCog1t0kYJnwg"><i class="fab fa-spotify"></i> 9. Therion</a></li>
             </ul>
         </div>
 
-        <!-- MULTIMEDIA -->
         <div class="section-wrap search-section">
             <h2>Multimedia</h2>
             <h3>>> radio / cine</h3>
@@ -640,7 +804,6 @@
             </div>
         </div>
 
-        <!-- CINÉFILOS -->
         <div class="section-wrap search-section">
             <h2>Cinéfilos</h2>
             <ul>
@@ -652,7 +815,6 @@
             <p class="note-text">Si CARTOONS pide VPN → <a href="https://play.google.com/store/apps/details?id=com.free.vpn.mexico.proxy.planet">Planet VPN</a></p>
         </div>
 
-        <!-- OCIO -->
         <div class="section-wrap search-section">
             <h2>Ocio</h2>
             <h3>>> audio y video</h3>
@@ -664,7 +826,6 @@
             </ul>
         </div>
 
-        <!-- CONVIVENCIA -->
         <div class="section-wrap search-section">
             <h2>Convivencia</h2>
             <h3>>> redes</h3>
@@ -675,7 +836,6 @@
             </ul>
         </div>
 
-        <!-- UNDERGROUND -->
         <div class="section-wrap search-section">
             <h2>Underground</h2>
             <h3>>> webs absurdas pero necesarias</h3>
@@ -686,7 +846,6 @@
             </ul>
         </div>
 
-        <!-- CAOS CONTROLADO -->
         <div class="section-wrap search-section">
             <h2>Caos Controlado</h2>
             <h3>>> ¿quieres discutir algo?</h3>
@@ -696,12 +855,11 @@
             </ul>
         </div>
 
-        <!-- EXPLORACIÓN -->
         <div class="section-wrap search-section">
             <h2>Exploración</h2>
             <h3>>> conocimiento prohibido o casi</h3>
             <ul>
-                <li class="playlist-item"><a href="https://aprende.org/"><i class="fab fa-wikipedia-w"></i>Aprende</a></li>
+                <li class="playlist-item"><a href="https://aprende.org/"><i class="fab fa-wikipedia-w"></i> Aprende</a></li>
                 <li class="playlist-item"><a href="https://archive.org"><i class="fa-solid fa-box-archive"></i> Internet Archive</a></li>
                 <li class="playlist-item"><a href="https://www.gutenberg.org"><i class="fa-solid fa-book"></i> Proyecto Gutenberg</a></li>
                 <li class="playlist-item"><a href="https://medlineplus.gov/spanish/"><i class="fa-solid fa-book"></i> Medline Plus(doctor de bolsillo)</a></li>
@@ -716,14 +874,14 @@
     </main>
 
     <footer>
-   <div id="sfcedza4nxgchzx76ha8jhbj3tpk5dbq8u5"></div>
-    <script type="text/javascript" src="https://counter1.optistats.ovh/private/counter.js?c=edza4nxgchzx76ha8jhbj3tpk5dbq8u5&down=async" async></script><br><a href="https://www.contadorvisitasgratis.com">contador de visitas para pagina web gratis</a>
-    <noscript><a href="https://www.contadorvisitasgratis.com" title="contador de visitas para pagina web gratis">
-    <img src="https://counter1.optistats.ovh/private/contadorvisitasgratis.php?c=edza4nxgchzx76ha8jhbj3tpk5dbq8u5" border="0" title="contador de visitas para pagina web gratis" alt="contador de visitas para pagina web gratis"></a></noscript>    
+        <div id="sfcedza4nxgchzx76ha8jhbj3tpk5dbq8u5"></div>
+        <script type="text/javascript" src="https://counter1.optistats.ovh/private/counter.js?c=edza4nxgchzx76ha8jhbj3tpk5dbq8u5&down=async" async></script>
+        <br><a href="https://www.contadorvisitasgratis.com">contador de visitas para pagina web gratis</a>
+        <noscript><a href="https://www.contadorvisitasgratis.com" title="contador de visitas para pagina web gratis">
+        <img src="https://counter1.optistats.ovh/private/contadorvisitasgratis.php?c=edza4nxgchzx76ha8jhbj3tpk5dbq8u5" border="0" title="contador de visitas para pagina web gratis" alt="contador de visitas para pagina web gratis"></a></noscript>
     </footer>
 </div>
 
-<!-- Elfsight -->
 <script src="https://elfsightcdn.com/platform.js" async></script>
 <div class="elfsight-app-1c4d0ae1-891a-4847-86b0-00553260b99b" data-elfsight-app-lazy></div>
 
@@ -744,7 +902,6 @@ function resize() { W = canvas.width = window.innerWidth; H = canvas.height = wi
 resize();
 window.addEventListener('resize', () => { resize(); initRain(); });
 
-// particles
 const particles = Array.from({length: 80}, () => mkParticle({}));
 function mkParticle(p) {
     p.x = Math.random() * (W||innerWidth); p.y = Math.random() * (H||innerHeight);
@@ -756,7 +913,6 @@ function mkParticle(p) {
     return p;
 }
 
-// matrix rain
 const COL = 22;
 let cols, drops;
 function initRain() {
@@ -769,13 +925,10 @@ const RC = '01アカサタナ{}[]<>/\\;:!@#$%&*~`';
 let frame = 0;
 function draw() {
     ctx.clearRect(0, 0, W, H);
-
-    // grid
     ctx.strokeStyle = 'rgba(0,255,231,0.02)'; ctx.lineWidth = 1;
     for (let x = 0; x < W; x += 55) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
     for (let y = 0; y < H; y += 55) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
 
-    // rain (every 2nd frame)
     if (frame % 2 === 0) {
         ctx.font = `10px "Share Tech Mono", monospace`;
         drops.forEach((y, i) => {
@@ -788,7 +941,6 @@ function draw() {
         });
     }
 
-    // particles
     particles.forEach(p => {
         ctx.globalAlpha = p.opacity;
         ctx.fillStyle = p.color;
@@ -797,7 +949,6 @@ function draw() {
         if (p.y < -5 || p.opacity <= 0) { mkParticle(p); p.y = H; }
     });
 
-    // corner brackets
     ctx.globalAlpha = 0.18; ctx.lineWidth = 1.5;
     [[0,0,1,1],[W,0,-1,1],[0,H,1,-1],[W,H,-1,-1]].forEach(([cx,cy,dx,dy]) => {
         ctx.strokeStyle = '#cc44ff';
@@ -841,10 +992,10 @@ document.getElementById('playlistSearch').addEventListener('keyup', function() {
 });
 
 // ── AVATAR ────────────────────────────────────────────────────────
-const avatar   = document.getElementById("avatar");
+const avatar    = document.getElementById("avatar");
 const avatarBox = document.getElementById("hub-avatar");
-const panel    = document.getElementById("avatar-panel");
-const base     = "https://api.dicebear.com/7.x/bottts/svg";
+const avatarPanel = document.getElementById("avatar-panel");
+const base      = "https://api.dicebear.com/7.x/bottts/svg";
 avatar.src = `${base}?seed=systemfail&backgroundColor=000000`;
 
 const ritual = { step:0, stealth:false, panelOpen:false, unlocked:false };
@@ -853,9 +1004,7 @@ let clickCount = 0, lastClickTime = 0;
 function moveAvatar() {
     const maxX = window.innerWidth - avatarBox.offsetWidth;
     const maxY = window.innerHeight - avatarBox.offsetHeight;
-    const x = Math.random() * (maxX - 20);
-    const y = Math.random() * (maxY - 20);
-    avatarBox.style.transform = `translate(${x}px, ${y}px) scale(1.05)`;
+    avatarBox.style.transform = `translate(${Math.random()*(maxX-20)}px, ${Math.random()*(maxY-20)}px) scale(1.05)`;
 }
 
 avatarBox.addEventListener("click", e => {
@@ -865,9 +1014,9 @@ avatarBox.addEventListener("click", e => {
     lastClickTime = now;
     if (clickCount >= 5 && !ritual.unlocked) { moveAvatar(); clickCount = 0; return; }
     if (ritual.unlocked) { window.location.href = "https://drive.google.com/drive/folders/0B0F9Kqt9_0moV0pKa3pGd0NIUlk"; return; }
-    if (ritual.step === 3 && panel.style.display === "none") { unlockDoor(); return; }
-    panel.style.display = panel.style.display === "block" ? "none" : "block";
-    ritual.panelOpen = panel.style.display === "block";
+    if (ritual.step === 3 && avatarPanel.style.display === "none") { unlockDoor(); return; }
+    avatarPanel.style.display = avatarPanel.style.display === "block" ? "none" : "block";
+    ritual.panelOpen = avatarPanel.style.display === "block";
 });
 
 function changeAvatar() {
@@ -895,9 +1044,9 @@ function helpPressEnd(e) {
 }
 
 document.addEventListener("click", e => {
-    if (!avatarBox.contains(e.target) && !panel.contains(e.target)) {
-        if (panel.style.display === "block") {
-            panel.style.display = "none";
+    if (!avatarBox.contains(e.target) && !avatarPanel.contains(e.target)) {
+        if (avatarPanel.style.display === "block") {
+            avatarPanel.style.display = "none";
             if (ritual.step === 2) ritual.step = 3;
             else ritual.step = 0;
         }
@@ -909,11 +1058,11 @@ function unlockDoor() {
     avatarBox.style.borderColor = "var(--cyan)";
     avatarBox.style.boxShadow = "0 0 25px rgba(0,255,231,0.5)";
     avatarBox.style.transform = "scale(1.15)";
-    document.querySelectorAll("[data-frame]").forEach(frame => {
-        frame.classList.remove("minimized", "door-sealed");
-        frame.classList.add("door-preopen");
-        setTimeout(() => { frame.classList.remove("door-preopen"); frame.classList.add("door-open", "unlocked"); }, 120);
-        frame.querySelectorAll("iframe").forEach(i => { if (!i.src && i.dataset.src) i.src = i.dataset.src; });
+    document.querySelectorAll("[data-frame]").forEach(f => {
+        f.classList.remove("minimized", "door-sealed");
+        f.classList.add("door-preopen");
+        setTimeout(() => { f.classList.remove("door-preopen"); f.classList.add("door-open", "unlocked"); }, 120);
+        f.querySelectorAll("iframe").forEach(i => { if (!i.src && i.dataset.src) i.src = i.dataset.src; });
     });
 }
 
@@ -954,15 +1103,12 @@ function cancelPress() {
 }
 
 // ── SYSTEM FAIL / KERNEL ──────────────────────────────────────────
-const systemBtn    = document.getElementById("systemFailBtn");
+const systemBtn     = document.getElementById("systemFailBtn");
 const kernelOverlay = document.getElementById("kernelOverlay");
 const kernelConsole = document.getElementById("kernelConsole");
 let holdTimeout, kernelActive = false;
 
-function startHold() {
-    if (kernelActive) return;
-    holdTimeout = setTimeout(activateKernel, 3000);
-}
+function startHold() { if (kernelActive) return; holdTimeout = setTimeout(activateKernel, 3000); }
 function cancelHold() { clearTimeout(holdTimeout); }
 
 ["mousedown","touchstart"].forEach(ev => systemBtn.addEventListener(ev, startHold));
@@ -973,12 +1119,10 @@ async function activateKernel() {
     if (navigator.vibrate) navigator.vibrate([200,100,200]);
     kernelOverlay.style.display = "block";
     kernelConsole.innerHTML = "";
-
     const cpu = navigator.hardwareConcurrency || "unknown";
     const mem = navigator.deviceMemory || "unknown";
     const bat = navigator.getBattery ? await navigator.getBattery() : null;
     const batLevel = bat ? Math.floor(bat.level*100)+"%" : "unknown";
-
     const lines = [
         "[BOOT] Initializing Signal Core...",
         "[KERNEL] Mounting anomaly layer...",
@@ -993,7 +1137,6 @@ async function activateKernel() {
         "[ROOT ACCESS] granted",
         "[WARNING] You are not supposed to be here."
     ];
-
     for (let line of lines) await typeLine(line);
     unlockSystem();
 }
@@ -1016,6 +1159,73 @@ function unlockSystem() {
     document.getElementById("hub-status").textContent = "CRÍTICO";
     kernelOverlay.addEventListener("click", () => { kernelOverlay.style.display = "none"; });
 }
+
+// ── PODCAST PANEL ─────────────────────────────────────────────────
+(function(){
+    const pcPanel   = document.getElementById('podcast-panel');
+    const pcTab     = document.getElementById('podcast-tab');
+    const pcClose   = document.getElementById('podcast-close');
+    const pcOverlay = document.getElementById('podcast-overlay');
+
+    function openPanel()  { pcPanel.classList.add('open');    pcOverlay.classList.add('active');    }
+    function closePanel() { pcPanel.classList.remove('open'); pcOverlay.classList.remove('active'); }
+
+    pcTab.addEventListener('click',    () => pcPanel.classList.contains('open') ? closePanel() : openPanel());
+    pcClose.addEventListener('click',  closePanel);
+    pcOverlay.addEventListener('click', closePanel);
+
+    /* Luz dorada recorriendo el contorno */
+    const gc    = document.getElementById('tab-glow-canvas');
+    const gCtx  = gc.getContext('2d');
+    let gW, gH;
+
+    function resizeGC(){
+        gW = gc.width  = pcTab.offsetWidth  || 42;
+        gH = gc.height = pcTab.offsetHeight || 120;
+    }
+    resizeGC();
+    window.addEventListener('resize', resizeGC);
+
+    const PERIOD = 5000, SPARK = 0.22;
+
+    function perimPt(d, w, h){
+        d = ((d % (2*(w+h))) + 2*(w+h)) % (2*(w+h));
+        if (d < w)  return [d,   0  ];  d -= w;
+        if (d < h)  return [w,   d  ];  d -= h;
+        if (d < w)  return [w-d, h  ];  d -= w;
+                    return [0,   h-d];
+    }
+
+    function drawGlow(ts){
+        if(!gW || !gH) resizeGC();
+        gCtx.clearRect(0, 0, gW, gH);
+        const perim    = 2 * (gW + gH);
+        const sparkLen = perim * SPARK;
+        const headPos  = ((ts % PERIOD) / PERIOD) * perim;
+        const SEG      = 70;
+        gCtx.save();
+        for(let i = 0; i < SEG; i++){
+            const t  = i / SEG;
+            const d1 = (headPos - t * sparkLen + perim * 4) % perim;
+            const d2 = (headPos - (t + 1/SEG) * sparkLen + perim * 4) % perim;
+            const [x1,y1] = perimPt(d1, gW, gH);
+            const [x2,y2] = perimPt(d2, gW, gH);
+            const alpha  = Math.pow(1 - t, 1.4);
+            const bright = 1 - t * 0.4;
+            gCtx.beginPath();
+            gCtx.moveTo(x1, y1);
+            gCtx.lineTo(x2, y2);
+            gCtx.strokeStyle = `rgba(255,${Math.round(200+bright*55)},${Math.round(bright*40)},${alpha.toFixed(2)})`;
+            gCtx.lineWidth   = 2.5;
+            gCtx.shadowColor = `rgba(255,220,0,${(alpha*0.85).toFixed(2)})`;
+            gCtx.shadowBlur  = 12;
+            gCtx.stroke();
+        }
+        gCtx.restore();
+        requestAnimationFrame(drawGlow);
+    }
+    requestAnimationFrame(drawGlow);
+})();
 </script>
 </body>
 </html>
