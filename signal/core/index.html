@@ -14,6 +14,9 @@
             --purple:  #cc44ff;
             --green:   #1DB954;
             --bg:      #050508;
+            --gold:    #FFD700;
+            --gold-dark: #B8860B;
+            --gold-light: #FFEC6E;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -46,7 +49,7 @@
             z-index: 1;
         }
 
-        canvas { position: fixed; inset: 0; z-index: 0; }
+        canvas#bg { position: fixed; inset: 0; z-index: 0; }
 
         .overlay {
             position: relative; z-index: 10;
@@ -94,7 +97,6 @@
             50% { opacity: 0.2; }
         }
 
-        /* HEADER */
         header {
             display: flex;
             flex-direction: column;
@@ -108,7 +110,6 @@
             margin-bottom: 1.2rem;
         }
 
-        /* NAV BUTTONS */
         .nav-buttons {
             display: flex;
             gap: 0.75rem;
@@ -177,7 +178,6 @@
         .nav-btn.disabled:hover { color: rgba(204,68,255,0.28); box-shadow: none; }
         .nav-btn.disabled:hover::before { opacity: 0; }
 
-        /* TITLE */
         .core-title {
             font-family: 'Orbitron', monospace;
             font-size: clamp(0.9rem, 3vw, 1.5rem);
@@ -207,7 +207,6 @@
             98% { opacity: 0; }
         }
 
-        /* SECTION HEADERS */
         h2 {
             font-family: 'Share Tech Mono', monospace;
             font-size: 0.6rem;
@@ -224,7 +223,6 @@
         h2::before { content: '//'; color: var(--magenta); opacity: 0.7; }
         h2::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, var(--cyan), transparent); opacity: 0.25; }
 
-        /* PLAYLIST LIST */
         ul {
             list-style: none;
             padding: 0;
@@ -262,72 +260,233 @@
 
         li a:hover::before { opacity: 1; }
         li a:hover { border-color: var(--green); color: #fff; transform: translateX(4px); box-shadow: -2px 0 14px rgba(29,185,84,0.25); }
-
         li a i { margin-right: 12px; font-size: 1rem; color: var(--green); flex-shrink: 0; transition: color 0.2s; }
         li a:hover i { color: #fff; }
 
-        /* PODCAST */
-        .widget-container {
-            margin-top: 1rem;
-            background: rgba(0,0,0,0.5);
-            border: 1px solid rgba(0,255,231,0.08);
-            border-top: 2px solid var(--cyan);
-            padding: 2rem 1.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.8rem;
-            position: relative;
-        }
-
-        .widget-container::before {
-            content: 'PODCAST_STREAM';
-            position: absolute; top: -0.5rem; left: 1rem;
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.5rem; letter-spacing: 0.2em;
-            color: var(--cyan); background: var(--bg);
-            padding: 0 0.5rem;
-        }
-
-        .podcast-label {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.58rem; letter-spacing: 0.22em;
-            color: var(--magenta); text-transform: uppercase;
-            align-self: flex-start; opacity: 0.75;
-        }
-
-        .widget-container iframe {
-            max-width: 750px; width: 100%;
-            border-radius: 3px;
-            border: 1px solid rgba(0,255,231,0.08);
-            box-shadow: 0 0 18px rgba(0,255,231,0.05);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .widget-container iframe:hover {
-            transform: scale(1.01);
-            box-shadow: 0 0 28px rgba(0,255,231,0.12);
-        }
-
-        .fade-frame {
-            opacity: 0; transform: translateY(30px);
-            transition: opacity 0.7s ease, transform 0.7s ease;
-        }
-
-        .fade-frame.visible { opacity: 1; transform: translateY(0); }
-
-        /* FOOTER */
         .footer-counter {
             margin-top: 3rem; text-align: center;
             opacity: 0.35; font-family: 'Share Tech Mono', monospace;
             font-size: 0.55rem; letter-spacing: 0.2em;
         }
+
+        /* ═══════════════════════════════════════════
+           PODCAST PANEL DESLIZANTE — LATERAL DERECHO
+        ═══════════════════════════════════════════ */
+        #podcast-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 999;
+        }
+        #podcast-overlay.active { display: block; }
+
+        #podcast-panel {
+            position: fixed;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%) translateX(calc(100% - 14px));
+            width: 430px;
+            max-width: 94vw;
+            z-index: 1000;
+            display: flex;
+            align-items: stretch;
+            transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        #podcast-panel.open {
+            transform: translateY(-50%) translateX(0);
+        }
+
+        /* ── Lengüeta / Tab ── */
+        #podcast-tab {
+            width: 14px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+            padding: 0;
+            cursor: pointer;
+            user-select: none;
+            border-radius: 6px 0 0 6px;
+            background: transparent;
+            box-shadow: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Ocultar texto, mostrar solo ícono micrófono */
+        #podcast-tab .tab-text {
+            display: none;
+        }
+
+        #podcast-tab .tab-icon {
+            display: block;
+            font-size: 0.5rem;
+            color: rgba(255, 215, 0, 0.95);
+            text-shadow: 0 0 7px rgba(255,215,0,0.9), 0 0 14px rgba(255,200,0,0.5);
+            animation: tabPulse 2.5s ease-in-out infinite;
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes tabPulse {
+            0%,100% { transform: scale(1);    }
+            50%      { transform: scale(0.88); }
+        }
+
+        /* ── Panel de contenido ── */
+        #podcast-content {
+            flex: 1;
+            background: rgba(5,5,8,0.97);
+            border: 1px solid rgba(255,215,0,0.22);
+            border-right: none;
+            padding: 1.3rem 1.1rem 1.3rem 1rem;
+            overflow-y: auto;
+            max-height: 88vh;
+            display: flex;
+            flex-direction: column;
+            gap: 1.1rem;
+            position: relative;
+        }
+
+        /* Línea dorada superior */
+        #podcast-content::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold) 40%, transparent);
+        }
+
+        /* Etiqueta flotante */
+        #podcast-content::before {
+            content: 'PODCAST_STREAM';
+            position: absolute; top: -0.52rem; left: 0.9rem;
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.46rem; letter-spacing: 0.22em;
+            color: var(--gold); background: #050508;
+            padding: 0 0.5rem;
+            opacity: 0.85;
+        }
+
+        .podcast-panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 0.7rem;
+            border-bottom: 1px solid rgba(255,215,0,0.12);
+        }
+
+        .podcast-panel-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 0.65rem;
+            color: var(--gold);
+            letter-spacing: 0.22em;
+            text-shadow: 0 0 10px rgba(255,215,0,0.45);
+        }
+
+        .podcast-close-btn {
+            background: none;
+            border: 1px solid rgba(255,215,0,0.28);
+            color: var(--gold);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.58rem;
+            cursor: pointer;
+            padding: 3px 8px;
+            letter-spacing: 0.12em;
+            transition: all 0.2s;
+        }
+        .podcast-close-btn:hover {
+            background: rgba(255,215,0,0.1);
+            box-shadow: 0 0 8px rgba(255,215,0,0.3);
+        }
+
+        .podcast-label {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.5rem;
+            letter-spacing: 0.2em;
+            color: var(--gold);
+            text-transform: uppercase;
+            opacity: 0.7;
+            margin-bottom: 0.35rem;
+            display: block;
+        }
+
+        .podcast-item {
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateX(18px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
+
+        #podcast-panel.open .podcast-item:nth-child(2) { opacity:1; transform:none; transition-delay:0.12s; }
+        #podcast-panel.open .podcast-item:nth-child(3) { opacity:1; transform:none; transition-delay:0.22s; }
+        #podcast-panel.open .podcast-item:nth-child(4) { opacity:1; transform:none; transition-delay:0.32s; }
+
+        .podcast-item iframe {
+            width: 100%;
+            border-radius: 3px;
+            border: 1px solid rgba(255,215,0,0.1);
+            box-shadow: 0 0 10px rgba(255,215,0,0.04);
+            transition: box-shadow 0.3s;
+        }
+        .podcast-item iframe:hover {
+            box-shadow: 0 0 20px rgba(255,215,0,0.14);
+        }
+
+        #podcast-content::-webkit-scrollbar { width: 3px; }
+        #podcast-content::-webkit-scrollbar-track { background: rgba(255,215,0,0.04); }
+        #podcast-content::-webkit-scrollbar-thumb { background: rgba(255,215,0,0.28); border-radius: 2px; }
     </style>
 </head>
 <body>
-<!--<script src="protect.js"></script>-->
 <canvas id="bg"></canvas>
 
+<!-- Overlay para cerrar al hacer clic fuera -->
+<div id="podcast-overlay"></div>
+
+<!-- ═══ PANEL PODCAST LATERAL DERECHO ═══ -->
+<div id="podcast-panel">
+
+    <!-- Lengüeta visible siempre -->
+    <div id="podcast-tab" title="Ver / cerrar Podcasts">
+        <span class="tab-icon">🎙</span>
+        <span class="tab-text">Podcasts</span>
+        <!-- Canvas para la luz dorada que recorre el borde -->
+        <canvas id="tab-glow-canvas" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;border-radius:8px 0 0 8px;"></canvas>
+    </div>
+
+    <!-- Contenido deslizante -->
+    <div id="podcast-content">
+        <div class="podcast-panel-header">
+            <span class="podcast-panel-title">// Podcast Feed</span>
+            <button class="podcast-close-btn" id="podcast-close">[ X ]</button>
+        </div>
+
+        <div class="podcast-item">
+            <span class="podcast-label">// Las Bromas del Panda Show</span>
+            <iframe src='https://widget.spreaker.com/player?show_id=6247023&theme=dark&playlist=show&playlist-continuous=true&chapters-image=true'
+                width='100%' height='210px' title='el panda show' frameborder='0'></iframe>
+        </div>
+
+        <div class="podcast-item">
+            <span class="podcast-label">// Podcast: Crimen y Castigo</span>
+            <iframe src="https://widget.spreaker.com/player?show_id=6671022&theme=light&playlist=show&playlist-continuous=false&chapters-image=true&episode_image_position=right&hide-logo=false&hide-likes=false&hide-comments=false&hide-sharing=false&hide-download=true"
+                width="100%" height="210px" title="CRIME AND PUNISHMENT" frameborder="0"></iframe>
+        </div>
+
+        <div class="podcast-item">
+            <span class="podcast-label">// Podcast Psicocatarsis</span>
+            <iframe src="https://widget.spreaker.com/player?show_id=6719012&theme=dark&playlist=show&playlist-continuous=true&chapters-image=true&episode_image_position=right&hide-logo=false&hide-likes=false&hide-comments=false&hide-sharing=false&hide-download=true"
+                width="100%" height="210px" title="PSICOCATARSIS." frameborder="0"></iframe>
+        </div>
+    </div>
+</div>
+
+<!-- ═══ CONTENIDO PRINCIPAL ═══ -->
 <div class="overlay">
     <div class="container">
 
@@ -341,12 +500,10 @@
             <img src="../../assets/img/logo-systemtag2.png" class="header-img" alt="SystemTag">
 
             <div class="nav-buttons">
-                <!--<button class="nav-btn disabled" disabled>-->
-                 <a class="nav-btn" href="https://baphomet1984.github.io/shopping/">
-                <span class="dot"></span><span>Shopping</span>
-                <!--</button>-->
-                </a>    
-                 <a class="nav-btn" href="https://baphomet1984.github.io/fail-news/">
+                <a class="nav-btn" href="https://baphomet1984.github.io/shopping/">
+                    <span class="dot"></span><span>Shopping</span>
+                </a>
+                <a class="nav-btn" href="https://baphomet1984.github.io/fail-news/">
                     <span class="dot"></span><span>Bitácora</span>
                 </a>
                 <a class="nav-btn" href="https://baphomet1984.github.io/alliados/">
@@ -381,150 +538,181 @@
                 <li><a href="https://open.spotify.com/playlist/37i9dQZF1EIcM7vKLqtJgT?si=MU8P6kObS_efOEAuU7b73A"><i class="fab fa-spotify"></i> 10. TECHNO OSCURO</a></li>
                 <li><a href="https://open.spotify.com/playlist/37i9dQZF1DWTe5ECpTKzMo?si=8IR6Y2vHRByTr_w5FnmT_w"><i class="fab fa-spotify"></i> 11. HIP-HOP MX 24K</a></li>
             </ul>
-
-            <h2>Podcast Patrocinadores</h2>
-            <div class="widget-container">
-                <span class="podcast-label">// Las Bromas del Panda Show</span>
-                <iframe class="fade-frame" src='https://widget.spreaker.com/player?show_id=6247023&theme=dark&playlist=show&playlist-continuous=true&chapters-image=true' width='100%' height='300px' title='el panda show' frameborder='0'></iframe>
-
-                <span class="podcast-label">// Podcast: Crimen y Castigo</span>
-                <iframe class="fade-frame" src="https://widget.spreaker.com/player?show_id=6671022&theme=light&playlist=show&playlist-continuous=false&chapters-image=true&episode_image_position=right&hide-logo=false&hide-likes=false&hide-comments=false&hide-sharing=false&hide-download=true" width="100%" height="300px" title="CRIME AND PUNISHMENT" frameborder="0"></iframe>
-
-                <span class="podcast-label">// Podcast Psicocatarsis</span>
-                <iframe class="fade-frame" src="https://widget.spreaker.com/player?show_id=6719012&theme=dark&playlist=show&playlist-continuous=true&chapters-image=true&episode_image_position=right&hide-logo=false&hide-likes=false&hide-comments=false&hide-sharing=false&hide-download=true" width="100%" height="300px" title="PSICOCATARSIS." frameborder="0"></iframe>
-            </div>
         </main>
 
         <footer class="footer-counter">
-<div id="sfc6eb3n1wu7csy9jaekkmr2zuyel82q5mw"></div><script type="text/javascript" src="https://counter1.optistats.ovh/private/counter.js?c=6eb3n1wu7csy9jaekkmr2zuyel82q5mw&down=async" async></script><br><a href="https://www.contadorvisitasgratis.com">contador de visitas para tumblr</a><noscript><a href="https://www.contadorvisitasgratis.com" title="contador de visitas para tumblr"><img src="https://counter1.optistats.ovh/private/contadorvisitasgratis.php?c=6eb3n1wu7csy9jaekkmr2zuyel82q5mw" border="0" title="contador de visitas para tumblr" alt="contador de visitas para tumblr"></a></noscript>        </footer>
+            <div id="sfc6eb3n1wu7csy9jaekkmr2zuyel82q5mw"></div>
+            <script type="text/javascript" src="https://counter1.optistats.ovh/private/counter.js?c=6eb3n1wu7csy9jaekkmr2zuyel82q5mw&down=async" async></script>
+            <br><a href="https://www.contadorvisitasgratis.com">contador de visitas para tumblr</a>
+            <noscript><a href="https://www.contadorvisitasgratis.com" title="contador de visitas para tumblr"><img src="https://counter1.optistats.ovh/private/contadorvisitasgratis.php?c=6eb3n1wu7csy9jaekkmr2zuyel82q5mw" border="0" title="contador de visitas para tumblr" alt="contador de visitas para tumblr"></a></noscript>
+        </footer>
     </div>
 </div>
 
 <script>
-// ── CANVAS CYBERPUNK BG ───────────────────────────────────────────
+/* ── CANVAS CYBERPUNK BG ── */
 const canvas = document.getElementById('bg');
 const ctx = canvas.getContext('2d');
 let W, H;
-
 function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
 resize();
 window.addEventListener('resize', resize);
 
-const particles = Array.from({length: 90}, () => resetParticle({}));
+const particles = Array.from({length:90}, () => resetParticle({}));
 function resetParticle(p) {
-    p.x = Math.random() * (W || window.innerWidth);
-    p.y = Math.random() * (H || window.innerHeight);
-    p.size = Math.random() * 1.2 + 0.2;
-    p.vy = -(Math.random() * 0.3 + 0.08);
-    p.vx = (Math.random() - 0.5) * 0.12;
-    p.opacity = Math.random() * 0.5 + 0.1;
-    p.color = Math.random() > 0.55 ? '#00ffe7' : Math.random() > 0.5 ? '#cc44ff' : '#ff00cc';
+    p.x = Math.random()*(W||window.innerWidth);
+    p.y = Math.random()*(H||window.innerHeight);
+    p.size = Math.random()*1.2+0.2;
+    p.vy = -(Math.random()*0.3+0.08);
+    p.vx = (Math.random()-0.5)*0.12;
+    p.opacity = Math.random()*0.5+0.1;
+    p.color = Math.random()>0.55?'#00ffe7':Math.random()>0.5?'#cc44ff':'#ff00cc';
     return p;
 }
-
-// matrix rain
 const COL_W = 20;
 let cols, drops;
-function initRain() {
-    cols = Math.floor(W / COL_W);
-    drops = Array.from({length: cols}, () => Math.random() * -120);
-}
+function initRain() { cols=Math.floor(W/COL_W); drops=Array.from({length:cols},()=>Math.random()*-120); }
 initRain();
 window.addEventListener('resize', initRain);
-
-const rainChars = '01アカサタナ{}[]<>/\\;:!@#$%^&*~`';
-
-let frame = 0;
-function animate() {
-    ctx.clearRect(0, 0, W, H);
-
-    // grid
-    ctx.strokeStyle = 'rgba(0,255,231,0.022)';
-    ctx.lineWidth = 1;
-    for (let x = 0; x < W; x += 55) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
-    for (let y = 0; y < H; y += 55) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
-
-    // rain (every other frame for perf)
-    if (frame % 2 === 0) {
-        ctx.font = '10px "Share Tech Mono", monospace';
-        drops.forEach((y, i) => {
-            const char = rainChars[Math.floor(Math.random() * rainChars.length)];
-            ctx.globalAlpha = 0.55;
-            ctx.fillStyle = '#00ffe7';
-            ctx.fillText(char, i * COL_W, y);
-            ctx.globalAlpha = 0.06;
-            ctx.fillText(rainChars[Math.floor(Math.random() * rainChars.length)], i * COL_W, y - COL_W);
-            drops[i] = y > H + 40 ? Math.random() * -180 : y + (Math.random() * 1 + 0.4);
+const rainChars='01アカサタナ{}[]<>/\\;:!@#$%^&*~`';
+let frame=0;
+function animate(){
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle='rgba(0,255,231,0.022)'; ctx.lineWidth=1;
+    for(let x=0;x<W;x+=55){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=0;y<H;y+=55){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    if(frame%2===0){
+        ctx.font='10px "Share Tech Mono",monospace';
+        drops.forEach((y,i)=>{
+            const ch=rainChars[Math.floor(Math.random()*rainChars.length)];
+            ctx.globalAlpha=0.55; ctx.fillStyle='#00ffe7'; ctx.fillText(ch,i*COL_W,y);
+            ctx.globalAlpha=0.06; ctx.fillText(rainChars[Math.floor(Math.random()*rainChars.length)],i*COL_W,y-COL_W);
+            drops[i]=y>H+40?Math.random()*-180:y+(Math.random()*1+0.4);
         });
     }
-
-    // particles
-    particles.forEach(p => {
-        ctx.globalAlpha = p.opacity;
-        ctx.fillStyle = p.color;
-        ctx.fillRect(p.x, p.y, p.size, p.size);
-        p.x += p.vx; p.y += p.vy; p.opacity -= 0.0007;
-        if (p.y < -5 || p.opacity <= 0) { p.y = H + 5; resetParticle(p); p.y = H; }
+    particles.forEach(p=>{
+        ctx.globalAlpha=p.opacity; ctx.fillStyle=p.color;
+        ctx.fillRect(p.x,p.y,p.size,p.size);
+        p.x+=p.vx; p.y+=p.vy; p.opacity-=0.0007;
+        if(p.y<-5||p.opacity<=0){p.y=H+5;resetParticle(p);p.y=H;}
     });
-
-    // corner brackets
-    const corners = [[0,0,1,1],[W,0,-1,1],[0,H,1,-1],[W,H,-1,-1]];
-    ctx.globalAlpha = 0.2; ctx.lineWidth = 1.5;
-    corners.forEach(([cx,cy,dx,dy]) => {
-        ctx.strokeStyle = '#cc44ff';
-        ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+dx*70,cy); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx,cy+dy*70); ctx.stroke();
+    const corners=[[0,0,1,1],[W,0,-1,1],[0,H,1,-1],[W,H,-1,-1]];
+    ctx.globalAlpha=0.2; ctx.lineWidth=1.5;
+    corners.forEach(([cx,cy,dx,dy])=>{
+        ctx.strokeStyle='#cc44ff';
+        ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+dx*70,cy);ctx.stroke();
+        ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx,cy+dy*70);ctx.stroke();
     });
-
-    ctx.globalAlpha = 1;
-    frame++;
-    requestAnimationFrame(animate);
+    ctx.globalAlpha=1; frame++; requestAnimationFrame(animate);
 }
 animate();
 
-// ── CLOCK ─────────────────────────────────────────────────────────
-function tick() {
-    const t = new Date();
-    document.getElementById('clock').textContent = t.toTimeString().slice(0,8);
-}
-setInterval(tick, 1000); tick();
+/* ── CLOCK ── */
+function tick(){document.getElementById('clock').textContent=new Date().toTimeString().slice(0,8);}
+setInterval(tick,1000); tick();
 
-// ── TITLE MUTATION ────────────────────────────────────────────────
-(() => {
-    if (sessionStorage.getItem("coreTextMutated")) return;
-    const title = document.getElementById("core-title");
-    if (!title) return;
-    const orig = title.innerHTML;
-    const variants = [
+/* ── TITLE MUTATION ── */
+(()=>{
+    if(sessionStorage.getItem("coreTextMutated"))return;
+    const title=document.getElementById("core-title"); if(!title)return;
+    const orig=title.innerHTML;
+    const variants=[
         '<i class="fab fa-spotify"></i> Selección Activa',
         '<i class="fab fa-spotify"></i> Acceso Autorizado',
         '<i class="fab fa-spotify"></i> Flujo Detectado',
         '<i class="fab fa-spotify"></i> Señal Estable'
     ];
-    setTimeout(() => {
-        const v = variants[Math.floor(Math.random() * variants.length)];
-        title.style.transition = "opacity 0.4s ease";
-        title.style.opacity = "0";
-        setTimeout(() => {
-            title.innerHTML = v; title.style.opacity = "1";
-            setTimeout(() => {
-                title.style.opacity = "0";
-                setTimeout(() => {
-                    title.innerHTML = orig; title.style.opacity = "1";
-                    sessionStorage.setItem("coreTextMutated", "true");
-                }, 400);
-            }, 1400);
-        }, 400);
-    }, Math.random() * 4000 + 3000);
+    setTimeout(()=>{
+        const v=variants[Math.floor(Math.random()*variants.length)];
+        title.style.transition="opacity 0.4s ease"; title.style.opacity="0";
+        setTimeout(()=>{
+            title.innerHTML=v; title.style.opacity="1";
+            setTimeout(()=>{
+                title.style.opacity="0";
+                setTimeout(()=>{ title.innerHTML=orig; title.style.opacity="1"; sessionStorage.setItem("coreTextMutated","true"); },400);
+            },1400);
+        },400);
+    },Math.random()*4000+3000);
 })();
 
-// ── FADE IFRAMES ──────────────────────────────────────────────────
-document.addEventListener("DOMContentLoaded", () => {
-    const obs = new IntersectionObserver((entries) => {
-        entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add("visible"); obs.unobserve(e.target); } });
-    }, { threshold: 0.15 });
-    document.querySelectorAll(".fade-frame").forEach(f => obs.observe(f));
-});
+/* ── PODCAST PANEL ── */
+const panel   = document.getElementById('podcast-panel');
+const tab     = document.getElementById('podcast-tab');
+const closeBtn= document.getElementById('podcast-close');
+const overlay = document.getElementById('podcast-overlay');
+
+function openPanel()  { panel.classList.add('open');    overlay.classList.add('active');    }
+function closePanel() { panel.classList.remove('open'); overlay.classList.remove('active'); }
+
+tab.addEventListener('click', ()=> panel.classList.contains('open') ? closePanel() : openPanel());
+closeBtn.addEventListener('click', closePanel);
+overlay.addEventListener('click', closePanel);
+
+/* ── LUZ DORADA RECORRIENDO EL BORDE DEL TAB (canvas) ── */
+(function goldGlow(){
+    const gc  = document.getElementById('tab-glow-canvas');
+    const gCtx= gc.getContext('2d');
+    const tabEl = document.getElementById('podcast-tab');
+
+    let gW, gH;
+    function resizeGC(){
+        gW = gc.width  = tabEl.offsetWidth  || 42;
+        gH = gc.height = tabEl.offsetHeight || 200;
+    }
+    resizeGC();
+    window.addEventListener('resize', resizeGC);
+
+    const PERIOD = 5000; // ms — ciclo completo cada 5 s
+
+    function perimToPoint(d, w, h){
+        // recorre el borde: top → right → bottom → left
+        if (d < w)            return { x: d,       y: 0     };
+        d -= w;
+        if (d < h)            return { x: w,       y: d     };
+        d -= h;
+        if (d < w)            return { x: w - d,   y: h     };
+        d -= w;
+                              return { x: 0,       y: h - d };
+    }
+
+    function drawGlow(ts){
+        if(!gW||!gH) resizeGC();
+        gCtx.clearRect(0, 0, gW, gH);
+
+        // Solo pintamos la orilla izquierda (el borde visible del tab)
+        // La chispa sube y baja por esa línea vertical de longitud gH
+        const progress = (ts % PERIOD) / PERIOD; // 0..1
+        // va y viene: sube en la primera mitad, baja en la segunda
+        const t = progress < 0.5 ? progress * 2 : (1 - progress) * 2; // 0→1→0
+        const sparkCenter = t * gH;
+        const sparkHalf   = gH * 0.18;
+
+        const SEG = 60;
+        gCtx.save();
+        for(let i = 0; i < SEG; i++){
+            const frac = i / SEG;
+            const y1 = sparkCenter - sparkHalf + frac * sparkHalf * 2;
+            const y2 = sparkCenter - sparkHalf + (frac + 1/SEG) * sparkHalf * 2;
+
+            // alpha: máximo en el centro de la chispa
+            const distFromCenter = Math.abs((y1 + y2) / 2 - sparkCenter) / sparkHalf;
+            const alpha = Math.pow(1 - distFromCenter, 2);
+
+            gCtx.beginPath();
+            gCtx.moveTo(0, y1);
+            gCtx.lineTo(0, y2);
+            gCtx.strokeStyle = `rgba(255,${Math.round(210 + alpha*45)},0,${(alpha).toFixed(2)})`;
+            gCtx.lineWidth   = 3;
+            gCtx.shadowColor = `rgba(255,230,0,${(alpha*0.9).toFixed(2)})`;
+            gCtx.shadowBlur  = 10;
+            gCtx.stroke();
+        }
+        gCtx.restore();
+
+        requestAnimationFrame(drawGlow);
+    }
+    requestAnimationFrame(drawGlow);
+})();
 </script>
 </body>
 </html>
