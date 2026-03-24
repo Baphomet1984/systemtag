@@ -298,32 +298,47 @@
         }
 
         /* ── Lengüeta / Tab ── */
-        #podcast-tab {
-            width: 42px;
-            height: clamp(80px, 28vh, 160px);
-            flex-shrink: 0;
-            position: sticky;
-            top: calc(50vh - 80px);
-            align-self: flex-start;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 0;
-            padding: 0;
-            cursor: pointer;
-            user-select: none;
-            border-radius: 8px 0 0 8px;
-            background: rgba(0, 0, 0, 0.18);
-            backdrop-filter: blur(4px);
-            border: 1px solid rgba(255, 215, 0, 0.55);
-            border-right: none;
-            box-shadow:
-                -2px 0 16px rgba(255,215,0,0.18),
-                inset 0 0 12px rgba(255,215,0,0.04);
-            position: relative;
-            overflow: hidden;
-        }
+                 #podcast-tab{
+    width: 42px;
+    height: clamp(80px, 28vh, 160px);
+
+    flex-shrink: 0;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+
+    border-radius:8px 0 0 8px;
+
+    background: rgba(0,0,0,0.18);
+    backdrop-filter: blur(4px);
+
+    border:1px solid rgba(255,215,0,0.55);
+    border-right:none;
+
+    box-shadow:
+        -2px 0 16px rgba(255,215,0,0.18),
+        inset 0 0 12px rgba(255,215,0,0.04);
+}
+
+#podcast-tab:hover{
+    background: rgba(255,215,0,0.08);
+    box-shadow:
+        -2px 0 20px rgba(255,215,0,0.4),
+        inset 0 0 12px rgba(255,215,0,0.1);
+}
+  @keyframes podcastNudge{
+0%{ transform:translateX(calc(100% - 42px)); }
+50%{ transform:translateX(calc(100% - 52px)); }
+100%{ transform:translateX(calc(100% - 42px)); }
+}
+
+#podcast-panel{
+animation: podcastNudge 4s ease-in-out 2;
+animation-delay:4s;
+}
 
         /* Ocultar texto */
         #podcast-tab .tab-text {
