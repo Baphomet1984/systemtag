@@ -1232,7 +1232,7 @@ function unlockSystem() {
         requestAnimationFrame(drawGlow);
     }
     requestAnimationFrame(drawGlow);
-})();
+})
 
 const podcastPanel = document.getElementById("podcast-panel")
 const podcastTab = document.getElementById("podcast-tab")
@@ -1252,7 +1252,8 @@ podcastTab.onclick = () => {
 podcastOverlay.onclick = () => {
     podcastPanel.classList.remove("open")
     podcastOverlay.classList.remove("active")
-}
+}();
+
 </script>
 </body>
 </html>
