@@ -533,7 +533,7 @@
     transform: translateX(0);
 }
 
-#podcast-tab{
+        #podcast-tab{
     width: 42px;
     height: clamp(80px, 28vh, 160px);
 
@@ -557,7 +557,8 @@
         -2px 0 16px rgba(255,215,0,0.18),
         inset 0 0 12px rgba(255,215,0,0.04);
 }
-    #podcast-tab:hover{
+
+#podcast-tab:hover{
     background: rgba(255,215,0,0.08);
     box-shadow:
         -2px 0 20px rgba(255,215,0,0.4),
@@ -687,6 +688,17 @@
         #podcast-content::-webkit-scrollbar { width: 3px; }
         #podcast-content::-webkit-scrollbar-track { background: rgba(255,215,0,0.04); }
         #podcast-content::-webkit-scrollbar-thumb { background: rgba(255,215,0,0.28); border-radius: 2px; }
+
+@keyframes podcastNudge{
+0%{ transform:translateX(calc(100% - 42px)); }
+50%{ transform:translateX(calc(100% - 52px)); }
+100%{ transform:translateX(calc(100% - 42px)); }
+}
+
+#podcast-panel{
+animation: podcastNudge 4s ease-in-out 2;
+animation-delay:4s;
+}
     </style>
 </head>
 <body>
@@ -1232,8 +1244,7 @@ function unlockSystem() {
         requestAnimationFrame(drawGlow);
     }
     requestAnimationFrame(drawGlow);
-})
-();
+})();
 
 </script>
 </body>
