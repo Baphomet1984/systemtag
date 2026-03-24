@@ -280,23 +280,28 @@
         }
         #podcast-overlay.active { display: block; }
 
-        #podcast-panel {
-            position: fixed;
-            top: 50%;
-            right: 0;
-            transform: translateY(-50%) translateX(calc(100% - 42px));
-            width: 430px;
-            max-width: 94vw;
-            z-index: 1000;
-            display: flex;
-            align-items: flex-start;
-            transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1);
-        }
+      #podcast-panel {
 
-        #podcast-panel.open {
-            transform: translateY(-50%) translateX(0);
-        }
+    position: fixed;
+    top: 120px;   /* BAJA el panel debajo del avatar */
+    right: 0;
 
+    transform: translateX(calc(100% - 42px));
+
+    width: 430px;
+    max-width: 94vw;
+
+    z-index: 1000;
+
+    display: flex;
+    align-items: flex-start;
+
+    transition: transform 0.45s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+      #podcast-panel.open {
+    transform: translateX(0);
+}
         /* ── Lengüeta / Tab ── */
                  #podcast-tab{
     width: 42px;
