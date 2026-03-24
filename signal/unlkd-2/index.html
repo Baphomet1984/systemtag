@@ -1233,26 +1233,7 @@ function unlockSystem() {
     }
     requestAnimationFrame(drawGlow);
 })
-
-const podcastPanel = document.getElementById("podcast-panel")
-const podcastTab = document.getElementById("podcast-tab")
-const podcastOverlay = document.getElementById("podcast-overlay")
-
-podcastTab.onclick = () => {
-
-    podcastPanel.classList.toggle("open")
-
-    if(podcastPanel.classList.contains("open")){
-        podcastOverlay.classList.add("active")
-    }else{
-        podcastOverlay.classList.remove("active")
-    }
-}
-
-podcastOverlay.onclick = () => {
-    podcastPanel.classList.remove("open")
-    podcastOverlay.classList.remove("active")
-}();
+();
 
 </script>
 </body>
