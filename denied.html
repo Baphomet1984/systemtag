@@ -22,27 +22,26 @@ text-align:center;
 overflow:hidden;
 }
 
-/* fondo glitch */
-filter: contrast(160%) saturate(120%) hue-rotate(15deg) blur(1px);
-/* texto principal */
 .denied{
 font-size:3rem;
 letter-spacing:0.2em;
 text-shadow:0 0 10px #ff3366;
 margin-bottom:1rem;
+background:rgba(0,0,0,0.75);
+padding:0.5rem 1.5rem;
+border-radius:4px;
 }
 
-/* texto terminal */
 .log{
 font-size:0.8rem;
 letter-spacing:0.15em;
 opacity:0.7;
-}
-  .log{
-white-space: pre-line;
+white-space:pre-line;
+background:rgba(0,0,0,0.75);
+padding:1rem 1.5rem;
+border-radius:4px;
 }
 
-/* cursor parpadeante */
 .cursor{
 display:inline-block;
 width:10px;
@@ -70,9 +69,7 @@ animation:blink 1s infinite;
 <span id="log"></span><span class="cursor"></span>
 </div>
 
-  <script>
-/* imágenes glitch aleatorias */
-
+<script>
 const glitches = [
 "https://baphomet1984.github.io/systemtag/assets/img/ef86285047cebb78123093ebdd70cc6d.gif",
 "https://baphomet1984.github.io/systemtag/assets/img/b40b709583ef693fb35645afe74544b9.gif",
@@ -119,10 +116,10 @@ const glitches = [
 ];
 
 const rand = Math.floor(Math.random()*glitches.length);
-
 document.body.style.backgroundImage = `url(${glitches[rand]})`;
 document.body.style.backgroundSize = "cover";
 document.body.style.backgroundPosition = "center";
+
 const text = `
 unauthorized node detected
 connection blocked
