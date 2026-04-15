@@ -1415,7 +1415,7 @@ function unlockSystem() {
   const userNum = getUserNumber();
   if (userNum === null) return;
 
-  fetch('aliados.json')
+  fetch('../../alliados/aliados.json')
     .then(r => r.json())
     .then(data => {
       const lista   = Array.isArray(data) ? data : (data.aliados || []);
