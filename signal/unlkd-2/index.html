@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Door-01 | Key#01</title>
+    <title>Door-01 | Key#02</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;500;600&display=swap');
@@ -699,156 +699,11 @@
 animation: podcastNudge 4s ease-in-out 2;
 animation-delay:4s;
 }
-  /* ══════════════════════════════════════════════════════
-     USER CARD OVERLAY — aparece al escanear QR
-  ══════════════════════════════════════════════════════ */
-  #user-overlay {
-    display: none;
-    position: fixed; inset: 0; z-index: 50000;
-    background: rgba(5, 5, 8, 0.80);
-    backdrop-filter: blur(7px);
-    -webkit-backdrop-filter: blur(7px);
-    align-items: center; justify-content: center;
-    opacity: 0;
-    transition: opacity 0.55s ease;
-  }
-  #user-overlay.visible { display: flex; opacity: 1; }
-  #user-overlay.fade-out {
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.75s ease;
-  }
-
-  .uc-card {
-    position: relative;
-    width: min(420px, 92vw);
-    background: rgba(5,5,8,0.94);
-    border: 1px solid rgba(0,255,231,0.18);
-    padding: 2.2rem 2rem 1.8rem;
-    display: flex; flex-direction: column; align-items: center;
-    gap: 0.9rem;
-    animation: ucSlideIn 0.5s cubic-bezier(0.22,1,0.36,1) forwards;
-  }
-  @keyframes ucSlideIn {
-    from { transform: translateY(30px) scale(0.97); opacity: 0; }
-    to   { transform: translateY(0) scale(1); opacity: 1; }
-  }
-  .uc-card::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: repeating-linear-gradient(
-      0deg, transparent, transparent 3px,
-      rgba(0,255,231,0.012) 3px, rgba(0,255,231,0.012) 4px
-    );
-    pointer-events: none; z-index: 0;
-  }
-  .uc-corner { position: absolute; width: 18px; height: 18px; z-index: 2; }
-  .uc-corner.tl { top:6px; left:6px;    border-top:1px solid var(--cyan); border-left:1px solid var(--cyan); }
-  .uc-corner.tr { top:6px; right:6px;   border-top:1px solid var(--cyan); border-right:1px solid var(--cyan); }
-  .uc-corner.bl { bottom:6px; left:6px;  border-bottom:1px solid var(--cyan); border-left:1px solid var(--cyan); }
-  .uc-corner.br { bottom:6px; right:6px; border-bottom:1px solid var(--cyan); border-right:1px solid var(--cyan); }
-
-  .uc-status {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.46rem; letter-spacing: 0.3em;
-    color: var(--cyan); border: 1px solid rgba(0,255,231,0.2);
-    padding: 3px 12px; background: rgba(0,255,231,0.04);
-    text-transform: uppercase; z-index: 1;
-  }
-  .uc-avatar {
-    width: 90px; height: 90px; border-radius: 50%;
-    border: 2px solid rgba(0,255,231,0.3); object-fit: cover;
-    filter: brightness(0.9) saturate(1.1);
-    box-shadow: 0 0 24px rgba(0,255,231,0.12); z-index: 1;
-  }
-  .uc-level {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.48rem; letter-spacing: 0.22em;
-    color: var(--amber); opacity: 0.75; z-index: 1;
-  }
-  .uc-alias {
-    font-family: 'Orbitron', monospace;
-    font-size: clamp(1.1rem, 4vw, 1.5rem); font-weight: 900;
-    color: #fff; letter-spacing: 0.06em;
-    text-shadow: 0 0 30px rgba(0,255,231,0.3);
-    z-index: 1; text-align: center;
-  }
-  .uc-desc {
-    font-family: 'Rajdhani', sans-serif;
-    font-size: 0.9rem; line-height: 1.6;
-    color: rgba(208,208,208,0.6);
-    text-align: center; max-width: 320px; z-index: 1;
-  }
-  .uc-meta {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.5rem; letter-spacing: 0.18em;
-    color: rgba(0,255,231,0.4); z-index: 1;
-  }
-  .uc-sep {
-    width: 100%; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(0,255,231,0.18), transparent);
-    z-index: 1;
-  }
-  .uc-actions {
-    display: flex; flex-direction: column; gap: 0.65rem;
-    width: 100%; z-index: 1;
-  }
-  .uc-btn {
-    position: relative; width: 100%;
-    background: transparent; border: 1px solid var(--purple);
-    color: var(--purple); font-family: 'Share Tech Mono', monospace;
-    font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase;
-    padding: 0.75rem 1.2rem; cursor: pointer;
-    display: flex; align-items: center; gap: 0.6rem;
-    overflow: hidden; transition: color 0.25s;
-    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
-  }
-  .uc-btn::before {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(90deg, var(--purple), var(--magenta));
-    opacity: 0; transition: opacity 0.25s; z-index: 0;
-  }
-  .uc-btn:hover::before { opacity: 1; }
-  .uc-btn:hover { color: var(--bg); box-shadow: 0 0 20px rgba(204,68,255,0.5); }
-  .uc-btn span  { position: relative; z-index: 1; }
-  .uc-btn .uc-dot {
-    width: 5px; height: 5px; border-radius: 50%;
-    background: var(--magenta); animation: blink 1.8s infinite;
-    position: relative; z-index: 1; flex-shrink: 0;
-  }
-  .uc-btn.hub-btn { border-color: var(--cyan); color: var(--cyan); }
-  .uc-btn.hub-btn::before { background: linear-gradient(90deg, var(--cyan), var(--green)); }
-  .uc-btn.hub-btn .uc-dot { background: var(--cyan); }
-  .uc-btn.hub-btn:hover { color: var(--bg); box-shadow: 0 0 20px rgba(0,255,231,0.5); }
-
-  .uc-id {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.44rem; letter-spacing: 0.2em;
-    color: rgba(0,255,231,0.22); z-index: 1;
-  }
-  .uc-error {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 0.68rem; letter-spacing: 0.15em;
-    color: var(--red); text-align: center;
-    z-index: 1; padding: 1rem 0; line-height: 2;
-  }
-
     </style>
 </head>
 <body>
 <script src="protect.js"></script>
 <canvas id="bg"></canvas>
-
-<!-- ══ USER CARD OVERLAY ══ -->
-<div id="user-overlay">
-  <div class="uc-card" id="ucCard">
-    <div class="uc-corner tl"></div>
-    <div class="uc-corner tr"></div>
-    <div class="uc-corner bl"></div>
-    <div class="uc-corner br"></div>
-  </div>
-</div>
-<!-- ══ FIN USER CARD OVERLAY ══ -->
-
 
 <!-- ══ PODCAST PANEL LATERAL DERECHO ══ -->
 <div id="podcast-overlay"></div>
@@ -885,9 +740,9 @@ animation-delay:4s;
 <div class="container">
 
     <div class="status-bar">
-        <span><span class="dot-live"></span>UNLKD · KEY#01 · ONLINE</span>
+        <span><span class="dot-live"></span>UNLKD · KEY#02 · ONLINE</span>
         <span id="clock">--:--:--</span>
-        <span>NODE · BAPHOMET</span>
+        <span>NODE · SETH</span>
     </div>
 
     <header>
@@ -904,7 +759,7 @@ animation-delay:4s;
             <a class="nav-btn" href="https://baphomet1984.github.io/alliados/">
                 <span class="dot"></span><span>Aliados</span>
             </a>
-            <a class="nav-btn" href="https://baphomet1984.github.io/bitacora/">
+           <a class="nav-btn" href="https://baphomet1984.github.io/bitacora/">
                 <span class="dot"></span><span>Bitácora</span>
             </a>
         </div>
@@ -948,9 +803,7 @@ animation-delay:4s;
                 <li class="playlist-item"><a href="https://open.spotify.com/intl-es/artist/1DnxfiR4j3tp1B7zMSFmDq?si=-GtiFFfMSXq9YV5O2gIeQg"><i class="fab fa-spotify"></i> 7. Smokehouse</a></li>
                 <li class="playlist-item"><a href="https://open.spotify.com/artist/3RNrq3jvMZxD9ZyoOZbQOD"><i class="fab fa-spotify"></i> 8. Korn</a></li>
                 <li class="playlist-item"><a href="https://open.spotify.com/intl-es/artist/5c8Cw62ZYj9XO6iDLRDEsi?si=U3kEgIHCRdCog1t0kYJnwg"><i class="fab fa-spotify"></i> 9. Therion</a></li>
-
-                <li class="playlist-item"><a href="https://open.spotify.com/playlist/5uBzsq62Ltwu0KWougAS0S?si=CJ2eQmIgSVqNHEyCCukbBA"><i class="fab fa-spotify"></i>Xhaparra♥️</a></li>
-                <li class="playlist-item"><a href="https://mega.nz/folder/3U4G2DKQ"><i class="fab fa-spotify"></i>baul musical</a></li>
+                <li class="playlist-item"><a href="https://mega.nz/folder/3U4G2DKQ#h4YgT7aCWygmplNdFIctAw"><i class="fab fa-spotify"></i>baul musical</a></li>
 
             </ul>
         </div>
@@ -1393,120 +1246,6 @@ function unlockSystem() {
         requestAnimationFrame(drawGlow);
     }
     requestAnimationFrame(drawGlow);
-})();
-
-// ══════════════════════════════════════════════════════
-//  USER CARD OVERLAY — lógica QR
-//  URL esperada: .../gate/?lvl=unlkd&go=signal-unlkd-2
-//  Extrae el número final y busca en aliados.json
-// ══════════════════════════════════════════════════════
-(function () {
-
-  function getUserNumber() {
-    const params = new URLSearchParams(window.location.search);
-    const go     = params.get('go') || '';
-    const match  = go.match(/-(\d+)$/);
-    if (match) return parseInt(match[1], 10);
-    const hash = window.location.hash.replace('#', '');
-    if (/^\d+$/.test(hash)) return parseInt(hash, 10);
-    return null;
-  }
-
-  const userNum = getUserNumber();
-  if (userNum === null) return;
-
-  fetch('https://github.com/Baphomet1984/alliados/aliados.json')
-    .then(r => r.json())
-    .then(data => {
-      const lista   = Array.isArray(data) ? data : (data.aliados || []);
-      const usuario = lista.find(u => {
-        const m = (u.id || '').match(/(\d+)$/);
-        return m && parseInt(m[1], 10) === userNum;
-      });
-      renderOverlay(usuario || null);
-    })
-    .catch(() => renderOverlay(null));
-
-  function renderOverlay(u) {
-    const card    = document.getElementById('ucCard');
-    const overlay = document.getElementById('user-overlay');
-
-    if (!u) {
-      card.innerHTML += `
-        <div class="uc-status">▸ ACCESO DENEGADO</div>
-        <div class="uc-error">// USUARIO NO REGISTRADO<br>REF: ${String(userNum).padStart(3,'0')}</div>
-        <div class="uc-id">SIGNAL · NODE · BAPHOMET</div>
-      `;
-    } else {
-      const nivel    = u.nivel || 1;
-      const lvlMap   = {
-        1: '◈ NIVEL 01 · ACCESO BÁSICO',
-        2: '◈◈ NIVEL 02 · ACCESO COMPLETO',
-        3: '◈◈◈ NIVEL 03 · ROOT'
-      };
-      const lvlTxt = lvlMap[nivel] || 'NIVEL ' + nivel;
-
-      // Botón S.Core — siempre presente (nivel 1+)
-      let btns = `
-        <button class="uc-btn"
-          onclick="window.location.href='https://baphomet1984.github.io/systemtag/gate/?lvl=core&go=signal-core'">
-          <span class="uc-dot"></span><span>▸ ACCEDER A S.CORE</span>
-        </button>
-      `;
-
-      // Botón Hub personal — nivel 2+
-      if (nivel >= 2 && u.hub) {
-        btns += `
-          <button class="uc-btn hub-btn" id="ucHubBtn" data-hub="${u.hub}">
-            <span class="uc-dot"></span><span>▸ ENTRAR A HUB PERSONAL</span>
-          </button>
-        `;
-      }
-
-      // Botón ROOT oculto — nivel 3 (activable por consola o easter egg)
-      const rootBtn = nivel >= 3
-        ? `<button id="ucRootBtn" data-hub="${u.hub}" style="display:none" aria-hidden="true">ROOT</button>`
-        : '';
-
-      const imgSrc = u.img
-        ? u.img
-        : `https://api.dicebear.com/7.x/bottts/svg?seed=${u.id}`;
-
-      const ciudad = (u.ubicacion && u.ubicacion.ciudad) ? u.ubicacion.ciudad.toUpperCase() : '';
-      const edad   = u.edad ? u.edad + ' AÑOS' : '';
-      const meta   = [ciudad, edad].filter(Boolean).join(' · ');
-
-      card.innerHTML += `
-        <div class="uc-status">▸ SIGNAL ACTIVE · ALIADO VERIFICADO</div>
-        <img class="uc-avatar" src="${imgSrc}" alt="${u.alias}"
-             onerror="this.src='https://api.dicebear.com/7.x/bottts/svg?seed=${u.id}'">
-        <div class="uc-level">${lvlTxt}</div>
-        <div class="uc-alias">${u.alias}</div>
-        ${u.descripcion ? `<div class="uc-desc">${u.descripcion}</div>` : ''}
-        ${meta ? `<div class="uc-meta">${meta}</div>` : ''}
-        <div class="uc-sep"></div>
-        <div class="uc-actions">${btns}</div>
-        <div class="uc-id">ID: ${u.id} · NODE · BAPHOMET</div>
-        ${rootBtn}
-      `;
-
-      // Hub btn: fade-out overlay → redirigir
-      const hubBtn = document.getElementById('ucHubBtn');
-      if (hubBtn) {
-        hubBtn.addEventListener('click', () => {
-          overlay.classList.add('fade-out');
-          setTimeout(() => { window.location.href = hubBtn.dataset.hub; }, 780);
-        });
-      }
-    }
-
-    // Mostrar overlay con doble rAF para garantizar la transición CSS
-    requestAnimationFrame(() => {
-      overlay.style.display = 'flex';
-      requestAnimationFrame(() => overlay.classList.add('visible'));
-    });
-  }
-
 })();
 
 </script>
