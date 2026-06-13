@@ -1178,7 +1178,7 @@ function typeLine(text, speed=25) {
 function unlockSystem() {
     const msg = document.createElement("div");
     msg.style.color = "#ff2e2e";
-    msg.innerHTML = "\n⚠ ACCESO OCULTO DESBLOQUEADO ⚠";
+    msg.innerHTML = "\n⚠ ACCESO OCULTO DESBLOQUEADO ⚠\n usuario Jellyfin:system-fail contraseña:pandemonium1984";
     kernelConsole.appendChild(msg);
     document.getElementById("hub-status").textContent = "CRÍTICO";
     kernelOverlay.addEventListener("click", () => { kernelOverlay.style.display = "none"; });
